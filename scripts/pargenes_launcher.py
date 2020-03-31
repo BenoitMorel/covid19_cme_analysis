@@ -51,7 +51,7 @@ def launch_pargenes(alignment, model, output_dir, seed, rand_trees, pars_trees, 
   cmd.append("-c")
   cmd.append(str(cores))
   print(" ".join(cmd))
-  launcher.submit_haswell(prefix, cmd, cores, debug) 
+  launcher.submit(prefix, cmd, cores, debug) 
 
 
 

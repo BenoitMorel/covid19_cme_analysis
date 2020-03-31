@@ -4,9 +4,9 @@ import sys
 import subprocess
 import shutil
 
-def submit_haswell(prefix, cmd, threads = 16, debug =  False):
-  threads = int(threads)
-  nodes = str((int(threads) - 1) // 16 + 1)
+def submit_haswell(prefix, cmd, cores = 16, debug =  False):
+  cores = int(cores)
+  nodes = str((int(cores) - 1) // 16 + 1)
   logfile = os.path.join(prefix + "_haswelllogs.out")
   submitfile = os.path.join(prefix + "_haswellsubmit.sh")
   with open(submitfile, "w") as f:
@@ -14,7 +14,7 @@ def submit_haswell(prefix, cmd, threads = 16, debug =  False):
     f.write("#SBATCH -o " + logfile + "\n")
     f.write("#SBATCH -B 2:8:1\n")
     f.write("#SBATCH -N " + str(nodes) + "\n")
-    f.write("#SBATCH -n " + str(threads) + "\n")
+    f.write("#SBATCH -n " + str(cores) + "\n")
     f.write("#SBATCH --threads-per-core=1\n")
     f.write("#SBATCH --cpus-per-task=1\n")
     f.write("#SBATCH --hint=compute_bound\n")
@@ -40,4 +40,20 @@ def submit_haswell(prefix, cmd, threads = 16, debug =  False):
   print(open(historic).readlines()[-2][:-1])
   print(open(historic).readlines()[-1][:-1])
   out.write("\n")
+
+def submit_normal(cmd):
+  subprocess.check_call(cmd)
+
+def is_slurm():
+  try:
+    subprocess.call(["sbatch", "-V"])
+  except:
+    return False
+  return True
+
+def submit(prefix, cmd, cores, debug = False):
+  if (is_slurm()):
+    submit_haswell(prefix, cmd, cores, debug)
+  else:
+    submit_normal(cmd)
 

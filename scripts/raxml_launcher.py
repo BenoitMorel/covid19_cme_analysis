@@ -43,4 +43,4 @@ def launch_raxml(alignment, model, output_dir, seed, starting_trees = 1, parsimo
   prefix += "_seed" + str(seed)
   cmd.append("--prefix")
   cmd.append(prefix)
-  launcher.submit_haswell(prefix, cmd, cores, debug) 
+  launcher.submit(prefix, cmd, cores, debug) 

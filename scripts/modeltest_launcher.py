@@ -25,7 +25,7 @@ def launch_modeltest(alignment, output_dir, seed, cores = 16, debug = False):
   cmd.append("--force")
   cmd.append("-h")
   cmd.append("uigfr")
-  launcher.submit_haswell(prefix, cmd, cores, debug) 
+  launcher.submit(prefix, cmd, cores, debug) 
 
 
 
