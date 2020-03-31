@@ -11,6 +11,7 @@ pargenes = os.path.join(software_path, "ParGenes", "pargenes", "pargenes-hpc.py"
 # data
 data_googleid = "1LpC3kmBh52vOrnpOMhGF7zMNTz0Ll6fF"
 data_path = os.path.join("data", "current")
+raw_alignment = os.path.join(data_path, "covid_raw.fasta")
 alignment = os.path.join(data_path, "covid_edited.fasta")
 
 
