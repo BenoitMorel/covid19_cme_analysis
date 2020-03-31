@@ -12,7 +12,7 @@ cmd.append("wget")
 cmd.append("--no-check-certificate")
 cmd.append("https://docs.google.com/uc?export=download&id=" + common.data_googleid)
 cmd.append("-O")
-cmd.append(common.raw_alignment + ".test")
+cmd.append(common.raw_alignment)
 
 print(" ".join(cmd))
 subprocess.call(cmd)

@@ -20,14 +20,14 @@ git clone --recursive https://github.com/Pas-Kapli/mptp.git
 
 echo "Installing raxml-ng..."
 cd raxml-ng
-mkdir build && cd build
+mkdir -p build && cd build
 cmake -DUSE_MPI=ON ..
 make -j
 cd ../..
 
 echo "Installing modeltest..."
 cd modeltest
-mkdir build && cd build
+mkdir -p build && cd build
 cmake -DUSE_MPI=ON ..
 make -j
 cd ../..
