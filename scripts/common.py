@@ -34,6 +34,6 @@ mptp_output = os.path.join(results_dir, "mptp_output.txt")
 
 # misc
 subst_model = "GTR+R4"
+remove_duplicates = True
+outgroups_to_remove = ["BAT", "PANGOLIN"]
 raxml_min_bl = "1e-9"
-
-

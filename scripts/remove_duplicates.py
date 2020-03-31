@@ -4,7 +4,6 @@ import sys
 
 def remove_duplicates(input_msa, output_msa):
   msa = ete3.SeqGroup(input_msa, format="fasta")
-  print("msa length: " + str(len(msa)))
   new_msa = ete3.SeqGroup()
   duplicates = set()
   for entry in msa.iter_entries():
@@ -17,6 +16,7 @@ def remove_duplicates(input_msa, output_msa):
   print("Found " + str(len(msa) - len(new_msa)) + " duplicates")
   new_msa.write("fasta", output_msa)
   print("New msa writen in " + output_msa)
+  print("msa length: " + str(len(new_msa)))
 
 
 if (__name__ == "__main__"):
