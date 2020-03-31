@@ -11,16 +11,14 @@ mptp = os.path.join(software_path, "mptp", "bin", "mptp")
 
 # data
 data_googleid = "1LpC3kmBh52vOrnpOMhGF7zMNTz0Ll6fF"
-root_data_path = "data"
-data_path = os.path.join(root_data_path, "current")
+root_data_dir = "data"
+data_path = os.path.join(root_data_dir, "current")
 raw_alignment = os.path.join(data_path, "covid_raw.fasta")
 alignment = os.path.join(data_path, "covid_edited.fasta")
-
 
 # runs
 root_runs_dir = "runs"
 runs_dir = os.path.join(root_runs_dir, "current")
-
 raxml_ml_runs_dir = os.path.join(runs_dir, "raxml_runs")
 pargenes_runs_dir = os.path.join(runs_dir, "pargenes_runs")
 modeltest_runs_dir = os.path.join(runs_dir, "modeltest_runs")

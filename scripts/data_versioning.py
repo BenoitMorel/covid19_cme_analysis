@@ -12,7 +12,7 @@ def relative_symlink(src, dest):
   shutil.move(tmp, dest)
 
 def get_current_version_id():
-  pattern = os.path.join(common.root_data_path, "[0123456789]*_covid_*")
+  pattern = os.path.join(common.root_data_dir, "[0123456789]*_covid_*")
   files = glob.glob(pattern)
   print(files)
   if (len(files) == 0):
@@ -40,7 +40,9 @@ def setup_new_version():
   version = version_id + "_covid"
   now = datetime.datetime.now()
   version += "_" + str(now.year)  + str(now.month) + str(now.day)
-  setup_directory(common.root_data_path, common.data_path, version)
+  setup_directory(common.root_data_dir, common.data_path, version)
+  setup_directory(common.root_runs_dir, common.runs_dir, version)
+  setup_directory(common.root_results_dir, common.results_dir, version)
   print(version)
  
 setup_new_version()
