@@ -5,6 +5,7 @@ import sys
 sys.path.insert(0, 'scripts')
 import common
 import pargenes_launcher
+import mptp_launcher
 
 tree = common.raxml_best_ml_tree
 output = common.mptp_output
