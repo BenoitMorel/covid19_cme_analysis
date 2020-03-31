@@ -6,7 +6,7 @@ sys.path.insert(0, 'scripts')
 import raxml_launcher
 import common
 
-cores = 16
+cores = common.cores_for_one_raxml_run
 output_dir = os.path.join("runs", "raxml_runs")
 for seed in range(1005, 1020):
   raxml_launcher.launch_raxml(common.alignment, common.subst_model, output_dir, seed, parsimony = False, cores = cores)

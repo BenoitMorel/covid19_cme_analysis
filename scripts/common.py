@@ -35,3 +35,7 @@ subst_model = "GTR+R4"
 remove_duplicates = True
 outgroups_to_remove = ["BAT", "PANGOLIN"]
 raxml_min_bl = "1e-9"
+available_cores = 128
+cores_for_one_raxml_run = 4
+
+

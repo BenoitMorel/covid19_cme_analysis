@@ -13,7 +13,7 @@ seed = 3000
 rand_trees = 0
 pars_trees = 100
 bs_trees = 100
-cores = 128
+cores = common.available_cores
 
 pargenes_launcher.launch_pargenes(alignment, model, output_dir, seed, rand_trees, pars_trees, bs_trees, cores)
 
