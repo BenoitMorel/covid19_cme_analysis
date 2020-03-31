@@ -45,5 +45,4 @@ def setup_new_version():
   setup_directory(common.root_results_dir, common.results_dir, version)
   print(version)
  
-setup_new_version()
 
