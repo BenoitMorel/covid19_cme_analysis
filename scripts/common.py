@@ -7,6 +7,7 @@ software_path = "software"
 raxml = os.path.join(software_path, "raxml-ng", "bin", "raxml-ng-mpi")
 modeltest = os.path.join(software_path, "modeltest", "bin", "modeltest-ng-mpi")
 pargenes = os.path.join(software_path, "ParGenes", "pargenes", "pargenes-hpc.py")
+mptp = os.path.join(software_path, "mptp", "bin", "mptp")
 
 # data
 data_googleid = "1LpC3kmBh52vOrnpOMhGF7zMNTz0Ll6fF"
@@ -25,6 +26,8 @@ modeltest_runs_dir = os.path.join(runs_dir, "modeltest_runs")
 # results
 results_dir = os.path.join("results", "current")
 raxml_best_ml_run_dir = os.path.join(results_dir, "best_raxml_run")
+raxml_best_ml_tree = os.path.join(raxml_best_ml_run_dir, "bestrun.raxml.bestTree")
+mptp_output = os.path.join(results_dir, "mptp_output.txt")
 
 # misc
 subst_model = "GTR+R4"
