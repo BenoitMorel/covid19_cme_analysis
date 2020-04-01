@@ -2,6 +2,7 @@ from shutil import rmtree
 import os
 import sys
 import common
+import subprocess
 
 def fail( msg ):
 	print( msg )
@@ -45,3 +46,12 @@ def expect_executable_exists( executable ):
 	import distutils.spawn
 	if not distutils.spawn.find_executable( executable ):
 		raise RuntimeError( "Executable not found: " + executable )
+
+
+def is_slurm():
+  try:
+    subprocess.call(["sbatch", "-V"])
+  except:
+    return False
+  return True
+

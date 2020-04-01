@@ -3,6 +3,7 @@ import datetime
 import sys
 import subprocess
 import shutil
+import util
 
 def submit_haswell(prefix, cmd, cores = 16, debug =  False):
   cores = int(cores)
@@ -31,28 +32,16 @@ def submit_haswell(prefix, cmd, cores = 16, debug =  False):
     command.append("--qos=debug")
   command.append("-s")
   command.append(submitfile)
-  historic = "historic.txt"
-  out = open(historic, "a+")
-  subprocess.check_call(command, stdout = out)
-  out.write("Submission script in " + submitfile + "\n")
-  out.write("Output in " + logfile + "\n")
-  print(open(historic).readlines()[-3][:-1])
-  print(open(historic).readlines()[-2][:-1])
-  print(open(historic).readlines()[-1][:-1])
-  out.write("\n")
+  subprocess.check_call(command)
+  print("Submission script in " + submitfile)
+  print("Output in " + logfile)
 
 def submit_normal(cmd):
   subprocess.check_call(cmd)
 
-def is_slurm():
-  try:
-    subprocess.call(["sbatch", "-V"])
-  except:
-    return False
-  return True
 
 def submit(prefix, cmd, cores, debug = False):
-  if (is_slurm()):
+  if (util.is_slurm()):
     submit_haswell(prefix, cmd, cores, debug)
   else:
     submit_normal(cmd)

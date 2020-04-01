@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import util
 
 scripts_dir = os.path.dirname( os.path.realpath(__file__) )
 base_dir = os.path.abspath( os.path.realpath( os.path.join(
@@ -52,7 +53,11 @@ pargenes_rand_trees = 0
 pargenes_pars_trees = 100
 pargenes_bs_trees = 100
 
-available_cores = 4
+if (util.is_slurm()):
+  available_cores = 256
+else:
+  available_cores = 40
+
 cores_for_one_raxml_run = 4
 
 
