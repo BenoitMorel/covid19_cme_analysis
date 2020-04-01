@@ -7,19 +7,29 @@ import common
 import subprocess
 import data_versioning
 import re
+import util
 
 if len(sys.argv) != 2:
-	print "Please supply Google Drive link to the file."
-	sys.exit(1)
+	util.fail("Please supply Google Drive link to the file.")
 
 drive_link = sys.argv[1]
 
-possible_id = re.search('/d/(.+?)/view?', drive_link)
+if "drive.google.com/file/d/" in drive_link:
+	pattern = r'/d/(.+?)/view?'
+elif "drive.google.com/open?id=" in drive_link:
+	pattern = r'id=(.+?)$'
+else:
+	util.fail("Drive Link looks wrong: {}".format(drive_link) )
+
+possible_id = re.search(pattern, drive_link)
 if not possible_id:
-	print "Drive Link looks wrong: ", drive_link
-	sys.exit(1)
+	util.fail("Drive Link looks wrong after pattern: {}".format(drive_link) )
 else:
 	data_googleid = possible_id.group(1)
+	data_googleid.rstrip()
+
+# print data_googleid
+# exit(0)
 
 data_versioning.setup_new_version()
 
