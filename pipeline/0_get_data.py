@@ -31,13 +31,13 @@ else:
 # print data_googleid
 # exit(0)
 
-data_versioning.setup_new_version()
+version = data_versioning.setup_new_version()
 
 cmd = []
 cmd.append("wget")
 cmd.append("--no-check-certificate")
 cmd.append("https://docs.google.com/uc?export=download&id=" + data_googleid)
 cmd.append("-O")
-cmd.append(common.raw_alignment)
+cmd.append( util.versioned_path(version, common.raw_alignment) )
 print(" ".join(cmd))
 subprocess.call(cmd)

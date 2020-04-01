@@ -5,10 +5,13 @@ import sys
 sys.path.insert(0, 'scripts')
 import common
 import pargenes_launcher
+import util
 
-alignment = common.alignment
+version = util.get_version( sys.argv )
+
+alignment = util.versioned_path( version, common.alignment )
 model = common.subst_model
-output_dir = common.pargenes_runs_dir
+output_dir = util.versioned_path( version, common.pargenes_runs_dir )
 seed = 3000
 rand_trees = 0
 pars_trees = 100
