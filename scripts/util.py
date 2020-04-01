@@ -4,7 +4,7 @@ import sys
 import common
 
 def fail( msg ):
-	print msg
+	print( msg )
 	sys.exit(1)
 
 def versioned_path(version, path):
