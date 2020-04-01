@@ -8,6 +8,7 @@ raxml = os.path.join(software_path, "raxml-ng", "bin", "raxml-ng-mpi")
 modeltest = os.path.join(software_path, "modeltest", "bin", "modeltest-ng-mpi")
 pargenes = os.path.join(software_path, "ParGenes", "pargenes", "pargenes-hpc.py")
 mptp = os.path.join(software_path, "mptp", "bin", "mptp")
+epa = os.path.join(software_path, "epa-ng", "bin", "epa-ng")
 
 # data
 data_googleid = "1LpC3kmBh52vOrnpOMhGF7zMNTz0Ll6fF"
