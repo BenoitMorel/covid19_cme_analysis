@@ -11,7 +11,6 @@ mptp = os.path.join(software_path, "mptp", "bin", "mptp")
 epa = os.path.join(software_path, "epa-ng", "bin", "epa-ng")
 
 # data
-data_googleid = "1LpC3kmBh52vOrnpOMhGF7zMNTz0Ll6fF"
 root_data_dir = "data"
 data_path = os.path.join(root_data_dir, "current")
 raw_alignment = os.path.join(data_path, "covid_raw.fasta")
