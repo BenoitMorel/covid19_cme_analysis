@@ -12,33 +12,31 @@ def relative_symlink(src, dest):
   shutil.move(tmp, dest)
 
 
+
 def launch_pargenes(alignment, model, output_dir, seed, rand_trees, pars_trees, bs_trees, cores):
   try:
     os.mkdir(output_dir)
   except:
     pass
   debug = False 
-  run_name = "pargenes_" + model.replace("+","") + "_r" + str(rand_trees) + "_p" + str(pars_trees) + "_bs" + str(bs_trees) + "_seed" + str(seed)
-  run_dir = os.path.join(output_dir, run_name)
-  os.mkdir(run_dir)
-  alignment_dir = os.path.join(run_dir, "alignments")
+  alignment_dir = os.path.join(output_dir, "alignments")
   os.mkdir(alignment_dir)
   alignment_symlink = os.path.join(alignment_dir, "ali.fasta")
-  raxml_options_file = os.path.join(run_dir, "raxml_options.txt")
+  raxml_options_file = os.path.join(output_dir, "raxml_options.txt")
   with open(raxml_options_file, "w") as writer:
     writer.write("--model " + model + " ")
     writer.write("--blmin " + common.raxml_min_bl + " ")
     writer.write("--precision " + str(common.raxml_precision) + " ")
 
   relative_symlink(alignment, alignment_symlink) 
-  prefix = os.path.join(run_dir, "pargenes") 
+  prefix = os.path.join(output_dir, "pargenes") 
   cmd = []
   cmd.append("python")
   cmd.append(common.pargenes)
   cmd.append("-a")
   cmd.append(alignment_dir)
   cmd.append("-o")
-  cmd.append(os.path.join(run_dir, "pargenes_run"))
+  cmd.append(os.path.join(output_dir, "pargenes_output"))
   cmd.append("-r")
   cmd.append(raxml_options_file)
   cmd.append("--seed")

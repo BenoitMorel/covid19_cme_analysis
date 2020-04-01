@@ -4,14 +4,10 @@ results="results"
 data="data"
 software="software"
 
-echo "Creating directories..."
-mkdir -p $runs
-mkdir -p $results
-mkdir -p $data
-mkdir -p $software
 
 
 echo "Cloning software..."
+mkdir -p $software
 cd $software
 git clone --recursive https://github.com/BenoitMorel/ParGenes.git
 git clone --recursive --branch dev https://github.com/ddarriba/modeltest.git 
