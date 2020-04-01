@@ -49,8 +49,8 @@ raxml_min_bl = "0.000000001"
  
 pargenes_seed = 3000
 pargenes_rand_trees = 0
-pargenes_pars_trees = 10
-pargenes_bs_trees = 10
+pargenes_pars_trees = 100
+pargenes_bs_trees = 100
 
 available_cores = 4
 cores_for_one_raxml_run = 4
