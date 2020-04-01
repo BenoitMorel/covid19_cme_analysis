@@ -28,7 +28,8 @@ def launch_pargenes(alignment, model, output_dir, seed, rand_trees, pars_trees, 
   with open(raxml_options_file, "w") as writer:
     writer.write("--model " + model + " ")
     writer.write("--blmin " + common.raxml_min_bl + " ")
-    
+    writer.write("--precision " + str(common.raxml_precision) + " ")
+
   relative_symlink(alignment, alignment_symlink) 
   prefix = os.path.join(run_dir, "pargenes") 
   cmd = []

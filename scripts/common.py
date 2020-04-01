@@ -34,8 +34,10 @@ mptp_output = os.path.join(results_dir, "mptp_output.txt")
 subst_model = "GTR+R4"
 remove_duplicates = True
 outgroups_to_remove = ["BAT", "PANGOLIN"]
-raxml_min_bl = "1e-9"
-available_cores = 128
+raxml_precision = "9"
+raxml_min_bl = "0.000000001"
+ 
+available_cores = 40
 cores_for_one_raxml_run = 4
 
 
