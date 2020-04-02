@@ -14,6 +14,7 @@ git clone --recursive --branch dev https://github.com/ddarriba/modeltest.git
 git clone --recursive https://github.com/amkozlov/raxml-ng.git
 git clone --recursive https://github.com/Pas-Kapli/mptp.git
 git clone --recursive https://github.com/Pbdas/epa-ng.git
+git clone https://github.com/lczech/genesis.git
 
 echo "Installing raxml-ng..."
 cd raxml-ng
@@ -45,3 +46,12 @@ echo "Installing epa-ng..."
 cd epa-ng
 make -j
 cd ..
+
+echo "Installing genesis..."
+cd genesis/apps
+ln -s ../../../scripts/*.cpp .
+cd ..
+make -j
+cd ..
+
+echo "Finished"
