@@ -11,7 +11,6 @@ using namespace genesis;
 using namespace tree;
 
 void buildHistogram(Tree const &tree, std::string const &infile, std::string const &outfile) {
-	tree = refTree;
 	std::vector<size_t> linkToEulerLeafIndex(tree.link_count());
 	std::vector<size_t> eulerTourLeaves;
 	for (auto it : eulertour(tree)) {
