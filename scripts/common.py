@@ -19,11 +19,17 @@ epa = os.path.join(software_path, "epa-ng", "bin", "epa-ng")
 genesis = os.path.join(software_path, "genesis", "bin", "apps")
 genesis_reduce_duplicates = os.path.join(genesis, "reduce_duplicates")
 genesis_reattach_duplicates = os.path.join(genesis, "reattach_duplicates")
+
+# config
+config_dir = os.path.join(base_dir, "config")
+outgroup_spec = os.path.join(config_dir, "outgroups.txt")
+
 # data
 root_data_dir = "data"
 data_path = os.path.join(root_data_dir)
 raw_alignment = os.path.join(data_path, "covid_raw.fasta")
 alignment = os.path.join(data_path, "covid_edited.fasta")
+outgroup_alignment = os.path.join(data_path, "covid_outgroups.fasta")
 duplicates_json = os.path.join(data_path, "covid_duplicates.json")
 
 # runs
@@ -43,6 +49,7 @@ raxml_all_ml_trees_ll = os.path.join(results_dir, "raxml_all_ml_trees_with_ll.tx
 raxml_bootstrap_trees = os.path.join(results_dir, "raxml_bs_trees.newick")
 
 mptp_output = os.path.join(results_dir, "mptp_output.txt")
+epa_rooting_dir = os.path.join(results_dir, "epa_rooting")
 
 # misc
 subst_model = "GTR+R4"

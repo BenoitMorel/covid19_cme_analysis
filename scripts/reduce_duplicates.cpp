@@ -30,6 +30,28 @@ using namespace genesis::utils;
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <sstream>
+#include <string>
+#include <fstream>
+
+std::vector<std::string> get_nonempty_noncomment_lines( std::string const& file )
+{
+    std::string const comment_token("#");
+
+    std::vector<std::string> res;
+
+    std::ifstream infile(file);
+    std::string line;
+
+    while (std::getline(infile, line)) {
+        if( not starts_with( line, comment_token )
+            and not line.empty() ) {
+            res.push_back( line );
+        }
+    }
+
+    return res;
+}
 
 int main( int argc, char** argv )
 {
@@ -38,14 +60,21 @@ int main( int argc, char** argv )
     utils::Logging::details.time = true;
 
     // Get the files from command line
-    if (argc != 4) {
+    if (argc != 6) {
         throw std::runtime_error(
-            "Need to provide an input and an output fasta file, and an output json file.\n"
+            std::string( "Usage: " ) + argv[0] + " <input-msa> <outgroup-names-file> <output-fasta> <output-json> <outgroup-output-fasta>"
         );
     }
     auto const infile = std::string( argv[1] );
-    auto const outfile = std::string( argv[2] );
-    auto const outfilejson = std::string( argv[3] );
+    auto const outgroup_file = std::string( argv[2] );
+    auto const outfile = std::string( argv[3] );
+    auto const outfilejson = std::string( argv[4] );
+    auto const outfile_outgroup = std::string( argv[5] );
+
+    // parse the outgroup names
+    auto outgroups = get_nonempty_noncomment_lines( outgroup_file );
+    // set up a sequence_set for the outgroup seqs
+    SequenceSet outgroup_seqs;
 
     // Prepare duplicate map, from sequences to all labels that have that sequence
     std::unordered_map<std::string, std::vector<std::string>> seq_map;
@@ -59,16 +88,27 @@ int main( int argc, char** argv )
             throw std::runtime_error( "Invalid sequences with empty label or sites." );
         }
 
-        seq_map[ fasta_in->sites() ].push_back( fasta_in->label() );
-        ++cnt;
+        if( contains_ci( outgroups, fasta_in->label() ) ) {
+            // outgroup case
+            outgroup_seqs.add( Sequence( fasta_in->label(), fasta_in->sites() ) );
+        } else {
+            // normal case
+            seq_map[ fasta_in->sites() ].push_back( fasta_in->label() );
+            ++cnt;
+        }
+
         ++fasta_in;
     }
     LOG_INFO << "Found " << cnt << " sequences, thereof " << seq_map.size() << " unique.";
+    LOG_INFO << "Found " << outgroup_seqs.size() << " outgroup seqeunces out of " << outgroups.size() << " that were specified.";
+
+    // Write out the outgroup file
+    FastaWriter().to_file( outgroup_seqs, outfile_outgroup );
 
     // Write out the reduced fasta file
     std::ofstream out_stream;
     file_output_stream( outfile, out_stream );
-     FastaOutputIterator fasta_out{ out_stream };
+    FastaOutputIterator fasta_out{ out_stream };
     for( auto const& seq : seq_map ) {
         auto const tmp_seq = Sequence( seq.second[0], seq.first );
         fasta_out = tmp_seq;

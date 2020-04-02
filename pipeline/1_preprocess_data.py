@@ -12,15 +12,16 @@ version = util.get_version( sys.argv )
 
 raw_alignment = util.versioned_path( version, common.raw_alignment )
 alignment = util.versioned_path( version, common.alignment )
+outgroup_alignment = util.versioned_path( version, common.outgroup_alignment )
 duplicates = util.versioned_path( version, common.duplicates_json)
 
-raw_alignment_no_outgroup = alignment + ".nooutgroup"
+# raw_alignment_no_outgroup = alignment + ".nooutgroup"
 
 
+# remove_outgroups.remove_outgroups(raw_alignment, raw_alignment_no_outgroup, common.outgroups_to_remove)
+    
+remove_duplicates.remove_duplicates( raw_alignment, common.outgroup_spec, alignment, duplicates, outgroup_alignment )
 
-remove_outgroups.remove_outgroups(raw_alignment, raw_alignment_no_outgroup, common.outgroups_to_remove)
-remove_duplicates.remove_duplicates( raw_alignment_no_outgroup, alignment, duplicates )
-
-util.clean_file(raw_alignment_no_outgroup)
+# util.clean_file(raw_alignment_no_outgroup)
 
 
