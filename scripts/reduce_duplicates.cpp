@@ -47,7 +47,7 @@ std::vector<std::string> get_nonempty_noncomment_lines( std::string const& file 
         // trim whitespace from left and right
         line = trim_right( trim_left( line ) );
 
-        if( not line.empty() 
+        if( not line.empty()
             and not starts_with( line, comment_token ) ) {
             res.push_back( line );
         }
@@ -92,16 +92,19 @@ int main( int argc, char** argv )
     auto fasta_in = FastaInputIterator( from_file( infile ));
     size_t cnt = 0;
     while( fasta_in ) {
-        if( fasta_in->sites().empty() || fasta_in->label().empty() ) {
+        auto seq = *fasta_in;
+        replace_characters( seq, "Nn", '-' );
+
+        if( seq.sites().empty() || seq.label().empty() ) {
             throw std::runtime_error( "Invalid sequences with empty label or sites." );
         }
 
-        if( contains_ci( outgroups, fasta_in->label() ) ) {
+        if( contains_ci( outgroups, seq.label() ) ) {
             // outgroup case
-            outgroup_seqs.add( Sequence( fasta_in->label(), fasta_in->sites() ) );
+            outgroup_seqs.add( Sequence( seq.label(), seq.sites() ) );
         } else {
             // normal case
-            seq_map[ fasta_in->sites() ].push_back( fasta_in->label() );
+            seq_map[ seq.sites() ].push_back( seq.label() );
             ++cnt;
         }
 

@@ -47,6 +47,7 @@ class Paths():
 		self.root_results_dir = util.versioned_path(version, self.root_results_dir)
 		self.results_dir = util.versioned_path(version, self.results_dir)
 		self.raxml_best_tree = util.versioned_path(version, self.raxml_best_tree)
+		self.raxml_best_tree_with_duplicate = util.versioned_path(version, self.raxml_best_tree_with_duplicate)
 		self.raxml_best_model = util.versioned_path(version, self.raxml_best_model)
 		self.raxml_all_ml_trees = util.versioned_path(version, self.raxml_all_ml_trees)
 		self.raxml_all_ml_trees_ll = util.versioned_path(version, self.raxml_all_ml_trees_ll)
@@ -75,6 +76,7 @@ class Paths():
 	root_results_dir = "results"
 	results_dir = os.path.join(root_results_dir)
 	raxml_best_tree = os.path.join(results_dir, "raxml_best_tree.newick")
+	raxml_best_tree_with_duplicate = os.path.join(results_dir, "raxml_best_tree_with_duplicate.newick")
 	raxml_best_model = os.path.join(results_dir, "raxml_best_model.txt")
 	raxml_all_ml_trees = os.path.join(results_dir, "raxml_all_ml_trees.newick")
 	raxml_all_ml_trees_ll = os.path.join(results_dir, "raxml_all_ml_trees_with_ll.txt")
