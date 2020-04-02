@@ -6,6 +6,9 @@ import subprocess
 import util
 
 def launch_epa(tree, modelfile, ref_msa, query_msa, out_dir, thorough=True):
+  util.clean_file(out_dir)
+  util.make_path(out_dir)
+
   cmd = []
   cmd.append(common.epa)
   cmd.append("--tree")
@@ -20,7 +23,7 @@ def launch_epa(tree, modelfile, ref_msa, query_msa, out_dir, thorough=True):
   cmd.append("4")
   if thorough:
   	cmd.append("--no-heur")
-  cmd.append("--out_dir")
+  cmd.append("--out-dir")
   cmd.append(out_dir)
   subprocess.check_call(cmd)
 
