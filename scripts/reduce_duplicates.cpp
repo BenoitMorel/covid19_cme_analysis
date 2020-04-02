@@ -95,7 +95,6 @@ int main( int argc, char** argv )
         if( fasta_in->sites().empty() || fasta_in->label().empty() ) {
             throw std::runtime_error( "Invalid sequences with empty label or sites." );
         }
-            LOG_INFO << "found: " << fasta_in->label();
 
         if( contains_ci( outgroups, fasta_in->label() ) ) {
             // outgroup case
