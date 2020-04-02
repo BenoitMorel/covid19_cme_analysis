@@ -5,6 +5,8 @@ import shutil
 import util
 import common
 import reattach_duplicates
+import rf_distance
+
 
 def export(pargenes_run_dir, paths):
   print("Pargenes run dir: " + pargenes_run_dir)
@@ -42,6 +44,6 @@ def export(pargenes_run_dir, paths):
     src = os.path.join(pargenes_output, "concatenated_bootstraps", "ali_fasta.bs")
     shutil.copy(src, paths.raxml_bootstrap_trees)
 
-
-
+  rf_distance.export_pairwise_rf_distance(paths.raxml_all_ml_trees, paths.raxml_all_ml_trees_rf_distances, paths.raxml_all_ml_trees_rf_logs)
+  
 
