@@ -16,6 +16,7 @@ modeltest = os.path.join(software_path, "modeltest", "bin", "modeltest-ng-mpi")
 pargenes = os.path.join(software_path, "ParGenes", "pargenes", "pargenes-hpc.py")
 mptp = os.path.join(software_path, "mptp", "bin", "mptp")
 epa = os.path.join(software_path, "epa-ng", "bin", "epa-ng")
+root_digger = os.path.join(software_path, "root_digger", "bin", "rd")
 genesis = os.path.join(software_path, "genesis", "bin", "apps")
 genesis_reduce_duplicates = os.path.join(genesis, "reduce_duplicates")
 genesis_reattach_duplicates = os.path.join(genesis, "reattach_duplicates")
@@ -70,6 +71,7 @@ class Paths():
 	raxml_ml_runs_dir = os.path.join(runs_dir, "raxml_runs")
 	pargenes_runs_dir = os.path.join(runs_dir, "pargenes_runs")
 	modeltest_runs_dir = os.path.join(runs_dir, "modeltest_runs")
+	root_digger_runs_dir = os.path.join(runs_dir, "root_digger_runs")
 
 	# results
 	root_results_dir = "results"
@@ -82,6 +84,9 @@ class Paths():
 
 	mptp_output = os.path.join(results_dir, "mptp_output.txt")
 	epa_rooting_dir = os.path.join(results_dir, "epa_rooting")
+	root_digger_output = os.path.join(results_dir, "root_digger_lwr.newick")
+	root_digger_logfile = os.path.join(root_digger_runs_dir,
+	  "root_digger.log")
 
 
 # misc

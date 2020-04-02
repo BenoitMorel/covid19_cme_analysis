@@ -22,5 +22,5 @@ Several parameters can be set in scripts/common.py.
 TODO: Some of them should be handled differently, in a configuration file.
 
 Requirements:
-bison, flex, MPI, python
+bison, flex, MPI, python, GSL
 

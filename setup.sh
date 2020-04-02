@@ -1,4 +1,4 @@
-
+#!/bin/bash
 runs="runs"
 results="results"
 data="data"
@@ -15,6 +15,7 @@ git clone --recursive https://github.com/amkozlov/raxml-ng.git
 git clone --recursive https://github.com/Pas-Kapli/mptp.git
 git clone --recursive https://github.com/Pbdas/epa-ng.git
 git clone https://github.com/lczech/genesis.git
+git clone --recursive https://github.com/computations/root_digger.git
 
 echo "Installing raxml-ng..."
 cd raxml-ng
@@ -54,5 +55,10 @@ cd ..
 make -j
 make update -j
 cd ..
+
+echo "Installing root_digger..."
+pushd root_digger
+make -j
+popd
 
 echo "Finished"
