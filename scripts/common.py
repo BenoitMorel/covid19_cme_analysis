@@ -24,6 +24,7 @@ root_data_dir = "data"
 data_path = os.path.join(root_data_dir)
 raw_alignment = os.path.join(data_path, "covid_raw.fasta")
 alignment = os.path.join(data_path, "covid_edited.fasta")
+duplicates_json = os.path.join(data_path, "covid_duplicates.json")
 
 # runs
 root_runs_dir = "runs"
@@ -45,7 +46,6 @@ mptp_output = os.path.join(results_dir, "mptp_output.txt")
 
 # misc
 subst_model = "GTR+R4"
-remove_duplicates = True
 outgroups_to_remove = ["BAT", "PANGOLIN"]
 raxml_precision = "9"
 raxml_min_bl = "0.000000001"

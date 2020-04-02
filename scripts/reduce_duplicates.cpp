@@ -38,12 +38,14 @@ int main( int argc, char** argv )
     utils::Logging::details.time = true;
 
     // Get the files from command line
-    if (argc != 2) {
+    if (argc != 4) {
         throw std::runtime_error(
-            "Need to provide a fasta file.\n"
+            "Need to provide an input and an output fasta file, and an output json file.\n"
         );
     }
     auto const infile = std::string( argv[1] );
+    auto const outfile = std::string( argv[2] );
+    auto const outfilejson = std::string( argv[3] );
 
     // Prepare duplicate map, from sequences to all labels that have that sequence
     std::unordered_map<std::string, std::vector<std::string>> seq_map;
@@ -63,16 +65,9 @@ int main( int argc, char** argv )
     }
     LOG_INFO << "Found " << cnt << " sequences, thereof " << seq_map.size() << " unique.";
 
-    // Prepare a nice output filename
-    std::string outfile_base = infile;
-    auto const ext = file_extension( infile );
-    if( ext == "fa" || ext == "fas" || ext == "fasta" ) {
-        outfile_base = file_filename( outfile_base );
-    }
-
     // Write out the reduced fasta file
     std::ofstream out_stream;
-    file_output_stream( outfile_base + ".reduced.fasta", out_stream );
+    file_output_stream( outfile, out_stream );
      FastaOutputIterator fasta_out{ out_stream };
     for( auto const& seq : seq_map ) {
         auto const tmp_seq = Sequence( seq.second[0], seq.first );
@@ -92,7 +87,7 @@ int main( int argc, char** argv )
             doc[ seq.second[0] ] = arr;
         }
     }
-    JsonWriter().to_file( doc, outfile_base + ".reduced.json" );
+    JsonWriter().to_file( doc, outfilejson );
 
     LOG_INFO << "Finished";
     return 0;

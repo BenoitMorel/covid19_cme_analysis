@@ -38,13 +38,14 @@ int main( int argc, char** argv )
     utils::Logging::details.time = true;
 
     // Get the files from command line
-    if (argc != 3) {
+    if (argc != 4) {
         throw std::runtime_error(
-            "Need to provide a newick file and a json file.\n"
+            "Need to provide an input and an output newick files, and a json file.\n"
         );
     }
     auto const newick_file = std::string( argv[1] );
-    auto const json_file = std::string( argv[2] );
+    auto const output_newick_file = std::string( argv[2] );
+    auto const json_file = std::string( argv[3] );
     LOG_INFO << "Started";
 
     // Read in the files
@@ -81,15 +82,8 @@ int main( int argc, char** argv )
         }
     }
 
-    // Prepare nice output file name
-    std::string outfile_base = newick_file;
-    auto const ext = file_extension( newick_file );
-    if( ext == "nw" || ext == "nwk" || ext == "newick" || ext == "tree" ) {
-        outfile_base = file_filename( outfile_base );
-    }
-
     // Write new newick file
-    CommonTreeNewickWriter().to_file( tree, outfile_base + ".reattached.newick" );
+    CommonTreeNewickWriter().to_file( tree, output_newick_file);
     LOG_INFO << "Wrote tree with " << leaf_node_count(tree) << " leaf nodes.";
 
     LOG_INFO << "Finished";

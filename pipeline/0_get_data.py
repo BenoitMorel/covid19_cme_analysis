@@ -28,8 +28,6 @@ else:
 	data_googleid = possible_id.group(1)
 	data_googleid.rstrip()
 
-# print data_googleid
-# exit(0)
 
 version = data_versioning.setup_new_version()
 
@@ -41,3 +39,8 @@ cmd.append("-O")
 cmd.append( util.versioned_path(version, common.raw_alignment) )
 print(" ".join(cmd))
 subprocess.call(cmd)
+print("")
+print("Version string: " + version)
+
+
+
