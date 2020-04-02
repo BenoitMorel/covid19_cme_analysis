@@ -55,4 +55,11 @@ make -j
 make update -j
 cd ..
 
+echo "Installing IQtree..."
+wget https://github.com/Cibiv/IQ-TREE/releases/download/v1.6.12/iqtree-1.6.12-Linux.tar.gz
+tar -xzf iqtree-1.6.12-Linux.tar.gz
+mv iqtree-1.6.12-Linux iqtree
+rm iqtree-1.6.12-Linux.tar.gz
+
+
 echo "Finished"
