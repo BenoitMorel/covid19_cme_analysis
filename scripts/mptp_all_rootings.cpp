@@ -133,7 +133,7 @@ int main(int argc, char* argv[]) {
 
 	//read tree
 	DefaultTreeNewickReader reader;
-	Tree tree = reader.from_file(pathToReferenceTree);
+	Tree tree = reader.from_file(treePath);
 
 	buildHistogram(tree, treePath, outputPath);
 	return 0;
