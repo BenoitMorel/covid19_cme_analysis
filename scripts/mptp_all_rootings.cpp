@@ -35,7 +35,7 @@ void buildHistogram(Tree const &tree, std::string const &infile, std::string con
 
 	size_t n = tree.node_count();
 
-	if (!is_bifurcating(refTree)) {
+	if (!is_bifurcating(tree)) {
 		throw std::runtime_error("The tree is not bifurcating");
 	}
 
