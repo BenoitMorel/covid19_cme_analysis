@@ -53,7 +53,6 @@ epa_rooting_dir = os.path.join(results_dir, "epa_rooting")
 
 # misc
 subst_model = "GTR+R4"
-outgroups_to_remove = ["BAT", "PANGOLIN"]
 raxml_precision = "9"
 raxml_min_bl = "0.000000001"
  
