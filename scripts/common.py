@@ -16,7 +16,9 @@ modeltest = os.path.join(software_path, "modeltest", "bin", "modeltest-ng-mpi")
 pargenes = os.path.join(software_path, "ParGenes", "pargenes", "pargenes-hpc.py")
 mptp = os.path.join(software_path, "mptp", "bin", "mptp")
 epa = os.path.join(software_path, "epa-ng", "bin", "epa-ng")
-
+genesis = os.path.join(software_path, "genesis", "bin", "apps")
+genesis_reduce_duplicates = os.path.join(genesis, "reduce_duplicates")
+genesis_reattach_duplicates = os.path.join(genesis, "reattach_duplicates")
 # data
 root_data_dir = "data"
 data_path = os.path.join(root_data_dir)

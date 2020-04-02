@@ -26,6 +26,10 @@ def clean_dir( path ):
 	if os.path.exists( path ):
 		rmtree( path, ignore_errors=True )
 
+def clean_file ( path ):
+  if os.path.exists( path ):
+    os.remove( path )
+
 def mkdirp( path ):
 	if not os.path.exists( path ):
 		os.mkdir( path )
