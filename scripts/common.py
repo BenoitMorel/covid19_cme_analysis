@@ -27,8 +27,9 @@ outgroup_spec = os.path.join(config_dir, "outgroups.txt")
 # paths that depend on the specified version
 class Paths():
 	"""docstring for Paths"""
-	def __init__(self, argv, i=1 ):
+	def __init__( self, argv, i=1 ):
 		version = util.get_version( argv, i )
+
 		self.version = version
 		self.root_data_dir = util.versioned_path(version, self.root_data_dir)
 		self.data_path = util.versioned_path(version, self.data_path)
@@ -81,7 +82,7 @@ class Paths():
 
 	mptp_output = os.path.join(results_dir, "mptp_output.txt")
 	epa_rooting_dir = os.path.join(results_dir, "epa_rooting")
-		
+
 
 # misc
 subst_model = "GTR+R4"

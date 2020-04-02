@@ -28,18 +28,18 @@ else:
 	data_googleid = possible_id.group(1)
 	data_googleid.rstrip()
 
-version = data_versioning.setup_new_version()
+paths = data_versioning.setup_new_version()
 
 cmd = []
 cmd.append("wget")
 cmd.append("--no-check-certificate")
 cmd.append("https://docs.google.com/uc?export=download&id=" + data_googleid)
 cmd.append("-O")
-cmd.append( util.versioned_path(version, common.raw_alignment) )
+cmd.append( paths.raw_alignment )
 print(" ".join(cmd))
 subprocess.call(cmd)
 print("")
-print("Version string: " + version)
+print("Version string: " + paths.version)
 
 
 
