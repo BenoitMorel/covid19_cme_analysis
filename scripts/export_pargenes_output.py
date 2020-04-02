@@ -19,7 +19,9 @@ def export(pargenes_run_dir, version):
   else:
     src = os.path.join(ml_run_dir, "ali_fasta.raxml.bestTree")
   dest = util.versioned_path(version, common.raxml_best_tree)
-  reattach_duplicates.reattach_duplicates(src, dest, duplicates)
+  dest_dup = util.versioned_path(version, common.raxml_best_tree_with_duplicate)
+  shutil.copy(src, dest)
+  reattach_duplicates.reattach_duplicates(src, dest_dup, duplicates)
   
 # export best ml model
   src = os.path.join(ml_run_dir, "ali_fasta.raxml.bestModel")
@@ -32,14 +34,12 @@ def export(pargenes_run_dir, version):
   shutil.copy(src, dest)
   src = os.path.join(ml_run_dir, "sorted_ml_trees_ll.newick")
   dest = util.versioned_path(version, common.raxml_all_ml_trees_ll)
-  #reattach_duplicates.reattach_duplicates(src, dest, duplicates)
   shutil.copy(src, dest)
 
 # export bootstrap trees
   if (common.pargenes_bs_trees > 0):
     src = os.path.join(pargenes_output, "concatenated_bootstraps", "ali_fasta.bs")
     dest = util.versioned_path(version, common.raxml_bootstrap_trees)
-    #reattach_duplicates.reattach_duplicates(src, dest, duplicates)
     shutil.copy(src, dest)
 
 
