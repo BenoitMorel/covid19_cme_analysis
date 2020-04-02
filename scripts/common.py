@@ -47,6 +47,7 @@ class Paths():
 		self.root_results_dir = util.versioned_path(version, self.root_results_dir)
 		self.results_dir = util.versioned_path(version, self.results_dir)
 		self.raxml_best_tree = util.versioned_path(version, self.raxml_best_tree)
+		self.raxml_best_tree_tbe = util.versioned_path(version, self.raxml_best_tree_tbe)
 		self.raxml_best_tree_with_duplicate = util.versioned_path(version, self.raxml_best_tree_with_duplicate)
 		self.raxml_best_model = util.versioned_path(version, self.raxml_best_model)
 		self.raxml_all_ml_trees = util.versioned_path(version, self.raxml_all_ml_trees)
@@ -76,6 +77,7 @@ class Paths():
 	root_results_dir = "results"
 	results_dir = os.path.join(root_results_dir)
 	raxml_best_tree = os.path.join(results_dir, "raxml_best_tree.newick")
+	raxml_best_tree_tbe = os.path.join(results_dir, "raxml_best_tree_tbe.newick")
 	raxml_best_tree_with_duplicate = os.path.join(results_dir, "raxml_best_tree_with_duplicate.newick")
 	raxml_best_model = os.path.join(results_dir, "raxml_best_model.txt")
 	raxml_all_ml_trees = os.path.join(results_dir, "raxml_all_ml_trees.newick")
@@ -94,7 +96,7 @@ raxml_min_bl = "0.000000001"
 pargenes_seed = 3000
 pargenes_rand_trees = 0
 pargenes_pars_trees = 100
-pargenes_bs_trees = 0
+pargenes_bs_trees = 100
 
 if (util.is_slurm()):
   available_cores = 256
