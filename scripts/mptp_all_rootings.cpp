@@ -113,16 +113,13 @@ void buildHistogram(Tree const &tree, std::string const &infile, std::string con
 int main(int argc, char* argv[]) {
 	std::ios_base::sync_with_stdio(false);
 	std::cin.tie(NULL);
-	std::string treePath;
-	std::string outputPath;
 
 	// Get the files from command line
 	if (argc != 3) {
-	throw std::runtime_error(
-	    std::string( "Usage: " ) + argv[0] + " <tree-file> <output-file>"
-	);
-	treePath = argv[1];
-	outputPath = argv[2];
+		throw std::runtime_error(std::string( "Usage: " ) + argv[0] + " <tree-file> <output-file>");
+	}
+	std::string treePath = argv[1];
+	std::string outputPath = argv[2];
 
 	/*std::ifstream infile(outputPath);
 	if (infile.good()) {
