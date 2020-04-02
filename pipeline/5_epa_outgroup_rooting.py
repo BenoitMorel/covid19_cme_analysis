@@ -12,6 +12,6 @@ tree = paths.raxml_best_tree
 modelfile = paths.raxml_best_model
 ref_msa = paths.alignment
 query_msa = paths.outgroup_alignment
-output = paths.epa_rooting_dir
+out_dir = paths.epa_rooting_dir
 
 epa_launcher.launch_epa(tree, modelfile, ref_msa, query_msa, out_dir, thorough=True)
