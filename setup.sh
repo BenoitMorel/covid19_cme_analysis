@@ -52,6 +52,7 @@ cd genesis/apps
 ln -s ../../../scripts/*.cpp .
 cd ..
 make -j
+make update -j
 cd ..
 
 echo "Finished"
