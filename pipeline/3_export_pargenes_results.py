@@ -7,5 +7,5 @@ import export_pargenes_output
 
 paths = common.Paths( sys.argv )
 
-export_pargenes_output.export( paths.pargenes_runs_dir, paths.version )
+export_pargenes_output.export( paths.pargenes_runs_dir, paths )
 

@@ -89,7 +89,7 @@ int main( int argc, char** argv )
 
     // Read the file
     LOG_INFO << "Started";
-    auto fasta_in = FastaInputIterator( from_file( infile ), FastaReader().valid_chars( "ACGTN-" ));
+    auto fasta_in = FastaInputIterator( from_file( infile ));
     size_t cnt = 0;
     while( fasta_in ) {
         auto seq = *fasta_in;
