@@ -21,7 +21,7 @@ void buildHistogram(Tree const &tree, std::string const &infile, std::string con
 		linkToEulerLeafIndex[it.link().index()] = eulerTourLeaves.size();
 	}
 
-	double miLen = 0.0;
+	double minLen = 0.0;
 	/*
 	// sort edges by their size
 	std::vector<double> edgeLengths;
