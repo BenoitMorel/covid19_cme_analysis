@@ -28,11 +28,18 @@ def setup_new_version( date=datetime.datetime.now().strftime("%Y-%m-%d") ):
 
   version = "{}_{}".format( date, version_id )
 
-  setup_directory( common.work_dir, common.root_data_dir, version )
-  setup_directory( common.work_dir, common.root_runs_dir, version)
-  setup_directory( common.work_dir, common.root_results_dir, version )
+  # make the base path for the version
+  util.make_path( util.versioned_path(version, "") )
+
+  # generate the appropriate paths
+  paths = common.Paths([version], 0)
+
+  util.make_path(paths.root_data_dir)
+  util.make_path(paths.root_runs_dir)
+  util.make_path(paths.root_results_dir)
+
   print(version)
 
-  return version
+  return paths
  
 

@@ -7,12 +7,13 @@ import raxml_launcher
 import common
 import util
 
-version = util.get_version( sys.argv )
+paths = common.Paths( sys.argv )
 
 cores = common.cores_for_one_raxml_run
-alignment = util.versioned_path( version, common.alignment )
+alignment = paths.alignment
 
-output_dir = util.versioned_path( version, os.path.join("runs", "raxml_runs") )
+output_dir = util.versioned_path( paths.version, os.path.join("runs", "raxml_runs") )
+
 for seed in range(1005, 1020):
   raxml_launcher.launch_raxml(alignment, common.subst_model, output_dir, seed, parsimony = False, cores = cores)
 
