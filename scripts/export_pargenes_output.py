@@ -18,8 +18,15 @@ def export(pargenes_run_dir, paths):
   else:
     src = os.path.join(ml_run_dir, "ali_fasta.raxml.bestTree")
   shutil.copy(src, paths.raxml_best_tree)
+
+# export best tree with duplicates reattached
   reattach_duplicates.reattach_duplicates(src, paths.raxml_best_tree_with_duplicate, paths.duplicates_json)
   
+# export best tree with TBE values
+  if (common.pargenes_bs_trees > 0):
+    src = os.path.join(pargenes_output, "supports_run", "results", "ali_fasta.support.tbe.raxml.support")
+    shutil.copy(src, paths.raxml_best_tree_tbe)
+
 # export best ml model
   src = os.path.join(ml_run_dir, "ali_fasta.raxml.bestModel")
   shutil.copy(src, paths.raxml_best_model)
