@@ -5,14 +5,9 @@ software="software"
 echo "Cloning software..."
 mkdir -p $software
 cd $software
-git clone --recursive https://github.com/BenoitMorel/ParGenes.git
-git clone --recursive --branch dev https://github.com/ddarriba/modeltest.git 
-git clone --recursive https://github.com/amkozlov/raxml-ng.git
-git clone --recursive https://github.com/Pas-Kapli/mptp.git
-git clone --recursive https://github.com/Pbdas/epa-ng.git
-git clone https://github.com/lczech/genesis.git
 
 install_raxmlng() {
+  git clone --recursive https://github.com/amkozlov/raxml-ng.git
   echo "Installing raxml-ng..."
   cd raxml-ng
   mkdir -p build && cd build
@@ -22,6 +17,7 @@ install_raxmlng() {
 }
 
 install_modeltest() {
+  git clone --recursive --branch dev https://github.com/ddarriba/modeltest.git 
   echo "Installing modeltest..."
   cd modeltest
   mkdir -p build && cd build
@@ -31,6 +27,7 @@ install_modeltest() {
 }
 
 install_pargenes() {
+  git clone --recursive https://github.com/BenoitMorel/ParGenes.git
   echo "Installing pargenes..."
   cd ParGenes
   ./install.sh 40
@@ -38,6 +35,7 @@ install_pargenes() {
 }
 
 install_mptp() {
+  git clone --recursive https://github.com/Pas-Kapli/mptp.git
   echo "Installing mptp..."
   cd mptp 
   ./autogen.sh
@@ -47,6 +45,7 @@ install_mptp() {
 }
 
 install_epa() {
+  git clone --recursive https://github.com/Pbdas/epa-ng.git
   echo "Installing epa-ng..."
   cd epa-ng
   make -j
@@ -54,6 +53,7 @@ install_epa() {
 }
 
 install_genesis() {
+  git clone https://github.com/lczech/genesis.git
   echo "Installing genesis..."
   cd genesis/apps
   ln -s ../../../scripts/*.cpp .
