@@ -11,5 +11,5 @@ paths = common.Paths( sys.argv )
 
 tree = paths.raxml_best_tree
 output = paths.mptp_output
-mptp_launcher.launch_mptp(tree, output)
+mptp_launcher.launch_mptp_mcmc(tree, output)
 
