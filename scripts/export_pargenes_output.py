@@ -29,9 +29,10 @@ def export(pargenes_run_dir, version):
   shutil.copy(src, dest)
 
 # export bootstrap trees
-  src = os.path.join(pargenes_output, "concatenated_bootstraps", "ali_fasta.bs")
-  dest = util.versioned_path(version, common.raxml_bootstrap_trees)
-  shutil.copy(src, dest)
+  if (common.pargenes_bs_trees > 0):
+    src = os.path.join(pargenes_output, "concatenated_bootstraps", "ali_fasta.bs")
+    dest = util.versioned_path(version, common.raxml_bootstrap_trees)
+    shutil.copy(src, dest)
 
 
 

@@ -31,7 +31,7 @@ cd ../..
 
 echo "Installing pargenes..."
 cd ParGenes
-./install.sh
+./install.sh 40
 cd ..
 
 echo "Installing mptp..."

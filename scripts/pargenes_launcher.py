@@ -49,6 +49,9 @@ def launch_pargenes(alignment, model, output_dir, seed, rand_trees, pars_trees, 
   cmd.append(str(bs_trees))
   cmd.append("-c")
   cmd.append(str(cores))
+  cmd.append("--core-assignment")
+  cmd.append("low")
+
   print(" ".join(cmd))
   launcher.submit(prefix, cmd, cores, debug) 
 

@@ -51,7 +51,7 @@ raxml_min_bl = "0.000000001"
 pargenes_seed = 3000
 pargenes_rand_trees = 0
 pargenes_pars_trees = 100
-pargenes_bs_trees = 100
+pargenes_bs_trees = 0
 
 if (util.is_slurm()):
   available_cores = 256
