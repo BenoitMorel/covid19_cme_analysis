@@ -44,11 +44,15 @@ std::vector<std::string> get_nonempty_noncomment_lines( std::string const& file 
     std::string line;
 
     while (std::getline(infile, line)) {
-        if( not starts_with( line, comment_token )
-            and not line.empty() ) {
+        // trim whitespace from left and right
+        line = trim_right( trim_left( line ) );
+
+        if( not line.empty() 
+            and not starts_with( line, comment_token ) ) {
             res.push_back( line );
         }
     }
+
 
     return res;
 }
@@ -71,8 +75,12 @@ int main( int argc, char** argv )
     auto const outfilejson = std::string( argv[4] );
     auto const outfile_outgroup = std::string( argv[5] );
 
+    LOG_INFO << "Specified: infile = " << infile;
+    LOG_INFO << "Specified: outgroup_file = " << outgroup_file;
+
     // parse the outgroup names
     auto outgroups = get_nonempty_noncomment_lines( outgroup_file );
+
     // set up a sequence_set for the outgroup seqs
     SequenceSet outgroup_seqs;
 
@@ -87,6 +95,7 @@ int main( int argc, char** argv )
         if( fasta_in->sites().empty() || fasta_in->label().empty() ) {
             throw std::runtime_error( "Invalid sequences with empty label or sites." );
         }
+            LOG_INFO << "found: " << fasta_in->label();
 
         if( contains_ci( outgroups, fasta_in->label() ) ) {
             // outgroup case

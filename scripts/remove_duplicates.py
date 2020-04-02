@@ -7,6 +7,9 @@ import common
 import util
 
 def remove_duplicates(input_msa, outgroup_spec, output_msa, output_json, output_outgroup_msa):
+  util.expect_file_exists( input_msa )
+  util.expect_file_exists( outgroup_spec )
+
   util.clean_file(output_msa)
   util.clean_file(output_json)
   util.clean_file(output_outgroup_msa)
