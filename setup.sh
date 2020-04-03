@@ -87,7 +87,7 @@ install_root_digger(){
   echo "Installing RootDigger..."
   git clone --recursive https://github.com/computations/root_digger.git
   pushd root_digger
-  make -j
+  make mpi -j
   popd
 }
 

@@ -12,8 +12,8 @@ tree = paths.raxml_best_tree
 alignment = paths.alignment
 outfile = paths.root_digger_output
 logfile = paths.root_digger_logfile
-threads = min(common.available_cores, 4)
+cores = str(common.available_cores)
 model = common.subst_model
 
 root_digger_launcher.launch_root_digger(tree, alignment, model,
-		outfile, logfile, threads)
+		outfile, logfile, cores)
