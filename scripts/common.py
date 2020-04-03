@@ -44,6 +44,7 @@ class Paths():
     self.raxml_ml_runs_dir = util.versioned_path(version, self.raxml_ml_runs_dir)
     self.pargenes_runs_dir = util.versioned_path(version, self.pargenes_runs_dir)
     self.modeltest_runs_dir = util.versioned_path(version, self.modeltest_runs_dir)
+    self.root_digger_runs_dir = util.versioned_path(version, self.root_digger_runs_dir)
 
     self.root_results_dir = util.versioned_path(version, self.root_results_dir)
     self.results_dir = util.versioned_path(version, self.results_dir)
@@ -59,6 +60,8 @@ class Paths():
 
     self.mptp_output = util.versioned_path(version, self.mptp_output)
     self.epa_rooting_dir = util.versioned_path(version, self.epa_rooting_dir)
+    self.root_digger_output = util.versioned_path(version, self.root_digger_output)
+    self.root_digger_logfile = util.versioned_path(version, self.root_digger_logfile)
 
   version = "UNDEFINED"
   # data
@@ -75,6 +78,7 @@ class Paths():
   raxml_ml_runs_dir = os.path.join(runs_dir, "raxml_runs")
   pargenes_runs_dir = os.path.join(runs_dir, "pargenes_runs")
   modeltest_runs_dir = os.path.join(runs_dir, "modeltest_runs")
+  root_digger_runs_dir = os.path.join(runs_dir, "root_digger_runs")
 
   # results
   root_results_dir = "results"
@@ -92,7 +96,7 @@ class Paths():
   mptp_output = os.path.join(results_dir, "mptp_output.txt")
   epa_rooting_dir = os.path.join(results_dir, "epa_rooting")
   root_digger_output = os.path.join(results_dir, "root_digger_lwr.newick")
-  root_digger_logfile = os.path.join(root_digger_runs_dir,
+  root_digger_logfile = os.path.join(root_digger_runs_dir, "root_digger.log")
 
 
 # misc

@@ -6,7 +6,7 @@ import subprocess
 import util
 
 def launch_epa(tree, modelfile, ref_msa, query_msa, out_dir, thorough=True):
-  util.clean_file(out_dir)
+  util.clean_dir(out_dir)
   util.make_path(out_dir)
 
   cmd = []
