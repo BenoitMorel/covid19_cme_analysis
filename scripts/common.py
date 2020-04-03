@@ -16,10 +16,12 @@ modeltest = os.path.join(software_path, "modeltest", "bin", "modeltest-ng-mpi")
 pargenes = os.path.join(software_path, "ParGenes", "pargenes", "pargenes-hpc.py")
 mptp = os.path.join(software_path, "mptp", "bin", "mptp")
 epa = os.path.join(software_path, "epa-ng", "bin", "epa-ng")
+papara = os.path.join(software_path, "papara", "papara")
 root_digger = os.path.join(software_path, "root_digger", "bin", "rd")
 genesis = os.path.join(software_path, "genesis", "bin", "apps")
 genesis_reduce_duplicates = os.path.join(genesis, "reduce_duplicates")
 genesis_reattach_duplicates = os.path.join(genesis, "reattach_duplicates")
+genesis_convert = os.path.join(genesis, "convert")
 
 # config
 config_dir = os.path.join(base_dir, "config")
@@ -37,6 +39,7 @@ class Paths():
     self.raw_alignment = util.versioned_path(version, self.raw_alignment)
     self.alignment = util.versioned_path(version, self.alignment)
     self.outgroup_alignment = util.versioned_path(version, self.outgroup_alignment)
+    self.outgroups_unaligned = util.versioned_path(version, self.outgroups_unaligned)
     self.duplicates_json = util.versioned_path(version, self.duplicates_json)
 
     self.root_runs_dir = util.versioned_path(version, self.root_runs_dir)
@@ -45,6 +48,7 @@ class Paths():
     self.pargenes_runs_dir = util.versioned_path(version, self.pargenes_runs_dir)
     self.modeltest_runs_dir = util.versioned_path(version, self.modeltest_runs_dir)
     self.root_digger_runs_dir = util.versioned_path(version, self.root_digger_runs_dir)
+    self.papara_runs_dir = util.versioned_path(version, self.papara_runs_dir)
 
     self.root_results_dir = util.versioned_path(version, self.root_results_dir)
     self.results_dir = util.versioned_path(version, self.results_dir)
@@ -70,6 +74,7 @@ class Paths():
   raw_alignment = os.path.join(data_path, "covid_raw.fasta")
   alignment = os.path.join(data_path, "covid_edited.fasta")
   outgroup_alignment = os.path.join(data_path, "covid_outgroups.fasta")
+  outgroups_unaligned = os.path.join(data_path, "covid_outgroups_unaligned.fasta")
   duplicates_json = os.path.join(data_path, "covid_duplicates.json")
 
   # runs
@@ -79,6 +84,7 @@ class Paths():
   pargenes_runs_dir = os.path.join(runs_dir, "pargenes_runs")
   modeltest_runs_dir = os.path.join(runs_dir, "modeltest_runs")
   root_digger_runs_dir = os.path.join(runs_dir, "root_digger_runs")
+  papara_runs_dir = os.path.join(runs_dir, "papara_runs")
 
   # results
   root_results_dir = "results"

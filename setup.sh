@@ -54,6 +54,16 @@ install_epa() {
   cd ..
 }
 
+install_papara() {
+  echo "Installing papara..."
+  mkdir papara
+  cd papara
+  wget https://cme.h-its.org/exelixis/resource/download/software/papara_nt-2.5-static_x86_64.tar.gz
+  tar xzf papara_nt-2.5-static_x86_64.tar.gz
+  ln -s papara_static_x86_64 papara
+  cd -
+}
+
 install_genesis() {
   git clone https://github.com/lczech/genesis.git
   echo "Installing genesis..."
@@ -86,6 +96,7 @@ install_modeltest
 install_pargenes
 install_mptp
 install_epa
+install_papara
 install_genesis
 install_iqtree
 install_root_digger
