@@ -6,7 +6,7 @@ import util
 import common
 import reattach_duplicates
 import rf_distance
-
+import iqtree_tests
 
 def export(pargenes_run_dir, paths):
   print("Pargenes run dir: " + pargenes_run_dir)
@@ -46,4 +46,13 @@ def export(pargenes_run_dir, paths):
 
   rf_distance.export_pairwise_rf_distance(paths.raxml_all_ml_trees, paths.raxml_all_ml_trees_rf_distances, paths.raxml_all_ml_trees_rf_logs)
   
+
+  iqtree_dir = os.path.join(paths.runs_dir, "iqtree_runs")
+  util.mkdirp(iqtree_dir)
+  iqtree_ll = iqtree_tests.eval_ll(paths.alignment, common.subst_model, paths.raxml_all_ml_trees, iqtree_dir)
+  raxml_ll = float(open(paths.raxml_all_ml_trees_ll).readline().split(" ")[0])
+  with open(paths.raxml_iqtree_ll, "w") as writer:
+    writer.write("# this file contains the likelihood of the best tree at the end of the raxml-ng run, and an evaluation of likelihood of the same tree  with iqtree (with model optimization)\n")
+    writer.write("raxml_ll=" + str(raxml_ll) + "\n")
+    writer.write("iqtree_ll=" + str(iqtree_ll) + "\n")
 
