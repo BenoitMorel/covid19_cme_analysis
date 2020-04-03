@@ -120,7 +120,7 @@ if (util.is_slurm()):
   available_cores = 256
 else:
   available_cores = 40
-
+iqtree_threads = 4 
 cores_for_one_raxml_run = 4
 
 
