@@ -47,3 +47,13 @@ def export(pargenes_run_dir, paths):
   rf_distance.export_pairwise_rf_distance(paths.raxml_all_ml_trees, paths.raxml_all_ml_trees_rf_distances, paths.raxml_all_ml_trees_rf_logs)
   
 
+# compute RF distance between starting and ML trees for the best run
+  rf_dir = os.path.join(paths.runs_dir, "rfdistances")
+  util.clean_dir(rf_dir)
+  util.mkdirp(rf_dir)
+  tree1 = os.path.join(ml_run_dir, "ali_fasta.raxml.bestTree")
+  tree2 = os.path.join(ml_run_dir, "ali_fasta.raxml.startTree")
+  rf = rf_distance.get_rf_distance(tree1, tree2, rf_dir)
+  print("RF between start and ML trees: " + str(rf))
+
+
