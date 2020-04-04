@@ -62,7 +62,7 @@ class Paths():
     self.raxml_all_ml_trees_rf_logs = util.versioned_path(version, self.raxml_all_ml_trees_rf_logs)
     self.raxml_all_ml_trees_ll = util.versioned_path(version, self.raxml_all_ml_trees_ll)
     self.raxml_bootstrap_trees = util.versioned_path(version, self.raxml_bootstrap_trees)
-
+    self.rf_distance_report = util.versioned_path(version, self.rf_distance_report)
     self.mptp_output = util.versioned_path(version, self.mptp_output)
     self.epa_rooting_dir = util.versioned_path(version, self.epa_rooting_dir)
     self.root_digger_output = util.versioned_path(version, self.root_digger_output)
@@ -100,6 +100,7 @@ class Paths():
 
   raxml_all_ml_trees_rf_distances = os.path.join(results_dir, "raxml_all_ml_trees.rf.distances")
   raxml_all_ml_trees_rf_logs = os.path.join(results_dir, "raxml_all_ml_trees.rf.logs")
+  rf_distance_report = os.path.join(results_dir, "rf_distance_report.txt")
   mptp_output = os.path.join(results_dir, "mptp_output.txt")
   epa_rooting_dir = os.path.join(results_dir, "epa_rooting")
   root_digger_output = os.path.join(results_dir, "root_digger_lwr.newick")
@@ -115,6 +116,8 @@ pargenes_seed = 3000
 pargenes_rand_trees = 0
 pargenes_pars_trees = 100
 pargenes_bs_trees = 100
+pargenes_ali_name = "ali.fasta"
+pargenes_family_name = pargenes_ali_name.replace(".", "_")
 
 if (util.is_slurm()):
   available_cores = 256
@@ -122,5 +125,4 @@ else:
   available_cores = 40
 iqtree_threads = 4 
 cores_for_one_raxml_run = 4
-
 
