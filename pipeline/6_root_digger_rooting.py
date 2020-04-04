@@ -12,7 +12,7 @@ tree = paths.raxml_best_tree
 alignment = paths.alignment
 outfile = paths.root_digger_output
 logfile = paths.root_digger_logfile
-cores = str(common.available_cores)
+cores = str(common.available_cores//2)
 model = common.subst_model
 
 root_digger_launcher.launch_root_digger(tree, alignment, model,
