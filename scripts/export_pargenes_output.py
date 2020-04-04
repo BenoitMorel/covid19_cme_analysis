@@ -6,7 +6,7 @@ import util
 import common
 import reattach_duplicates
 import rf_distance
-
+import iqtree_tests
 
 def export(pargenes_run_dir, paths):
   print("Pargenes run dir: " + pargenes_run_dir)

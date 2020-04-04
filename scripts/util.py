@@ -51,6 +51,16 @@ def expect_executable_exists( executable ):
 	if not distutils.spawn.find_executable( executable ):
 		raise RuntimeError( "Executable not found: " + executable )
 
+"""
+  returns the first occurence of the string matching
+  .*${marker1}${input_str}${marker2}.*  (bash notation)
+
+  the function does not check that such a string exists
+"""
+def find_string_between(input_str, marker1, marker2):
+  start = input_str.find(marker1) + len(marker1)
+  end = input_str.find(marker2, start)
+  return input_str[start:end]
 
 def is_slurm():
   try:

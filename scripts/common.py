@@ -22,6 +22,7 @@ genesis = os.path.join(software_path, "genesis", "bin", "apps")
 genesis_reduce_duplicates = os.path.join(genesis, "reduce_duplicates")
 genesis_reattach_duplicates = os.path.join(genesis, "reattach_duplicates")
 genesis_convert = os.path.join(genesis, "convert")
+iqtree = os.path.join(software_path, "iqtree", "bin", "iqtree")
 
 # config
 config_dir = os.path.join(base_dir, "config")
@@ -66,7 +67,7 @@ class Paths():
     self.epa_rooting_dir = util.versioned_path(version, self.epa_rooting_dir)
     self.root_digger_output = util.versioned_path(version, self.root_digger_output)
     self.root_digger_logfile = util.versioned_path(version, self.root_digger_logfile)
-
+    self.raxml_iqtree_ll = util.versioned_path(version, self.raxml_iqtree_ll)
   version = "UNDEFINED"
   # data
   root_data_dir = "data"
@@ -103,10 +104,10 @@ class Paths():
   epa_rooting_dir = os.path.join(results_dir, "epa_rooting")
   root_digger_output = os.path.join(results_dir, "root_digger_lwr.newick")
   root_digger_logfile = os.path.join(root_digger_runs_dir, "root_digger.log")
-
+  raxml_iqtree_ll = os.path.join(results_dir, "raxml_iqtree_ll.txt")
 
 # misc
-subst_model = "GTR+R4"
+subst_model = "GTR+FO+R4"
 raxml_precision = "9"
 raxml_min_bl = "0.000000001"
  
@@ -119,7 +120,7 @@ if (util.is_slurm()):
   available_cores = 256
 else:
   available_cores = 40
-
+iqtree_threads = 4 
 cores_for_one_raxml_run = 4
 
 
