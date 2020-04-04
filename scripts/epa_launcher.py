@@ -29,6 +29,7 @@ def launch_epa(tree, modelfile, ref_msa, query_msa, out_dir, thorough=True):
   cmd.append("--out-dir")
   cmd.append(out_dir)
   cmd.append("--redo")
+  cmd.append("--verbose")
   subprocess.check_call(cmd)
 
 def launch_split4epa(ref_phylip, papara_result, out_dir):
