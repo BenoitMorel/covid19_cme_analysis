@@ -355,7 +355,8 @@ class experiment:
         for tree in trees:
             t_name = base26_encode(tree_counter, len(trees))
             try:
-                t = tree_param(t_name, tree_size = int(tree))
+                base = os.path.split(tree)[1]
+                t = tree_param(t_name, tree_size = int(base))
             except:
                 t = tree_param(t_name, tree = tree)
             for sites in aligns:
