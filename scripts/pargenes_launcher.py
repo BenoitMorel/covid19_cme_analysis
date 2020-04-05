@@ -21,7 +21,7 @@ def launch_pargenes(alignment, model, output_dir, seed, rand_trees, pars_trees, 
   debug = False 
   alignment_dir = os.path.join(output_dir, "alignments")
   os.mkdir(alignment_dir)
-  alignment_symlink = os.path.join(alignment_dir, "ali.fasta")
+  alignment_symlink = os.path.join(alignment_dir, common.pargenes_ali_name)
   raxml_options_file = os.path.join(output_dir, "raxml_options.txt")
   with open(raxml_options_file, "w") as writer:
     writer.write("--model " + model + " ")

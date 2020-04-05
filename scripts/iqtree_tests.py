@@ -6,8 +6,8 @@ import subprocess
 import util
 import common
 
-def eval_ll(alignment, model, trees, tree, runs_dir):
-  prefix = os.path.join(runs_dir, "eval_ll")
+def iqtree_tests(alignment, model, trees, tree, runs_dir):
+  prefix = os.path.join(runs_dir, "iqtree_tests")
   cmd = []
   cmd.append(common.iqtree)
   cmd.append("-blmin")
@@ -19,12 +19,14 @@ def eval_ll(alignment, model, trees, tree, runs_dir):
   cmd.append("-pre")
   cmd.append(prefix)
   cmd.append("-redo")
-  cmd.append("-te")
+  cmd.append("-z")
   cmd.append(trees)
+  cmd.append("-te")
+  cmd.append(tree)
   cmd.append("-n")
   cmd.append("0")
   cmd.append("-zb")
-  cmd.append("1000")
+  cmd.append("10000")
   cmd.append("-zw")
   cmd.append("-au")
   cmd.append("-nt")
@@ -36,7 +38,7 @@ def eval_ll(alignment, model, trees, tree, runs_dir):
 def perform_all_tests(paths):  
   iqtree_dir = os.path.join(paths.runs_dir, "iqtree_tests")
   util.mkdirp(iqtree_dir)
-  iqtree_ll = eval_ll(paths.alignment, common.subst_model, paths.raxml_all_ml_trees, paths.raxml_best_tree, iqtree_dir)
+  iqtree_ll = iqtree_tests(paths.alignment, common.subst_model, paths.raxml_all_ml_trees, paths.raxml_best_tree, iqtree_dir)
   raxml_ll = float(open(paths.raxml_all_ml_trees_ll).readline().split(" ")[0])
   with open(paths.raxml_iqtree_ll, "w") as writer:
     writer.write("# this file contains the likelihood of the best tree at the end of the raxml-ng run, and an evaluation of likelihood of the same tree  with iqtree (with model optimization)\n")
