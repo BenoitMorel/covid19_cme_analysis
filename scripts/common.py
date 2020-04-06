@@ -68,6 +68,7 @@ class Paths():
     self.root_digger_output = util.versioned_path(version, self.root_digger_output)
     self.root_digger_logfile = util.versioned_path(version, self.root_digger_logfile)
     self.raxml_iqtree_ll = util.versioned_path(version, self.raxml_iqtree_ll)
+    self.iqtree_tests_output = util.versioned_path(version, self.iqtree_tests_output)
   version = "UNDEFINED"
   # data
   root_data_dir = "data"
@@ -106,7 +107,7 @@ class Paths():
   root_digger_output = os.path.join(results_dir, "root_digger_lwr.newick")
   root_digger_logfile = os.path.join(root_digger_runs_dir, "root_digger.log")
   raxml_iqtree_ll = os.path.join(results_dir, "raxml_iqtree_ll.txt")
-
+  iqtree_tests_output = os.path.join(results_dir, "iqtree_tests.txt")
 # misc
 subst_model = "GTR+FO+R4"
 raxml_precision = "9"
