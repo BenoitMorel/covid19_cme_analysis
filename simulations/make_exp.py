@@ -107,24 +107,33 @@ class single_param(indel_param):
 
 
 class subst_params(indel_param):
-    def __init__(self):
-        self._params = numpy.random.rand(6) + 1e-2
-
+    def __init__(self, value = None):
+        if value is None:
+            self._params = numpy.random.rand(6) + 1e-2
+        else:
+            if len(value) != 6:
+                raise Exception('Only 6 parameters are supported')
+            self._params = value
 
 class freq_params(indel_param):
-    def __init__(self):
-        self._params = numpy.random.dirichlet([1.0 for _ in range(4)])
-        self._params += .001
-        self._params /= numpy.linalg.norm(self._params, 1)
-
+    def __init__(self, value = None):
+        if value is None:
+            self._params = numpy.random.dirichlet([1.0 for _ in range(4)])
+            self._params += .001
+            self._params /= numpy.linalg.norm(self._params, 1)
+        else:
+            if len(value) != 4:
+                raise Exception('Only 4 parameters are supported')
+            if not numpy.abs(numpy.sum(value) - 1.0)  < 0.0001:
+                raise Exception('Values provided do not sum to 1: ' +
+                        str(numpy.sum(value)))
+            self._params = value
 
 class pinvar_param(single_param):
     pass
 
-
 class alpha_param(single_param):
     pass
-
 
 class tree_param:
     def __init__(self, tree_name, tree=None, tree_size=None):
@@ -170,11 +179,14 @@ class dataset:
 
         self._tree = tree
         self._sites = sites
-        self._subst_params = subst_params()
-        self._freq_params = freq_params()
+        self._subst_params =\
+            subst_params([0.368190805,0.944029819,0.263834661,
+                0.292381286,2.769579762,1.000000000])
+        self._freq_params =\
+                freq_params([0.300096292,0.178844167,0.193299872,0.327759670])
         self._pinv = pinvar_param(0.0)
-        self._alpha = alpha_param()
-        self._ngamcat = 4
+        self._alpha = alpha_param(1.0)
+        self._ngamcat = 0
         self._path = os.path.join(prefix, str(tree.tree_name) + "tree", str(sites) + "sites")
         os.makedirs(self._path, exist_ok=True)
         self._control_file = None
