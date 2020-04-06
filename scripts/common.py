@@ -58,6 +58,7 @@ class Paths():
     self.raxml_best_tree_with_duplicate = util.versioned_path(version, self.raxml_best_tree_with_duplicate)
     self.raxml_best_model = util.versioned_path(version, self.raxml_best_model)
     self.raxml_all_ml_trees = util.versioned_path(version, self.raxml_all_ml_trees)
+    self.raxml_credible_ml_trees = util.versioned_path(version, self.raxml_credible_ml_trees)
     self.raxml_all_ml_trees_rf_distances = util.versioned_path(version, self.raxml_all_ml_trees_rf_distances)
     self.raxml_all_ml_trees_rf_logs = util.versioned_path(version, self.raxml_all_ml_trees_rf_logs)
     self.raxml_all_ml_trees_ll = util.versioned_path(version, self.raxml_all_ml_trees_ll)
@@ -96,6 +97,7 @@ class Paths():
   raxml_best_tree_with_duplicate = os.path.join(results_dir, "raxml_best_tree_with_duplicate.newick")
   raxml_best_model = os.path.join(results_dir, "raxml_best_model.txt")
   raxml_all_ml_trees = os.path.join(results_dir, "raxml_all_ml_trees.newick")
+  raxml_credible_ml_trees = os.path.join(results_dir, "raxml_credible_ml_trees.newick")
   raxml_all_ml_trees_ll = os.path.join(results_dir, "raxml_all_ml_trees_with_ll.txt")
   raxml_bootstrap_trees = os.path.join(results_dir, "raxml_bs_trees.newick")
 

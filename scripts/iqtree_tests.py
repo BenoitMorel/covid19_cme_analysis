@@ -53,7 +53,7 @@ def extract_tests_results(iqtree_tests_file):
       res.append(line.replace("\n", ""))
   return res
 
-
+"""
 def get_per_test_values(iqtree_tests_file):
   iqtree_lines = extract_tests_results(iqtree_tests_file)
    
@@ -80,11 +80,21 @@ def get_per_test_values(iqtree_tests_file):
   print("ITS ALL WRONG")
   assert(False)
   return per_test_values
+"""
+
 
 def filter_accepted_trees(iqtree_tests_file, ml_trees_file):
-  ml_trees = open(ml_trees).readlines()
-  per_test_values = get_per_test_values(iqtree_tests_file)
-
+  ml_trees = open(ml_trees_file).readlines()
+  iqtree_lines = extract_tests_results(iqtree_tests_file)
+  accepted_trees = []
+  for i in range(0, len(iqtree_lines)):
+    line = iqtree_lines[i]
+    plus_count = line.count(" + ")
+    minus_count = line.count(" - ")
+    assert(plus_count + minus_count == 7)
+    if (minus_count == 0):
+      accepted_trees.append(ml_trees[i])
+  return accepted_trees
 
 def perform_all_tests(paths):  
   iqtree_dir = os.path.join(paths.runs_dir, "iqtree_tests")
@@ -93,7 +103,11 @@ def perform_all_tests(paths):
   raxml_ll = float(open(paths.raxml_all_ml_trees_ll).readline().split(" ")[0])
   iqtree_tests_output = os.path.join(iqtree_dir, "iqtree_tests.iqtree")
   shutil.copy(iqtree_tests_output, paths.iqtree_tests_output)
- # get_per_test_values(iqtree_tests_output)
+  accepted_trees = filter_accepted_trees(paths.iqtree_tests_output, paths.raxml_all_ml_trees)
+  print(str(len(accepted_trees)) + " tree passed all IQTree consistency tests") 
+  with open(paths.raxml_credible_ml_trees, "w") as writer:
+    for tree in accepted_trees:
+      writer.write(tree)
   with open(paths.raxml_iqtree_ll, "w") as writer:
     writer.write("# this file contains the likelihood of the best tree at the end of the raxml-ng run, and an evaluation of likelihood of the same tree  with iqtree (with model optimization)\n")
     writer.write("raxml_ll=" + str(raxml_ll) + "\n")
