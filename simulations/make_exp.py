@@ -28,11 +28,6 @@ progressbar.streams.flush()
 PROGRESS_BAR = None
 PROGRESS_BAR_ITER = multiprocessing.Value('i', 0)
 
-IQTREE = "iqtree -m gtr+g4 -s {msa} -g {tree} -pre {prefix} -seed {seed} -nt 1"
-model_file = "subst.model"
-freqs_file = "freqs.model"
-
-RUN_TEMPLATE = "run_{run_iter:0{leading_zeroes}}"
 TOTAL_ITERS = 0
 
 class indel_control_file:
@@ -292,6 +287,7 @@ class raxml_ng(program):
             "--model", "gtr+g4",
             "--prefix", path,
             "--seed", str(seed),
+            "--tree", "rand{1}",
             "--threads", "1"],
             stdout=subprocess.DEVNULL)
 
