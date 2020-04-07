@@ -58,6 +58,8 @@ class Paths():
     self.raxml_best_tree_with_duplicate = util.versioned_path(version, self.raxml_best_tree_with_duplicate)
     self.raxml_best_model = util.versioned_path(version, self.raxml_best_model)
     self.raxml_all_ml_trees = util.versioned_path(version, self.raxml_all_ml_trees)
+    self.raxml_credible_ml_trees = util.versioned_path(version, self.raxml_credible_ml_trees)
+    self.raxml_consensus_MR_tree = util.versioned_path(version, self.raxml_consensus_MR_tree)
     self.raxml_all_ml_trees_rf_distances = util.versioned_path(version, self.raxml_all_ml_trees_rf_distances)
     self.raxml_all_ml_trees_rf_logs = util.versioned_path(version, self.raxml_all_ml_trees_rf_logs)
     self.raxml_all_ml_trees_ll = util.versioned_path(version, self.raxml_all_ml_trees_ll)
@@ -68,6 +70,7 @@ class Paths():
     self.root_digger_output = util.versioned_path(version, self.root_digger_output)
     self.root_digger_logfile = util.versioned_path(version, self.root_digger_logfile)
     self.raxml_iqtree_ll = util.versioned_path(version, self.raxml_iqtree_ll)
+    self.iqtree_tests_output = util.versioned_path(version, self.iqtree_tests_output)
   version = "UNDEFINED"
   # data
   root_data_dir = "data"
@@ -95,6 +98,8 @@ class Paths():
   raxml_best_tree_with_duplicate = os.path.join(results_dir, "raxml_best_tree_with_duplicate.newick")
   raxml_best_model = os.path.join(results_dir, "raxml_best_model.txt")
   raxml_all_ml_trees = os.path.join(results_dir, "raxml_all_ml_trees.newick")
+  raxml_credible_ml_trees = os.path.join(results_dir, "raxml_credible_ml_trees.newick")
+  raxml_consensus_MR_tree = os.path.join(results_dir, "raxml_consensus_tree_MR.newick")
   raxml_all_ml_trees_ll = os.path.join(results_dir, "raxml_all_ml_trees_with_ll.txt")
   raxml_bootstrap_trees = os.path.join(results_dir, "raxml_bs_trees.newick")
 
@@ -106,7 +111,7 @@ class Paths():
   root_digger_output = os.path.join(results_dir, "root_digger_lwr.newick")
   root_digger_logfile = os.path.join(root_digger_runs_dir, "root_digger.log")
   raxml_iqtree_ll = os.path.join(results_dir, "raxml_iqtree_ll.txt")
-
+  iqtree_tests_output = os.path.join(results_dir, "iqtree_tests.txt")
 # misc
 subst_model = "GTR+FO+R4"
 raxml_precision = "9"
