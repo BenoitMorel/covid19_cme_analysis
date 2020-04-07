@@ -15,6 +15,7 @@ import subprocess
 import sys
 import json
 import itertools
+import copy
 
 import ete3
 import numpy
@@ -192,7 +193,7 @@ class dataset:
         self._control_file = None
         self._results = {}
 
-    def write_control_file(self):
+    def write_control_file(self, path):
         if not self._control_file:
             self._control_file =\
                 indel_control_file(
@@ -203,11 +204,12 @@ class dataset:
                         str(self._ngamcat),
                         self._tree.newick,
                         str(self._sites))
-        self._control_file.write(self._path)
+        self._control_file.write(path)
 
-    def run_indel(self):
-        with directory_guard(self._path):
+    def run_indel(self, path):
+        with directory_guard(path):
             subprocess.run("indelible", stdout = subprocess.DEVNULL)
+        self._alignment_path = os.path.join(path, "simulated_sequences.fas")
 
     @property
     def path(self):
@@ -222,11 +224,13 @@ class dataset:
 
     @property
     def alignment(self):
-        return os.path.join(self._path, "simulated_sequences.fas")
+        return self._alignment_path
 
-    def make(self):
-        self.write_control_file()
-        self.run_indel()
+    def make_iteration(self, path):
+        self.write_control_file(path)
+        self.run_indel(path)
+
+    def make_tree(self):
         with open(self.tree_path, 'w') as outfile:
             outfile.write(self._tree.newick)
 
@@ -297,7 +301,7 @@ class raxml_ng(program):
 class iteration:
     def __init__(self, iteration, dataset, programs):
         self._iteration = int(iteration)
-        self._dataset = dataset
+        self._dataset = copy.copy(dataset)
         self._path = os.path.join(dataset.path, str(iteration) + "iter")
         self._programs = programs
 
@@ -312,6 +316,8 @@ class iteration:
         else:
             with open(self._seed_file) as sf:
                 self._seed = int(sf.read())
+
+        self._dataset.make_iteration(self._path)
 
         iter_results = {self._dataset : []}
         for prog in self._programs:
@@ -384,7 +390,7 @@ class experiment:
     def _prep_runs(self):
         self._iterations = []
         for ds in self._datasets:
-            ds.make()
+            ds.make_tree()
             for i in range(self._run_iter):
                 self._iterations.append(iteration(i, ds, self._programs))
 
