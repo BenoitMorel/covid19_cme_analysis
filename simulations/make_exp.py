@@ -14,6 +14,7 @@ import string
 import subprocess
 import sys
 import json
+from json import JSONEncoder
 import itertools
 import copy
 
@@ -96,7 +97,11 @@ class directory_guard:
 
 class indel_param:
     def indel_repr(self):
-        return ' '.join([str(f) for f in self._params])
+        return ' '.join([str(f) for f in self.params])
+
+    @property
+    def params(self):
+        return self._params
 
 
 class single_param(indel_param):
@@ -108,27 +113,23 @@ class single_param(indel_param):
 
 
 class subst_params(indel_param):
-    def __init__(self, value = None):
-        if value is None:
-            self._params = numpy.random.rand(6) + 1e-2
-        else:
-            if len(value) != 6:
-                raise Exception('Only 6 parameters are supported')
-            self._params = value
+    def __init__(self, matrix):
+        self._params = matrix
+
+    @property
+    def params(self):
+        return [float(numpy.random.choice(self._params[i], 1)) for i in range(6)]
+
 
 class freq_params(indel_param):
-    def __init__(self, value = None):
-        if value is None:
-            self._params = numpy.random.dirichlet([1.0 for _ in range(4)])
-            self._params += .001
-            self._params /= numpy.linalg.norm(self._params, 1)
-        else:
-            if len(value) != 4:
-                raise Exception('Only 4 parameters are supported')
-            if not numpy.abs(numpy.sum(value) - 1.0)  < 0.0001:
-                raise Exception('Values provided do not sum to 1: ' +
-                        str(numpy.sum(value)))
-            self._params = value
+    def __init__(self, matrix):
+        self._params = matrix
+
+    @property
+    def params(self):
+        arr = [float(numpy.random.choice(self._params[i], 1)) for i in range(4)]
+        arr /= numpy.linalg.norm(arr, 1)
+        return arr
 
 class pinvar_param(single_param):
     pass
@@ -148,7 +149,7 @@ class tree_param:
             t = ete3.Tree()
             t.populate(tree_size)
             for n in t.traverse():
-                n.dist = numpy.random.exponential(0.1)
+                n.dist = numpy.random.exponential(0.1) + 0.01
             self._tree = t
 
     @property
@@ -172,20 +173,20 @@ class tree_param:
 
 
 class dataset:
-    def __init__(self, 
+    def __init__(self,
                  tree,
                  sites,
                  prefix,
+                 summary_file,
                  seed = None):
 
+        with open(summary_file) as infile:
+            json_dict = json.load(infile)
         self._tree = tree
         self._sites = sites
-        self._subst_params =\
-            subst_params([0.368190805,0.944029819,0.263834661,
-                0.292381286,2.769579762,1.000000000])
-        self._freq_params =\
-                freq_params([0.300096292,0.178844167,0.193299872,0.327759670])
-        self._pinv = pinvar_param(0.0)
+        self._subst_params = subst_params(json_dict['subst'])
+        self._freq_params = freq_params(json_dict['freqs'])
+        self._pinv = pinvar_param(0.90)
         self._alpha = alpha_param(1.0)
         self._ngamcat = 0
         self._path = os.path.join(prefix, str(tree.tree_name) + "tree", str(sites) + "sites")
@@ -327,8 +328,13 @@ class iteration:
                 run_prefix = os.path.join(run_dir, "simulation")
                 prog.run(run_prefix, self._dataset.alignment, self._seed)
                 self.set_done(prog.name, self._path)
-            iter_results[self._dataset].append(prog.result(self._path,
-                self._dataset.tree_path))
+            try:
+                iter_results[self._dataset].append(prog.result(self._path,
+                    self._dataset.tree_path))
+            except:
+                print("WARNING: failed to parse the result of",
+                        str(self._dataset), "iteration", self._iteration,
+                        "for program", prog.name)
 
         PROGRESS_BAR.update(PROGRESS_BAR_ITER.value)
         PROGRESS_BAR_ITER.value += 1
@@ -355,6 +361,7 @@ class experiment:
                  run_iters,
                  trees,
                  aligns,
+                 summary_file,
                  run_iq=True,
                  seed=None):
 
@@ -378,7 +385,8 @@ class experiment:
             except:
                 t = tree_param(t_name, tree = tree)
             for sites in aligns:
-                self._datasets.append(dataset(t, sites, self._run_path))
+                self._datasets.append(dataset(t, sites, self._run_path,
+                    summary_file))
             tree_counter += 1
 
         self._dataset_map = {ds : ds for ds in self._datasets}
@@ -434,7 +442,6 @@ class result:
     @property
     def rfdist(self):
         rf, max_rf, _, _, _, _, _ = self._true_tree.robinson_foulds(self._tree, unrooted_trees=True)
-        print(self._true_tree)
         return rf/max_rf
 
     def read_true_tree(self, true_tree_filename):
@@ -537,6 +544,7 @@ def base26_encode(index, maximum):
     bases.reverse()
     return ''.join(bases)
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--path',
@@ -551,6 +559,7 @@ if __name__ == "__main__":
     parser.add_argument('--no-run-iq-tree', dest='runiq', action='store_false')
     parser.add_argument('--run-raxml-ng', dest='runraxmlng', action='store_true')
     parser.add_argument('--no-run-raxml-ng', dest='runraxmlng', action='store_false')
+    parser.add_argument('--summary',required=True, type=str)
     parser.set_defaults(runiq=True)
     parser.set_defaults(runraxmlng=True)
     args = parser.parse_args()
@@ -593,9 +602,11 @@ if __name__ == "__main__":
             trees_corrected_paths.append(t)
 
 
+    summary_file = os.path.abspath(args.summary)
 
     with directory_guard(exp_path):
-        exp = experiment('.', args.iters, trees_corrected_paths, args.msa)
+        exp = experiment('.', args.iters, trees_corrected_paths, args.msa,
+                summary_file)
         if args.runiq:
             exp.register_program(iqtree())
         if args.runraxmlng:
@@ -603,3 +614,5 @@ if __name__ == "__main__":
         exp.run(args.procs)
         PROGRESS_BAR.finish()
         print(exp.summarize_rf())
+    with open("simulation_results.log", "w") as outfile:
+        outfile.write(str(exp.summarize_rf()))
