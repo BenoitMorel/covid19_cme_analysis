@@ -4,6 +4,21 @@ results="results"
 data="data"
 software="software"
 
+echo -n "Detecting supported SIMD instruction set... "
+simd=""
+if grep -q avx2 /proc/cpuinfo; then
+    simd="AVX2"
+elif grep -q avx /proc/cpuinfo; then
+    simd="AVX"
+elif grep -q sse /proc/cpuinfo; then
+    simd="SSE"
+fi
+echo "$simd"
+
+echo -n "Detecting number of (physical) CPU cores... "
+ncores=$(lscpu --parse=Core,Socket | grep --invert-match "^#" | sort --unique | wc --lines)
+echo "$ncores"
+
 echo "Cloning software..."
 mkdir -p $software
 cd $software
@@ -16,6 +31,14 @@ install_raxmlng() {
   cmake -DUSE_MPI=ON ..
   make -j
   cd ../..
+}
+
+install_raxml() {
+    git clone https://github.com/stamatak/standard-RAxML.git
+    echo "Installing raxml..."
+    cd standard-RAxML/
+    make -j "$ncores" -f "Makefile.$simd.PTHREADS.gcc"
+    cd ..
 }
 
 install_modeltest() {
@@ -92,6 +115,7 @@ install_root_digger(){
 }
 
 install_raxmlng
+install_raxml
 install_modeltest
 install_pargenes
 install_mptp
