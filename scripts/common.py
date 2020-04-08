@@ -12,6 +12,7 @@ work_dir = os.path.join(base_dir, "work_dir")
 # tools
 software_path = os.path.join(base_dir, "software")
 raxml = os.path.join(software_path, "raxml-ng", "bin", "raxml-ng-mpi")
+old_raxml = os.path.join(software_path, "standard-RAxML", "raxml")
 modeltest = os.path.join(software_path, "modeltest", "bin", "modeltest-ng-mpi")
 pargenes = os.path.join(software_path, "ParGenes", "pargenes", "pargenes-hpc.py")
 mptp = os.path.join(software_path, "mptp", "bin", "mptp")
@@ -70,6 +71,7 @@ class Paths():
     self.root_digger_output = util.versioned_path(version, self.root_digger_output)
     self.root_digger_logfile = util.versioned_path(version, self.root_digger_logfile)
     self.raxml_iqtree_ll = util.versioned_path(version, self.raxml_iqtree_ll)
+    self.raxml_iqtree_ll_all = util.versioned_path(version, self.raxml_iqtree_ll_all)
     self.iqtree_tests_output = util.versioned_path(version, self.iqtree_tests_output)
   version = "UNDEFINED"
   # data
