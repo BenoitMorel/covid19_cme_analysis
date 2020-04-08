@@ -113,6 +113,7 @@ class Paths():
   root_digger_output = os.path.join(results_dir, "root_digger_lwr.newick")
   root_digger_logfile = os.path.join(root_digger_runs_dir, "root_digger.log")
   raxml_iqtree_ll = os.path.join(results_dir, "raxml_iqtree_ll.txt")
+  raxml_iqtree_ll_all = os.path.join(results_dir, "raxml_iqtree_ll_all.csv")
   iqtree_tests_output = os.path.join(results_dir, "iqtree_tests.txt")
 # misc
 subst_model = "GTR+FO+R4"
