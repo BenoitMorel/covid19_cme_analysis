@@ -31,7 +31,7 @@ def iqtree_tests(alignment, model, trees, tree, runs_dir):
   cmd.append("-au")
   cmd.append("-nt")
   cmd.append(str(common.iqtree_threads))
-  logs = subprocess.check_output(cmd)
+  logs = subprocess.check_output(cmd, encoding='utf-8')
   ll = util.find_string_between(logs, "BEST SCORE FOUND : ", "\n")
   return float(ll)
 

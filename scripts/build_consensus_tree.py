@@ -19,7 +19,7 @@ def build_consensus_tree(input_trees, output_tree, run_dir, mode = "MR"):
   cmd.append("--prefix")
   cmd.append(prefix)
   cmd.append("--redo")
-  subprocess.check_output(cmd)
+  subprocess.check_output(cmd, encoding='utf-8')
   consensus = prefix + ".raxml.consensusTree" + mode
   print("Saving consensus tree to " + output_tree)
   shutil.copy(consensus, output_tree)
