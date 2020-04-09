@@ -130,7 +130,7 @@ pargenes_family_name = pargenes_ali_name.replace(".", "_")
 if (util.is_slurm()):
   available_cores = 256
 else:
-  available_cores = len(os.sched_getaffinity(0))
+  available_cores = util.num_pyhsical_cores()
 iqtree_threads = 4
 cores_for_one_raxml_run = 4
 
