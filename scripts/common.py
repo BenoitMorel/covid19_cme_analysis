@@ -133,4 +133,5 @@ else:
   available_cores = util.num_pyhsical_cores()
 iqtree_threads = 4
 cores_for_one_raxml_run = 4
-
+raxmlng_eval_cores = 6
+raxml_eval_cores = 6
