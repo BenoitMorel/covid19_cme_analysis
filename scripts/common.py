@@ -119,7 +119,7 @@ class Paths():
 subst_model = "GTR+FO+R4"
 raxml_precision = "9"
 raxml_min_bl = "0.000000001"
- 
+
 pargenes_seed = 3000
 pargenes_rand_trees = 0
 pargenes_pars_trees = 100
@@ -130,7 +130,7 @@ pargenes_family_name = pargenes_ali_name.replace(".", "_")
 if (util.is_slurm()):
   available_cores = 256
 else:
-  available_cores = 40
-iqtree_threads = 4 
+  available_cores = len(os.sched_getaffinity(0))
+iqtree_threads = 4
 cores_for_one_raxml_run = 4
 
