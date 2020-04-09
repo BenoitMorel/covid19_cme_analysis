@@ -2,6 +2,7 @@ import os
 import sys
 import shutil
 import subprocess
+import multiprocessing as mp
 
 import util
 import common
@@ -23,7 +24,7 @@ def iqtree_eval(alignment, model, tree, prefix):
   cmd.append("-te") # Thre tree on which to perform model optimization
   cmd.append(tree)
   cmd.append("-nt")
-  cmd.append(str(common.iqtree_threads))
+  cmd.append("1")
   logs = subprocess.check_output(cmd, encoding='utf-8')
   ll = util.find_string_between(logs, "BEST SCORE FOUND : ", "\n")
   return float(ll)
@@ -42,24 +43,26 @@ def evaluate_all_trees(paths):
   print('Loading RAxML-ng LLHs... ', end = '')
   raxml_lls = []
   with open(paths.raxml_all_ml_trees_ll) as reader:
-      for line in reader:
-          raxml_lls.append(float(line.split(' ')[0]))
+    for line in reader:
+      raxml_lls.append(float(line.split(' ')[0]))
   print('done.')
 
-  sys.stdout.write('Evaluating trees with iqtree (including model & brlen optimization)... 000/%d' % len(raxml_lls))
-  sys.stdout.flush()
-  iqtree_lls = []
+  print('Evaluating trees with iqtree (including model & brlen optimization)... ', end = '')
+  tree_files = []
   with open(paths.raxml_all_ml_trees) as trees_file:
     for i, tree_str in enumerate(trees_file):
       # Write a separate newick file for this tree
       tree_file_name = os.path.join(iqtree_eval_dir, 'tree_%d.newick' % i)
       with open(tree_file_name, 'w') as tree_file:
         tree_file.write(tree_str)
-      # Evaluate this tree with model & brlen optimization
-      iqtree_lls.append(iqtree_eval(paths.alignment, common.subst_model, tree_file_name, tree_file_name))
-      sys.stdout.write('\b' * 7 + '%03d/%d' % (i + 1, len(raxml_lls)))
-      sys.stdout.flush()
-    sys.stdout.write('\n')
+      tree_files.append(tree_file_name)
+
+  # Evaluate trees with model & brlen optimization
+  pool = mp.Pool(common.available_cores)
+  iqtree_lls = pool.starmap(iqtree_eval,
+    [(paths.alignment, common.subst_model, tree_file_name, tree_file_name)
+      for tree_file_name in tree_files])
+  print('done')
 
   with open(paths.raxml_iqtree_ll_all, "w") as writer:
     writer.write('# this file contains the likelihood of all ML trees at the end of the raxml-ng run as\n')
