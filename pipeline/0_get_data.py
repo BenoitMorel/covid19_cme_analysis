@@ -35,11 +35,17 @@ cmd.append("wget")
 cmd.append("--no-check-certificate")
 cmd.append("https://docs.google.com/uc?export=download&id=" + data_googleid)
 cmd.append("-O")
-cmd.append( paths.raw_sequences )
+cmd.append( paths.raw_sequences + ".gz" )
 print(" ".join(cmd))
 subprocess.call(cmd)
 print("")
 print("Version string: " + paths.version)
 
-
+# if remote was gzipped
+if True:
+  cmd = []
+  cmd.append("gunzip")
+  cmd.append( paths.raw_sequences+ ".gz" )
+  print(" ".join(cmd))
+  subprocess.call(cmd)
 
