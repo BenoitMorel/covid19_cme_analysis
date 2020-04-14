@@ -29,6 +29,8 @@ while(defined(my $ln=<IN>)){
     my $seqLength = length($ln);
     my $subseq = substr($ln, $trimlength, -$trimlength);
 
+    print $subseq, "\n";
+
     print STDERR "Seq: $name.. old length $seqLength... new length is ", length($subseq), "\n";
 
     
