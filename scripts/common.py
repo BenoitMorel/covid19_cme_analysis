@@ -72,6 +72,7 @@ class Paths():
     self.root_digger_logfile = util.versioned_path(version, self.root_digger_logfile)
     self.raxml_iqtree_ll = util.versioned_path(version, self.raxml_iqtree_ll)
     self.raxml_iqtree_ll_all = util.versioned_path(version, self.raxml_iqtree_ll_all)
+    self.gamma_ll_all = util.versioned_path(version, self.gamma_ll_all)
     self.iqtree_tests_output = util.versioned_path(version, self.iqtree_tests_output)
   version = "UNDEFINED"
   # data
@@ -113,6 +114,7 @@ class Paths():
   root_digger_output = os.path.join(results_dir, "root_digger_lwr.newick")
   root_digger_logfile = os.path.join(root_digger_runs_dir, "root_digger.log")
   raxml_iqtree_ll = os.path.join(results_dir, "raxml_iqtree_ll.txt")
+  gamma_ll_all = os.path.join(results_dir, "gamma_ll_all.csv")
   raxml_iqtree_ll_all = os.path.join(results_dir, "raxml_iqtree_ll_all.csv")
   iqtree_tests_output = os.path.join(results_dir, "iqtree_tests.txt")
 # misc
@@ -133,5 +135,5 @@ else:
   available_cores = util.num_pyhsical_cores()
 iqtree_threads = 4
 cores_for_one_raxml_run = 4
-raxmlng_eval_cores = 6
-raxml_eval_cores = 6
+raxmlng_eval_cores = 1
+raxml_eval_cores = 1
