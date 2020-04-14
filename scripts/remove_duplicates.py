@@ -16,7 +16,7 @@ def trim_separate_align(input_fasta, datestring, runsdir):
   cmd.append(input_fasta)
   cmd.append(datestring)
   cmd.append(common.scripts_dir)
-  cmd.append("\"{}\" --thread {}".format(common.mafft, common.available_threads))
+  cmd.append("\"{}\" --thread {}".format(common.mafft, common.available_cores))
   subprocess.check_call(cmd, cwd=runsdir)
 
 def remove_duplicates(input_msa, outgroup_spec, output_msa, output_json, output_outgroup_msa):
