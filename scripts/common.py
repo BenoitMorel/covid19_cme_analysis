@@ -23,6 +23,7 @@ genesis_reduce_duplicates = os.path.join(genesis, "reduce_duplicates")
 genesis_reattach_duplicates = os.path.join(genesis, "reattach_duplicates")
 genesis_convert = os.path.join(genesis, "convert")
 iqtree = os.path.join(software_path, "iqtree", "bin", "iqtree")
+preanalysis1 = os.path.join(scripts_dir, "preanalysis1.sh")
 mafft = os.path.join(software_path, "mafft", "mafftdir", "bin", "mafft")
 
 # config
@@ -38,6 +39,7 @@ class Paths():
     self.version = version
     self.root_data_dir = util.versioned_path(version, self.root_data_dir)
     self.data_path = util.versioned_path(version, self.data_path)
+    self.raw_sequences = util.versioned_path(version, self.raw_sequences)
     self.raw_alignment = util.versioned_path(version, self.raw_alignment)
     self.alignment = util.versioned_path(version, self.alignment)
     self.outgroup_alignment = util.versioned_path(version, self.outgroup_alignment)
@@ -46,6 +48,7 @@ class Paths():
 
     self.root_runs_dir = util.versioned_path(version, self.root_runs_dir)
     self.runs_dir = util.versioned_path(version, self.runs_dir)
+    self.preanalysis_runs_dir = util.versioned_path(version, self.preanalysis_runs_dir)
     self.raxml_ml_runs_dir = util.versioned_path(version, self.raxml_ml_runs_dir)
     self.pargenes_runs_dir = util.versioned_path(version, self.pargenes_runs_dir)
     self.modeltest_runs_dir = util.versioned_path(version, self.modeltest_runs_dir)
@@ -76,6 +79,7 @@ class Paths():
   # data
   root_data_dir = "data"
   data_path = os.path.join(root_data_dir)
+  raw_sequences = os.path.join(data_path, "covid_raw_unaligned.fasta")
   raw_alignment = os.path.join(data_path, "covid_raw.fasta")
   alignment = os.path.join(data_path, "covid_edited.fasta")
   outgroup_alignment = os.path.join(data_path, "covid_outgroups.fasta")
@@ -85,6 +89,7 @@ class Paths():
   # runs
   root_runs_dir = "runs"
   runs_dir = os.path.join(root_runs_dir)
+  preanalysis_runs_dir = os.path.join(runs_dir, "preanalysis")
   raxml_ml_runs_dir = os.path.join(runs_dir, "raxml_runs")
   pargenes_runs_dir = os.path.join(runs_dir, "pargenes_runs")
   modeltest_runs_dir = os.path.join(runs_dir, "modeltest_runs")

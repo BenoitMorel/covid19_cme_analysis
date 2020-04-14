@@ -1,4 +1,4 @@
-from shutil import rmtree
+from shutil import rmtree, copyfile
 import os
 import sys
 import common
@@ -21,6 +21,9 @@ def get_version( argv, i=1 ):
 	if not version_valid( version ):
 		fail("Invalid version: {}".format(version))
 	return version
+
+def copy( src, dest ):
+  copyfile( src, dest)
 
 def clean_dir( path ):
 	if os.path.exists( path ):
