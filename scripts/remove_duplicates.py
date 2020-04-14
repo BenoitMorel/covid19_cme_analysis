@@ -15,8 +15,9 @@ def trim_separate_align(input_fasta, datestring, runsdir):
   cmd.append(common.preanalysis1)
   cmd.append(input_fasta)
   cmd.append(datestring)
-  cmd.append("\"{} --thread {}\"".format(common.mafft, common.available_cores))
   cmd.append(common.scripts_dir)
+  cmd.append(common.mafft)
+  cmd.append(str(common.available_cores))
   print(" ".join(cmd))
   subprocess.check_call(cmd, cwd=runsdir)
 

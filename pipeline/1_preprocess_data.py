@@ -5,6 +5,7 @@ import sys
 sys.path.insert(0, 'scripts')
 import common
 import remove_duplicates
+import util
 
 paths = common.Paths( sys.argv )
 
