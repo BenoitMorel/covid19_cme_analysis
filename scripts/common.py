@@ -23,6 +23,7 @@ genesis_reduce_duplicates = os.path.join(genesis, "reduce_duplicates")
 genesis_reattach_duplicates = os.path.join(genesis, "reattach_duplicates")
 genesis_convert = os.path.join(genesis, "convert")
 iqtree = os.path.join(software_path, "iqtree", "bin", "iqtree")
+mafft = os.path.join(software_path, "mafft", "mafftdir", "bin", "mafft")
 
 # config
 config_dir = os.path.join(base_dir, "config")

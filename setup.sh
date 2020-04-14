@@ -114,6 +114,14 @@ install_root_digger(){
   popd
 }
 
+install_mafft() {
+  echo "Installing mafft..."
+  wget https://mafft.cbrc.jp/alignment/software/mafft-7.450-linux.tgz
+  tar -xzf mafft-7.450-linux.tgz
+  mv mafft-linux64 mafft
+  rm mafft-7.450-linux.tgz
+}
+
 install_raxmlng
 install_raxml
 install_modeltest
@@ -124,6 +132,7 @@ install_papara
 install_genesis
 install_iqtree
 install_root_digger
+install_mafft
 
 
 echo "Finished"
