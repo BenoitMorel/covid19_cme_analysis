@@ -1,3 +1,5 @@
+#!/bin/bash
+
 input=$1
 date=$2
 scriptdir=$3
