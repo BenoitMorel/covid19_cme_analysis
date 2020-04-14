@@ -96,7 +96,7 @@ def evaluate_all(paths):
   jiggle_params_dir = os.path.join(paths.runs_dir, 'jiggle_params')
   util.mkdirp(jiggle_params_dir)
 
-  print('Jiggling some parameters to check how the LLH change on THE maximum likelihood tree', end = '')
+  print('Jiggling some parameters to check how the LLHs change on THE maximum likelihood tree', end = '')
   params_sets = []
   for blmin in ('1e-1', '1e-2', '1e-3', '1e-4', '1e-5', '1e-6', '1e-7', '1e-8', '1e-9', '1e-10'):
     params_sets.append((paths.alignment, common.subst_model, blmin, '100', 'nr_safe', '0.1',
@@ -119,7 +119,7 @@ def evaluate_all(paths):
   print('done')
 
   with open(paths.param_jiggle_llhs, "w") as writer:
-    writer.write('blmin,blmsc,blopt,lh_epsilon,llh\n')
+    writer.write('blmin,blmax,blopt,lh_epsilon,llh\n')
     for llh, params in zip(llhs, params_sets):
       if llh is None:
         llh = "NA"
