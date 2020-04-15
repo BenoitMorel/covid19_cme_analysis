@@ -24,7 +24,7 @@ genesis_reattach_duplicates = os.path.join(genesis, "reattach_duplicates")
 genesis_convert = os.path.join(genesis, "convert")
 iqtree = os.path.join(software_path, "iqtree", "bin", "iqtree")
 preanalysis1 = os.path.join(scripts_dir, "preanalysis1.sh")
-mafft = os.path.join(software_path, "mafft", "mafftdir", "bin", "mafft")
+mafft = os.path.join(software_path, "mafft", "mafft.bat")
 
 # config
 config_dir = os.path.join(base_dir, "config")
