@@ -73,7 +73,8 @@ class Paths():
     self.raxml_iqtree_ll = util.versioned_path(version, self.raxml_iqtree_ll)
     self.raxml_iqtree_ll_all = util.versioned_path(version, self.raxml_iqtree_ll_all)
     self.gamma_ll_all = util.versioned_path(version, self.gamma_ll_all)
-    self.param_jiggle_llhs = util.versioned_path(version, self.param_jiggle_llhs)
+    self.raxmlng_param_jiggle_llhs = util.versioned_path(version, self.raxmlng_param_jiggle_llhs)
+    self.iqtree_param_jiggle_llhs = util.versioned_path(version, self.iqtree_param_jiggle_llhs)
     self.iqtree_tests_output = util.versioned_path(version, self.iqtree_tests_output)
   version = "UNDEFINED"
   # data
@@ -117,7 +118,8 @@ class Paths():
   raxml_iqtree_ll = os.path.join(results_dir, "raxml_iqtree_ll.txt")
   gamma_ll_all = os.path.join(results_dir, "gamma_ll_all.csv")
   raxml_iqtree_ll_all = os.path.join(results_dir, "raxml_iqtree_ll_all.csv")
-  param_jiggle_llhs = os.path.join(results_dir, "param_jiggle_llhs.csv")
+  raxmlng_param_jiggle_llhs = os.path.join(results_dir, "raxmlng_param_jiggle_llhs.csv")
+  iqtree_param_jiggle_llhs = os.path.join(results_dir, "iqtree_param_jiggle_llhs.csv")
   iqtree_tests_output = os.path.join(results_dir, "iqtree_tests.txt")
 # misc
 subst_model = "GTR+FO+R4"
