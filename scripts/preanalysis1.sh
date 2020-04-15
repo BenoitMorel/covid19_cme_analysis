@@ -28,6 +28,6 @@ if [[ "$alignment" != "" ]]; then
     
     ## also the alignment for the dataset without the outgroup
     $alignment --thread $cores ${name}_oneline_fullseq_ns_NOOUTGROUP_${date}.fasta > ${name}_oneline_fullseq_ns_NOOUTGROUP_${date}.aln
-    ${scriptdir}/fasta2oneline.pl ${name}_oneline_fullseq_ns_${date}.aln > ${date}_nooutgroup.aln
+    ${scriptdir}/fasta2oneline.pl ${name}_oneline_fullseq_ns_NOOUTGROUP_${date}.aln > ${date}_nooutgroup.aln
     ${scriptdir}/trimalignment.pl -in ${date}_nooutgroup.aln -l 1000 > ${date}_nooutgroup_trimmed.aln
 fi
