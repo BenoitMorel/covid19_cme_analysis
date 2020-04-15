@@ -19,7 +19,7 @@ set -e
 ${scriptdir}/fasta2oneline.pl $input  > ${name}_oneline_${date}.fasta
 ${scriptdir}/getFullSeq.pl -in  ${name}_oneline_${date}.fasta -length 29000 > ${name}_oneline_fullseq_${date}.fasta
 ${scriptdir}/filterSequences.pl -in ${name}_oneline_fullseq_${date}.fasta > ${name}_oneline_fullseq_ns_${date}.fasta
-${scriptdir}/remove_outgroup.pl -in ${name}_oneline_fullseq_ns_${date}.fasta -outgroup "BAT|PANGOLIN" > ${name}_oneline_fullseq_ns_NOTOUGROUP_${date}.fasta
+${scriptdir}/remove_outgroup.pl -in ${name}_oneline_fullseq_ns_${date}.fasta -outgroup "BAT|PANGOLIN" > ${name}_oneline_fullseq_ns_NOOUTGROUP_${date}.fasta
 
 if [[ "$alignment" != "" ]]; then
     # $alignment --thread $cores ${name}_oneline_fullseq_ns_${date}.fasta > ${name}_oneline_fullseq_ns_${date}.aln
