@@ -49,7 +49,7 @@ def raxmlng_eval(alignment, model, blmin, blmax, blopt, lh_epsilon, tree_file, p
   cmd.append('--prefix')
   cmd.append(prefix)
   cmd.append('--threads')
-  cmd.append(str(common.raxmlng_eval_cores))
+  cmd.append(1)
   cmd.append('--blopt')
   cmd.append(blopt)
   cmd.append('--blmin')
