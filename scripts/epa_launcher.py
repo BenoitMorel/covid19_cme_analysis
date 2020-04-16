@@ -20,7 +20,7 @@ def launch_epa(tree, modelfile, ref_msa, query_msa, out_dir, thorough=True):
   cmd.append(query_msa)
   cmd.append("--threads")
   if not util.is_slurm():
-    cmd.append(common.available_cores)
+    cmd.append(str(common.available_cores))
   else:
     cmd.append("4")
   if thorough:
@@ -65,7 +65,7 @@ def launch_papara(tree, ref_phylip, query_fasta, out_dir):
   cmd.append(query_fasta)
   if not util.is_slurm():
     cmd.append("-j")
-    cmd.append(common.available_cores)
+    cmd.append(str(common.available_cores))
   cmd.append("-r")
   cmd.append("-n")
   cmd.append(name)
