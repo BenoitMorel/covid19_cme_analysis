@@ -19,6 +19,14 @@ gamma_ll_all <- read_csv(
     raxml = col_double()
 ))
 
+gamma_median_ll_all <- read_csv(
+  "src/covid-19/results-full-ds/gamma_median_ll_all.csv",
+  skip = 2,
+  col_types = cols(
+    raxmlng = col_double(),
+    iqtree = col_double()
+  ))
+
 ### Visualize ###
 
 ## GTR+FO+R4 ##
@@ -46,6 +54,16 @@ ggscatter(
 ggscatter(
   gamma_ll_all,
   x = "raxmlng", y = "raxml", 
+  add = "reg.line", conf.int = TRUE, 
+  cor.coef = TRUE, cor.method = "spearman",
+  xlab = "RAxML-ng LNL", ylab = "iqtree LNL"
+) +
+  scale_x_reverse() + 
+  scale_y_reverse()
+
+ggscatter(
+  gamma_median_ll_all,
+  x = "raxmlng", y = "iqtree", 
   add = "reg.line", conf.int = TRUE, 
   cor.coef = TRUE, cor.method = "spearman",
   xlab = "RAxML-ng LNL", ylab = "iqtree LNL"
