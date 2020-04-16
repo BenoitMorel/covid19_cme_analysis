@@ -37,7 +37,7 @@ def mkdirp( path ):
 	if not os.path.exists( path ):
 		os.mkdir( path )
 
-def make_path( path ):	
+def make_path( path ):
 	if not os.path.exists( path ):
 		os.makedirs( path )
 
@@ -72,3 +72,11 @@ def is_slurm():
     return False
   return True
 
+def num_pyhsical_cores():
+  out = subprocess.check_output(['lscpu', '--parse=Core,Socket'], encoding = 'utf-8')
+  out = out.split('\n')
+  num_cores = len(
+     dict.fromkeys(
+       [line for line in out if not line.startswith('#') and line != '']
+  ))
+  return num_cores

@@ -12,6 +12,7 @@ work_dir = os.path.join(base_dir, "work_dir")
 # tools
 software_path = os.path.join(base_dir, "software")
 raxml = os.path.join(software_path, "raxml-ng", "bin", "raxml-ng-mpi")
+old_raxml = os.path.join(software_path, "standard-RAxML", "raxml")
 modeltest = os.path.join(software_path, "modeltest", "bin", "modeltest-ng-mpi")
 pargenes = os.path.join(software_path, "ParGenes", "pargenes", "pargenes-hpc.py")
 mptp = os.path.join(software_path, "mptp", "bin", "mptp")
@@ -74,6 +75,11 @@ class Paths():
     self.root_digger_output = util.versioned_path(version, self.root_digger_output)
     self.root_digger_logfile = util.versioned_path(version, self.root_digger_logfile)
     self.raxml_iqtree_ll = util.versioned_path(version, self.raxml_iqtree_ll)
+    self.raxml_iqtree_ll_all = util.versioned_path(version, self.raxml_iqtree_ll_all)
+    self.gamma_ll_all = util.versioned_path(version, self.gamma_ll_all)
+    self.gamma_median_ll_all = util.versioned_path(version, self.gamma_median_ll_all)
+    self.raxmlng_param_jiggle_llhs = util.versioned_path(version, self.raxmlng_param_jiggle_llhs)
+    self.iqtree_param_jiggle_llhs = util.versioned_path(version, self.iqtree_param_jiggle_llhs)
     self.iqtree_tests_output = util.versioned_path(version, self.iqtree_tests_output)
   version = "UNDEFINED"
   # data
@@ -117,12 +123,17 @@ class Paths():
   root_digger_output = os.path.join(results_dir, "root_digger_lwr.newick")
   root_digger_logfile = os.path.join(root_digger_runs_dir, "root_digger.log")
   raxml_iqtree_ll = os.path.join(results_dir, "raxml_iqtree_ll.txt")
+  gamma_ll_all = os.path.join(results_dir, "gamma_ll_all.csv")
+  gamma_median_ll_all = os.path.join(results_dir, "gamma_median_ll_all.csv")
+  raxml_iqtree_ll_all = os.path.join(results_dir, "raxml_iqtree_ll_all.csv")
+  raxmlng_param_jiggle_llhs = os.path.join(results_dir, "raxmlng_param_jiggle_llhs.csv")
+  iqtree_param_jiggle_llhs = os.path.join(results_dir, "iqtree_param_jiggle_llhs.csv")
   iqtree_tests_output = os.path.join(results_dir, "iqtree_tests.txt")
 # misc
 subst_model = "GTR+FO+R4"
 raxml_precision = "9"
 raxml_min_bl = "0.000000001"
- 
+
 pargenes_seed = 3000
 pargenes_rand_trees = 0
 pargenes_pars_trees = 100
@@ -133,7 +144,8 @@ pargenes_family_name = pargenes_ali_name.replace(".", "_")
 if (util.is_slurm()):
   available_cores = 256
 else:
-  available_cores = 40
-iqtree_threads = 4 
+  available_cores = util.num_pyhsical_cores()
+iqtree_threads = 4
 cores_for_one_raxml_run = 4
-
+raxmlng_eval_cores = 1
+raxml_eval_cores = 1
