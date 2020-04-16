@@ -89,7 +89,7 @@ class Paths():
   raw_alignment = os.path.join(data_path, "covid_raw.fasta")
   alignment = os.path.join(data_path, "covid_edited.fasta")
   outgroup_alignment = os.path.join(data_path, "covid_outgroups.fasta")
-  outgroups_unaligned = os.path.join(data_path, "covid_outgroups_unaligned.fasta")
+  outgroups_unaligned = os.path.join(data_path, "covid_outgroups.fasta")
   duplicates_json = os.path.join(data_path, "covid_duplicates.json")
 
   # runs
@@ -137,7 +137,7 @@ raxml_min_bl = "0.000000001"
 pargenes_seed = 3000
 pargenes_rand_trees = 0
 pargenes_pars_trees = 100
-pargenes_bs_trees = 100
+pargenes_bs_trees = 0
 pargenes_ali_name = "ali.fasta"
 pargenes_family_name = pargenes_ali_name.replace(".", "_")
 
