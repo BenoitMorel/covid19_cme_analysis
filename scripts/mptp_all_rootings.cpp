@@ -8,13 +8,15 @@
 #include <cstdlib>
 
 using namespace genesis;
-using namespace tree;
+using namespace genesis::sequence;
+using namespace genesis::tree;
+using namespace genesis::utils;
 
 void buildHistogram(Tree const &tree, std::string const &infile, std::string const &outfile) {
 	std::vector<size_t> linkToEulerLeafIndex(tree.link_count());
 	std::vector<size_t> eulerTourLeaves;
 	for (auto it : eulertour(tree)) {
-		if (it.node().is_leaf()) {
+		if ( is_leaf(it.node()) ) {
 			eulerTourLeaves.emplace_back(it.node().index());
 		}
 		linkToEulerLeafIndex[it.link().index()] = eulerTourLeaves.size();
@@ -26,7 +28,7 @@ void buildHistogram(Tree const &tree, std::string const &infile, std::string con
 	std::vector<double> edgeLengths;
 	for (size_t edgeId = 0; edgeId < tree.edge_count(); ++edgeId) {
 		auto const& edge = tree.edge_at(edgeId);
-		double len = edge.data<DefaultEdgeData>().branch_length;
+		double len = edge.data<CommonEdgeData>().branch_length;
 		edgeLengths.push_back(len);
 	}
 	std::sort(edgeLengths.begin(), edgeLengths.end(), std::greater<double>());
@@ -45,7 +47,7 @@ void buildHistogram(Tree const &tree, std::string const &infile, std::string con
 	for (size_t edgeId = 0; edgeId < tree.edge_count(); ++edgeId) {
 		auto const& edge = tree.edge_at(edgeId);
 
-		if (edge.data<DefaultEdgeData>().branch_length < minLen) {
+		if (edge.data<CommonEdgeData>().branch_length < minLen) {
 			continue;
 		}
 
@@ -58,10 +60,10 @@ void buildHistogram(Tree const &tree, std::string const &infile, std::string con
 
 		size_t i = startLeafIndex;
 		while (i != endLeafIndex) {
-			if (tree.node_at(eulerTourLeaves[i]).data<DefaultNodeData>().name.empty()) {
+			if (tree.node_at(eulerTourLeaves[i]).data<CommonNodeData>().name.empty()) {
 				throw std::runtime_error("node name is empty");
 			}
-			outgroup += tree.node_at(eulerTourLeaves[i]).data<DefaultNodeData>().name;
+			outgroup += tree.node_at(eulerTourLeaves[i]).data<CommonNodeData>().name;
 			i = (i + 1) % eulerTourLeaves.size();
 			if (i != endLeafIndex) {
 				outgroup += ",";
@@ -128,8 +130,7 @@ int main(int argc, char* argv[]) {
 	}*/
 
 	//read tree
-	DefaultTreeNewickReader reader;
-	Tree tree = reader.from_file(treePath);
+	auto tree = CommonTreeNewickReader().read( from_file( treePath ) );
 
 	buildHistogram(tree, treePath, outputPath);
 	return 0;
