@@ -19,6 +19,7 @@ papara_out_dir = paths.papara_runs_dir
 
 # create outgroup alignment using papara
 # first create a phylip version of the ref alignment
+util.clean_dir( papara_out_dir )
 util.make_path( papara_out_dir )
 ref_msa_phylip = os.path.join( papara_out_dir, "covid_ingroup.phylip" )
 convert.convert( "fasta", "phylip", ref_msa, ref_msa_phylip )
