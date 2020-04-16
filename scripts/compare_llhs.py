@@ -8,7 +8,7 @@ import re
 import util
 import common
 
-def iqtree_eval(alignment, model, tree, prefix):
+def iqtree_eval(alignment, model, tree, prefix, gmedian = False):
   cmd = []
   cmd.append(common.iqtree)
   cmd.append("-blmin") # Minimum branch length
@@ -17,6 +17,8 @@ def iqtree_eval(alignment, model, tree, prefix):
   cmd.append(alignment)
   cmd.append("-m")
   cmd.append(model)
+  if gmedian:
+      cmd.append("-gmedian")
   cmd.append("-pre")
   cmd.append(prefix)
   cmd.append("-redo")
@@ -102,6 +104,10 @@ def evaluate_all_trees(paths):
   util.mkdirp(raxml_eval_dir_gamma)
   raxmlng_eval_dir_gamma = os.path.join(paths.runs_dir, 'raxmlng_eval_gamma')
   util.mkdirp(raxmlng_eval_dir_gamma)
+  iqtree_eval_dir_gamma_median = os.path.join(paths.runs_dir, 'iqtree_eval_gamma_median')
+  util.mkdirp(iqtree_eval_dir_gamma_median)
+  raxmlng_eval_dir_gamma_median = os.path.join(paths.runs_dir, 'raxmlng_eval_gamma_median')
+  util.mkdirp(raxmlng_eval_dir_gamma_median)
 
   print('Comparing LLHs for model %s' % common.subst_model)
   print('Loading RAxML-ng LLHs... ', end = '')
@@ -159,4 +165,24 @@ def evaluate_all_trees(paths):
     writer.write('raxmlng,iqtree,raxml\n')
     for raxmlng_ll, iqtree_ll, raxml_ll in zip(raxmlng_lls, iqtree_lls, raxml_lls):
       writer.write('%.3f,%.3f,%.3f\n' % (raxmlng_ll, iqtree_ll, raxml_ll))
+
+  # Evaluate using GTR+GAMMA Model with median rates
+  print('Comparing LLHs for GTR+GAMMA model with median rates')
+
+  print('Evaluating trees with RAxML-ng (including model & brlen optimization)... ', end = '')
+  raxmlng_lls = raxmlng_eval_all(paths.alignment, 'GTR+FO+GA', paths.raxml_all_ml_trees, os.path.join(raxmlng_eval_dir_gamma_median, 'eval'))
+  print('done')
+
+  print('Evaluating trees with iqtree (including model & brlen optimization)... ', end = '')
+  iqtree_lls = pool.starmap(iqtree_eval,
+    [(paths.alignment, 'GTR+FO+G', tree_file_name, tree_file_name.replace(iqtree_eval_dir_model, iqtree_eval_dir_gamma_median), True)
+      for tree_file_name in tree_files])
+  print('done')
+
+  with open(paths.gamma_median_ll_all, "w") as writer:
+    writer.write('# this file contains the likelihood of all ML trees optimized and evaluated\n')
+    writer.write('# under GTR+F0+GA and fixed tree topology\n')
+    writer.write('raxmlng,iqtree\n')
+    for raxmlng_ll, iqtree_ll  in zip(raxmlng_lls, iqtree_lls):
+      writer.write('%.3f,%.3f\n' % (raxmlng_ll, iqtree_ll))
 
