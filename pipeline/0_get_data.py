@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os
 import sys
@@ -46,6 +46,6 @@ if True:
   cmd = []
   cmd.append("gunzip")
   cmd.append( paths.raw_sequences+ ".gz" )
-  print(" ".join(cmd))
+  print((" ".join(cmd)))
   subprocess.call(cmd)
 
