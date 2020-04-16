@@ -38,6 +38,7 @@ install_raxml() {
     echo "Installing raxml..."
     cd standard-RAxML/
     make -j "$ncores" -f "Makefile.$simd.PTHREADS.gcc"
+    mv "raxmlHPC-PTHREADS-$simd" "raxml"
     cd ..
 }
 
