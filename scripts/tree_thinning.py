@@ -54,22 +54,7 @@ def rec_bs_sum_thin(node, max_children, do_prune):
 def max_bootstrap_sum_thinning(input_tree_file, output_tree_file):
   tree = Tree(input_tree_file, format = 0)
   print("  Initial tree size: " + str(len(tree.get_leaves())))
-
-  all_roots = tree.get_descendants()
-  """
-  all_scored_roots = []
-  for root in all_roots:
-    if (tree != root):
-      tree.set_outgroup(root)
-    support_sum = rec_bs_sum_thin(tree, len(tree.get_children()), do_prune = False)
-    all_scored_roots.append((tree, support_sum))
-  all_scored_roots.sort(key=lambda x: x[1], reverse = True)
-  for t in all_scored_roots:
-    print(t)
-  print(all_scored_roots)
-  tree.set_outgroup(all_scored_roots[0][0])
-  """
-  
+  tree.set_outgroup(tree.get_midpoint_outgroup())
   support_sum = rec_bs_sum_thin(tree, len(tree.get_children()), True) # unrooted tree -> allow 3 children
   print("  Final tree size: " + str(len(tree.get_leaves())))
   print("    with score " + str(support_sum))
@@ -82,5 +67,5 @@ if (__name__ == "__main__"):
     exit(1)
   input_tree_file = sys.argv[1]
   output_tree_file = sys.argv[2]
-  leaves_thinning(input_tree_file, output_tree_file)
+  max_bootstrap_sum_thinning(input_tree_file, output_tree_file)
 
