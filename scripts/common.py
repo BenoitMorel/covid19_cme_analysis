@@ -90,8 +90,6 @@ class Paths():
   raw_sequences = os.path.join(data_path, "covid_raw_unaligned.fasta")
   raw_alignment = os.path.join(data_path, "covid_raw.fasta")
   alignment = os.path.join(data_path, "covid_edited.fasta")
-  outgroup_alignment = os.path.join(data_path, "covid_outgroups.fasta")
-  outgroups_unaligned = os.path.join(data_path, "covid_outgroups.fasta")
   duplicates_json = os.path.join(data_path, "covid_duplicates.json")
 
   # runs
@@ -103,6 +101,7 @@ class Paths():
   modeltest_runs_dir = os.path.join(runs_dir, "modeltest_runs")
   root_digger_runs_dir = os.path.join(runs_dir, "root_digger_runs")
   papara_runs_dir = os.path.join(runs_dir, "papara_runs")
+
 
   # results
   root_results_dir = "results"
@@ -117,6 +116,9 @@ class Paths():
   raxml_all_ml_trees_ll = os.path.join(results_dir, "raxml_all_ml_trees_with_ll.txt")
   raxml_bootstrap_trees = os.path.join(results_dir, "raxml_bs_trees.newick")
 
+  outgroup_alignment = os.path.join(papara_runs_dir, "covid_outgroups_aligned.fasta")
+  outgroups_unaligned = os.path.join(preanalysis_runs_dir, "covid_outgroups.fasta")
+  
   raxml_all_ml_trees_rf_distances = os.path.join(results_dir, "raxml_all_ml_trees.rf.distances")
   raxml_all_ml_trees_rf_logs = os.path.join(results_dir, "raxml_all_ml_trees.rf.logs")
   rf_distance_report = os.path.join(results_dir, "rf_distance_report.txt")
