@@ -87,7 +87,7 @@ int main( int argc, char** argv )
 
     // output iterator for the removed sequences
     std::ofstream removed_out_stream;
-    file_output_stream( outfile, removed_out_stream );
+    file_output_stream( trimmed_seqs, removed_out_stream );
     FastaOutputIterator removed{ removed_out_stream };
 
     // Read the file
