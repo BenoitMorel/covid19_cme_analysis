@@ -55,11 +55,30 @@ def max_bootstrap_sum_thinning(input_tree_file, output_tree_file):
   tree = Tree(input_tree_file, format = 0)
   print("  Initial tree size: " + str(len(tree.get_leaves())))
   tree.set_outgroup(tree.get_midpoint_outgroup())
-  support_sum = rec_bs_sum_thin(tree, len(tree.get_children()), True) # unrooted tree -> allow 3 children
-  print("  Final tree size: " + str(len(tree.get_leaves())))
-  print("    with score " + str(support_sum))
+  max_support_sum = rec_bs_sum_thin(tree, len(tree.get_children()), False) # unrooted tree -> allow 3 children
+  max_tree = tree
+  descendants = tree.get_descendants()
+  # here comes a terrible hack based on copies
+  # to iterate over all possible roots, because I
+  # did not find any better way  of doing it with
+  # ete3. If this becomes a serious thing, we should
+  # reimplement with a better library (genesis?)
+  for i in range(0, len(descendants)):
+    # a leaf is never the best choice
+    if (descendants[i].is_leaf()):
+      continue
+    copy = tree.copy()
+    copy.set_outgroup(copy.get_descendants()[i])
+    support_sum = rec_bs_sum_thin(copy, len(copy.get_children()), False) 
+    if (max_support_sum < support_sum): 
+      max_tree = copy
+      max_support_sum = support_sum
+  max_support_sum = rec_bs_sum_thin(max_tree, len(max_tree.get_children()), True)
+  max_tree.unroot() 
+  print("  Final tree size: " + str(len(max_tree.get_leaves())))
+  print("    with score " + str(max_support_sum))
   with open(output_tree_file, "w") as writer:
-    writer.write(tree.write())
+    writer.write(max_tree.write())
   
 if (__name__ == "__main__"):
   if (len(sys.argv) != 3): 
