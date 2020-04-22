@@ -46,6 +46,7 @@ class Paths():
     self.outgroup_alignment = util.versioned_path(version, self.outgroup_alignment)
     self.outgroups_unaligned = util.versioned_path(version, self.outgroups_unaligned)
     self.duplicates_json = util.versioned_path(version, self.duplicates_json)
+    self.outgroup_trashbin = util.versioned_path(version, self.outgroup_trashbin)
 
     self.root_runs_dir = util.versioned_path(version, self.root_runs_dir)
     self.runs_dir = util.versioned_path(version, self.runs_dir)
@@ -92,6 +93,7 @@ class Paths():
   raw_alignment = os.path.join(data_path, "covid_raw.fasta")
   alignment = os.path.join(data_path, "covid_edited.fasta")
   duplicates_json = os.path.join(data_path, "covid_duplicates.json")
+  outgroup_trashbin = os.path.join(data_path, "outgroups_removed_by_app.fasta")
 
   # runs
   root_runs_dir = "runs"
@@ -119,7 +121,7 @@ class Paths():
 
   outgroup_alignment = os.path.join(papara_runs_dir, "covid_outgroups_aligned.fasta")
   outgroups_unaligned = os.path.join(preanalysis_runs_dir, "covid_outgroups.fasta")
-  
+
   raxml_all_ml_trees_rf_distances = os.path.join(results_dir, "raxml_all_ml_trees.rf.distances")
   raxml_all_ml_trees_rf_logs = os.path.join(results_dir, "raxml_all_ml_trees.rf.logs")
   rf_distance_report = os.path.join(results_dir, "rf_distance_report.txt")

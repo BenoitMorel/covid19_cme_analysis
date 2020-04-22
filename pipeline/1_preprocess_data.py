@@ -21,4 +21,4 @@ remove_duplicates.remove_duplicates(paths.raw_alignment,
 									common.outgroup_spec,
 									paths.alignment,
 									paths.duplicates_json,
-									paths.outgroup_alignment )
+									paths.outgroup_trashbin )
