@@ -13,7 +13,7 @@ remove_duplicates.trim_separate_align(  paths.raw_sequences,
                                         paths.version,
                                         paths.preanalysis_runs_dir )
 
-result_file=os.path.join( paths.preanalysis_runs_dir, "{}_nooutgroup_trimmed.aln".format( paths.version ) )
+result_file=os.path.join( paths.preanalysis_runs_dir, "{}_nooutgroup_trimmed_nosingle.aln".format( paths.version ) )
 util.expect_file_exists( result_file )
 util.copy( result_file, paths.raw_alignment )
 
