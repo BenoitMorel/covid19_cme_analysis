@@ -26,6 +26,7 @@ genesis_convert = os.path.join(genesis, "convert")
 iqtree = os.path.join(software_path, "iqtree", "bin", "iqtree")
 preanalysis1 = os.path.join(scripts_dir, "preanalysis1.sh")
 mafft = os.path.join(software_path, "mafft", "mafft.bat")
+hmmer_dir = os.path.join(software_path, "hmmer", "src")
 
 # config
 config_dir = os.path.join(base_dir, "config")
@@ -56,6 +57,7 @@ class Paths():
     self.modeltest_runs_dir = util.versioned_path(version, self.modeltest_runs_dir)
     self.root_digger_runs_dir = util.versioned_path(version, self.root_digger_runs_dir)
     self.papara_runs_dir = util.versioned_path(version, self.papara_runs_dir)
+    self.hmmer_runs_dir = util.versioned_path(version, self.hmmer_runs_dir)
 
     self.root_results_dir = util.versioned_path(version, self.root_results_dir)
     self.results_dir = util.versioned_path(version, self.results_dir)
@@ -104,6 +106,7 @@ class Paths():
   modeltest_runs_dir = os.path.join(runs_dir, "modeltest_runs")
   root_digger_runs_dir = os.path.join(runs_dir, "root_digger_runs")
   papara_runs_dir = os.path.join(runs_dir, "papara_runs")
+  hmmer_runs_dir = os.path.join(runs_dir, "hmmer_runs_dir")
 
 
   # results

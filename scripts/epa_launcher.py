@@ -72,3 +72,36 @@ def launch_papara(tree, ref_phylip, query_fasta, out_dir):
   subprocess.check_call(cmd, cwd=out_dir)
 
   return os.path.join( out_dir, "papara_alignment." + name )
+
+def launch_hmmbuild(ref_msa, out_dir):
+  util.make_path(out_dir)
+
+  ref_hmm="reference.hmm"
+
+  cmd = []
+  cmd.append( os.path.join(common.hmmer_dir, "hmmalign") )
+  if not util.is_slurm():
+    cmd.append("--cpu")
+    cmd.append(str(common.available_cores))
+  cmd.append(ref_hmm)
+  cmd.append(ref_msa)
+  subprocess.check_call(cmd, cwd=out_dir)
+
+  return os.path.join(out_dir, ref_hmm)
+
+
+def launch_hmmalign(ref_hmm, query_fasta, out_file):
+  util.make_path(out_dir)
+
+  cmd = []
+  cmd.append( os.path.join(common.hmmer_dir, "hmmalign") )
+  if not util.is_slurm():
+    cmd.append("--cpu")
+    cmd.append(str(common.available_cores))
+  cmd.append("-o")
+  cmd.append(out_file)
+  cmd.append(ref_hmm)
+  cmd.append(query_fasta)
+  subprocess.check_call(cmd, cwd=out_dir)
+
+  return out_file

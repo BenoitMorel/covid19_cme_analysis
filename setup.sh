@@ -43,7 +43,7 @@ install_raxml() {
 }
 
 install_modeltest() {
-  git clone --recursive --branch dev https://github.com/ddarriba/modeltest.git 
+  git clone --recursive --branch dev https://github.com/ddarriba/modeltest.git
   echo "Installing modeltest..."
   cd modeltest
   mkdir -p build && cd build
@@ -63,7 +63,7 @@ install_pargenes() {
 install_mptp() {
   git clone --recursive https://github.com/Pas-Kapli/mptp.git
   echo "Installing mptp..."
-  cd mptp 
+  cd mptp
   ./autogen.sh
   ./configure
   make
@@ -123,6 +123,18 @@ install_mafft() {
   rm mafft-7.450-linux.tgz
 }
 
+install_hmmer() {
+  echo "Installing hmmer..."
+  wget http://eddylab.org/software/hmmer/hmmer.tar.gz
+  tar -xzf hmmer.tar.gz
+  mv hmmer-* hmmer
+  rm hmmer.tar.gz
+  cd hmmer
+  ./configure
+  make -j
+  cd -
+}
+
 install_raxmlng
 install_raxml
 install_modeltest
@@ -134,6 +146,7 @@ install_genesis
 install_iqtree
 install_root_digger
 install_mafft
+install_hmmer
 
 
 echo "Finished"
