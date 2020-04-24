@@ -8,6 +8,7 @@ import subprocess
 import data_versioning
 import re
 import util
+import dl_gdrive
 
 if len(sys.argv) != 2:
 	util.fail("Please supply Google Drive link to the file.")
@@ -30,22 +31,29 @@ else:
 
 paths = data_versioning.setup_new_version()
 
-cmd = []
-cmd.append("wget")
-cmd.append("--no-check-certificate")
-cmd.append("https://docs.google.com/uc?export=download&id=" + data_googleid)
-cmd.append("-O")
-cmd.append( paths.raw_sequences + ".gz" )
-print(" ".join(cmd))
-subprocess.call(cmd)
-print("")
-print("Version string: " + paths.version)
-
-# if remote was gzipped
-if True:
+for p in paths:
+  """
   cmd = []
-  cmd.append("gunzip")
-  cmd.append( paths.raw_sequences+ ".gz" )
-  print((" ".join(cmd)))
+  cmd.append("wget")
+  cmd.append("--no-check-certificate")
+  cmd.append("https://docs.google.com/uc?export=download&id=" + data_googleid)
+  cmd.append("-O")
+  cmd.append( p.raw_sequences + ".gz" )
+  print(" ".join(cmd))
   subprocess.call(cmd)
+  """
+
+  print("Downloading the data")
+  dl_gdrive.download_file_from_google_drive(data_googleid, p.raw_sequences + ".gz")
+
+  print("")
+  print("Version string: " + p.version)
+
+  # if remote was gzipped
+  if True:
+    cmd = []
+    cmd.append("gunzip")
+    cmd.append( p.raw_sequences+ ".gz" )
+    print((" ".join(cmd)))
+    subprocess.call(cmd)
 

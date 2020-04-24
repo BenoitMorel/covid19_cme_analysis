@@ -22,7 +22,8 @@ def setup_directory(directory, subdirectory, version):
   real_current = os.path.join(directory, version, subdirectory)
   util.make_path(real_current)
 
-def setup_new_version( date=datetime.datetime.now().strftime("%Y-%m-%d") ):
+def setup_new_version( date=datetime.datetime.now().strftime("%Y-%m-%d"),
+    datasets = ["fmsao", "fmsan", "smsao", "smsan"]):
 
   version_id = get_current_version_id( date )
 
@@ -32,14 +33,15 @@ def setup_new_version( date=datetime.datetime.now().strftime("%Y-%m-%d") ):
   util.make_path( util.versioned_path(version, "") )
 
   # generate the appropriate paths
-  paths = common.Paths([version], 0)
+  paths = []
+  for ds in datasets:
+    p = common.Paths([version, ds], 0)
 
-  util.make_path(paths.root_data_dir)
-  util.make_path(paths.root_runs_dir)
-  util.make_path(paths.root_results_dir)
+    util.make_path(p.root_data_dir)
+    util.make_path(p.root_runs_dir)
+    util.make_path(p.root_results_dir)
+    paths.append(p)
 
   print(version)
 
   return paths
- 
-

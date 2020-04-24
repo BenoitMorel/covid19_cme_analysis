@@ -36,112 +36,264 @@ outgroup_spec = os.path.join(config_dir, "outgroups.txt")
 class Paths():
   """docstring for Paths"""
   def __init__( self, argv, i=1 ):
-    version = util.get_version( argv, i )
+    version = util.get_version( argv[:-1], i )
 
-    self.version = version
-    self.root_data_dir = util.versioned_path(version, self.root_data_dir)
-    self.data_path = util.versioned_path(version, self.data_path)
-    self.raw_sequences = util.versioned_path(version, self.raw_sequences)
-    self.raw_alignment = util.versioned_path(version, self.raw_alignment)
-    self.alignment = util.versioned_path(version, self.alignment)
-    self.outgroup_alignment = util.versioned_path(version, self.outgroup_alignment)
-    self.outgroups_unaligned = util.versioned_path(version, self.outgroups_unaligned)
-    self.duplicates_json = util.versioned_path(version, self.duplicates_json)
-    self.outgroup_trashbin = util.versioned_path(version, self.outgroup_trashbin)
+    self._version = version
+    self._dataset = argv[-1] #dataset
 
-    self.root_runs_dir = util.versioned_path(version, self.root_runs_dir)
-    self.runs_dir = util.versioned_path(version, self.runs_dir)
-    self.preanalysis_runs_dir = util.versioned_path(version, self.preanalysis_runs_dir)
-    self.raxml_ml_runs_dir = util.versioned_path(version, self.raxml_ml_runs_dir)
-    self.pargenes_runs_dir = util.versioned_path(version, self.pargenes_runs_dir)
-    self.modeltest_runs_dir = util.versioned_path(version, self.modeltest_runs_dir)
-    self.root_digger_runs_dir = util.versioned_path(version, self.root_digger_runs_dir)
-    self.papara_runs_dir = util.versioned_path(version, self.papara_runs_dir)
-    self.hmmer_runs_dir = util.versioned_path(version, self.hmmer_runs_dir)
+    os.makedirs(util.make_path_in_workdir(self.version, self.dataset),
+        exist_ok=True)
 
-    self.root_results_dir = util.versioned_path(version, self.root_results_dir)
-    self.results_dir = util.versioned_path(version, self.results_dir)
-    self.raxml_best_tree = util.versioned_path(version, self.raxml_best_tree)
-    self.raxml_best_tree_tbe = util.versioned_path(version, self.raxml_best_tree_tbe)
-    self.raxml_best_tree_with_duplicate = util.versioned_path(version, self.raxml_best_tree_with_duplicate)
-    self.raxml_best_model = util.versioned_path(version, self.raxml_best_model)
-    self.raxml_all_ml_trees = util.versioned_path(version, self.raxml_all_ml_trees)
-    self.raxml_credible_ml_trees = util.versioned_path(version, self.raxml_credible_ml_trees)
-    self.raxml_consensus_MR_tree = util.versioned_path(version, self.raxml_consensus_MR_tree)
-    self.raxml_all_ml_trees_rf_distances = util.versioned_path(version, self.raxml_all_ml_trees_rf_distances)
-    self.raxml_all_ml_trees_rf_logs = util.versioned_path(version, self.raxml_all_ml_trees_rf_logs)
-    self.raxml_all_ml_trees_ll = util.versioned_path(version, self.raxml_all_ml_trees_ll)
-    self.raxml_bootstrap_trees = util.versioned_path(version, self.raxml_bootstrap_trees)
-    self.rf_distance_report = util.versioned_path(version, self.rf_distance_report)
-    self.mptp_output = util.versioned_path(version, self.mptp_output)
-    self.thinning_dir = util.versioned_path(version, self.thinning_dir)
-    self.max_support_thinned_tree = util.versioned_path(version, self.max_support_thinned_tree)
-    self.leaves_thinned_tree = util.versioned_path(version, self.leaves_thinned_tree)
-    self.epa_rooting_dir = util.versioned_path(version, self.epa_rooting_dir)
-    self.root_digger_output = util.versioned_path(version, self.root_digger_output)
-    self.root_digger_logfile = util.versioned_path(version, self.root_digger_logfile)
-    self.raxml_iqtree_ll = util.versioned_path(version, self.raxml_iqtree_ll)
-    self.raxml_iqtree_ll_all = util.versioned_path(version, self.raxml_iqtree_ll_all)
-    self.gamma_ll_all = util.versioned_path(version, self.gamma_ll_all)
-    self.gamma_median_ll_all = util.versioned_path(version, self.gamma_median_ll_all)
-    self.raxmlng_param_jiggle_llhs = util.versioned_path(version, self.raxmlng_param_jiggle_llhs)
-    self.iqtree_param_jiggle_llhs = util.versioned_path(version, self.iqtree_param_jiggle_llhs)
-    self.iqtree_tests_output = util.versioned_path(version, self.iqtree_tests_output)
-  version = "UNDEFINED"
+  @property
+  def version(self):
+    return self._version
+
+  @property
+  def dataset(self):
+    return self._dataset
+
+  @property
+  def root_data_dir(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._root_data_dir)
+
+  @property
+  def data_path(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._data_path)
+
+  @property
+  def raw_sequences(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._raw_sequences)
+
+  @property
+  def raw_alignment(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._raw_alignment)
+
+  @property
+  def alignment(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._alignment)
+
+  @property
+  def outgroup_alignment(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._outgroup_alignment)
+
+  @property
+  def outgroups_unaligned(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._outgroups_unaligned)
+
+  @property
+  def duplicates_json(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._duplicates_json)
+
+  @property
+  def outgroup_trashbin(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._outgroup_trashbin)
+
+
+  @property
+  def root_runs_dir(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._root_runs_dir)
+
+  @property
+  def runs_dir(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._runs_dir)
+
+  @property
+  def preanalysis_runs_dir(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._preanalysis_runs_dir)
+
+  @property
+  def raxml_ml_runs_dir(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._raxml_ml_runs_dir)
+
+  @property
+  def pargenes_runs_dir(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._pargenes_runs_dir)
+
+  @property
+  def modeltest_runs_dir(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._modeltest_runs_dir)
+
+  @property
+  def root_digger_runs_dir(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._root_digger_runs_dir)
+
+  @property
+  def papara_runs_dir(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._papara_runs_dir)
+
+  @property
+  def hmmer_runs_dir(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._hmmer_runs_dir)
+
+
+  @property
+  def root_results_dir(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._root_results_dir)
+
+  @property
+  def results_dir(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._results_dir)
+
+  @property
+  def raxml_best_tree(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._raxml_best_tree)
+
+  @property
+  def raxml_best_tree_tbe(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._raxml_best_tree_tbe)
+
+  @property
+  def raxml_best_tree_with_duplicate(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._raxml_best_tree_with_duplicate)
+
+  @property
+  def raxml_best_model(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._raxml_best_model)
+
+  @property
+  def raxml_all_ml_trees(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._raxml_all_ml_trees)
+
+  @property
+  def raxml_credible_ml_trees(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._raxml_credible_ml_trees)
+
+  @property
+  def raxml_consensus_MR_tree(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._raxml_consensus_MR_tree)
+
+  @property
+  def raxml_all_ml_trees_rf_distances(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._raxml_all_ml_trees_rf_distances)
+
+  @property
+  def raxml_all_ml_trees_rf_logs(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._raxml_all_ml_trees_rf_logs)
+
+  @property
+  def raxml_all_ml_trees_ll(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._raxml_all_ml_trees_ll)
+
+  @property
+  def raxml_bootstrap_trees(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._raxml_bootstrap_trees)
+
+  @property
+  def rf_distance_report(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._rf_distance_report)
+
+  @property
+  def mptp_output(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._mptp_output)
+
+  @property
+  def thinning_dir(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._thinning_dir)
+
+  @property
+  def max_support_thinned_tree(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._max_support_thinned_tree)
+
+  @property
+  def leaves_thinned_tree(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._leaves_thinned_tree)
+
+  @property
+  def epa_rooting_dir(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._epa_rooting_dir)
+
+  @property
+  def root_digger_output(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._root_digger_output)
+
+  @property
+  def root_digger_logfile(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._root_digger_logfile)
+
+  @property
+  def raxml_iqtree_ll(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._raxml_iqtree_ll)
+
+  @property
+  def raxml_iqtree_ll_all(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._raxml_iqtree_ll_all)
+
+  @property
+  def gamma_ll_all(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._gamma_ll_all)
+
+  @property
+  def gamma_median_ll_all(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._gamma_median_ll_all)
+
+  @property
+  def raxmlng_param_jiggle_llhs(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._raxmlng_param_jiggle_llhs)
+
+  @property
+  def iqtree_param_jiggle_llhs(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._iqtree_param_jiggle_llhs)
+
+  @property
+  def iqtree_tests_output(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._iqtree_tests_output)
+
+  _version = "UNDEFINED"
   # data
-  root_data_dir = "data"
-  data_path = os.path.join(root_data_dir)
-  raw_sequences = os.path.join(data_path, "covid_raw_unaligned.fasta")
-  raw_alignment = os.path.join(data_path, "covid_raw.fasta")
-  alignment = os.path.join(data_path, "covid_edited.fasta")
-  duplicates_json = os.path.join(data_path, "covid_duplicates.json")
-  outgroup_trashbin = os.path.join(data_path, "outgroups_removed_by_app.fasta")
+  _root_data_dir = "data"
+  _data_path = os.path.join(_root_data_dir)
+  _raw_sequences = os.path.join(_data_path, "covid_raw_unaligned.fasta")
+  _raw_alignment = os.path.join(_data_path, "covid_raw.fasta")
+  _alignment = os.path.join(_data_path, "covid_edited.fasta")
+  _duplicates_json = os.path.join(_data_path, "covid_duplicates.json")
+  _outgroup_trashbin = os.path.join(_data_path, "outgroups_removed_by_app.fasta")
 
   # runs
-  root_runs_dir = "runs"
-  runs_dir = os.path.join(root_runs_dir)
-  preanalysis_runs_dir = os.path.join(runs_dir, "preanalysis")
-  raxml_ml_runs_dir = os.path.join(runs_dir, "raxml_runs")
-  pargenes_runs_dir = os.path.join(runs_dir, "pargenes_runs")
-  modeltest_runs_dir = os.path.join(runs_dir, "modeltest_runs")
-  root_digger_runs_dir = os.path.join(runs_dir, "root_digger_runs")
-  papara_runs_dir = os.path.join(runs_dir, "papara_runs")
-  hmmer_runs_dir = os.path.join(runs_dir, "hmmer_runs_dir")
+  _root_runs_dir = "runs"
+  _runs_dir = os.path.join(_root_runs_dir)
+  _preanalysis_runs_dir = os.path.join(_runs_dir, "preanalysis")
+  _raxml_ml_runs_dir = os.path.join(_runs_dir, "raxml_runs")
+  _pargenes_runs_dir = os.path.join(_runs_dir, "pargenes_runs")
+  _modeltest_runs_dir = os.path.join(_runs_dir, "modeltest_runs")
+  _root_digger_runs_dir = os.path.join(_runs_dir, "root_digger_runs")
+  _papara_runs_dir = os.path.join(_runs_dir, "papara_runs")
+  _hmmer_runs_dir = os.path.join(_runs_dir, "hmmer_runs_dir")
 
 
   # results
-  root_results_dir = "results"
-  results_dir = os.path.join(root_results_dir)
-  raxml_best_tree = os.path.join(results_dir, "raxml_best_tree.newick")
-  raxml_best_tree_tbe = os.path.join(results_dir, "raxml_best_tree_tbe.newick")
-  raxml_best_tree_with_duplicate = os.path.join(results_dir, "raxml_best_tree_with_duplicate.newick")
-  raxml_best_model = os.path.join(results_dir, "raxml_best_model.txt")
-  raxml_all_ml_trees = os.path.join(results_dir, "raxml_all_ml_trees.newick")
-  raxml_credible_ml_trees = os.path.join(results_dir, "raxml_credible_ml_trees.newick")
-  raxml_consensus_MR_tree = os.path.join(results_dir, "raxml_consensus_tree_MR.newick")
-  raxml_all_ml_trees_ll = os.path.join(results_dir, "raxml_all_ml_trees_with_ll.txt")
-  raxml_bootstrap_trees = os.path.join(results_dir, "raxml_bs_trees.newick")
+  _root_results_dir = "results"
+  _results_dir = os.path.join(_root_results_dir)
+  _raxml_best_tree = os.path.join(_results_dir, "raxml_best_tree.newick")
+  _raxml_best_tree_tbe = os.path.join(_results_dir, "raxml_best_tree_tbe.newick")
+  _raxml_best_tree_with_duplicate = os.path.join(_results_dir, "raxml_best_tree_with_duplicate.newick")
+  _raxml_best_model = os.path.join(_results_dir, "raxml_best_model.txt")
+  _raxml_all_ml_trees = os.path.join(_results_dir, "raxml_all_ml_trees.newick")
+  _raxml_credible_ml_trees = os.path.join(_results_dir, "raxml_credible_ml_trees.newick")
+  _raxml_consensus_MR_tree = os.path.join(_results_dir, "raxml_consensus_tree_MR.newick")
+  _raxml_all_ml_trees_ll = os.path.join(_results_dir, "raxml_all_ml_trees_with_ll.txt")
+  _raxml_bootstrap_trees = os.path.join(_results_dir, "raxml_bs_trees.newick")
 
-  outgroup_alignment = os.path.join(papara_runs_dir, "covid_outgroups_aligned.fasta")
-  outgroups_unaligned = os.path.join(preanalysis_runs_dir, "covid_outgroups.fasta")
+  _outgroup_alignment = os.path.join(_papara_runs_dir, "covid_outgroups_aligned.fasta")
+  _outgroups_unaligned = os.path.join(_preanalysis_runs_dir, "covid_outgroups.fasta")
 
-  raxml_all_ml_trees_rf_distances = os.path.join(results_dir, "raxml_all_ml_trees.rf.distances")
-  raxml_all_ml_trees_rf_logs = os.path.join(results_dir, "raxml_all_ml_trees.rf.logs")
-  rf_distance_report = os.path.join(results_dir, "rf_distance_report.txt")
-  mptp_output = os.path.join(results_dir, "mptp_output.txt")
-  thinning_dir = os.path.join(results_dir, "tree_thinning")
-  max_support_thinned_tree = os.path.join(thinning_dir, "max_support_thinned_tree.newick")
-  leaves_thinned_tree = os.path.join(thinning_dir, "leaves_thinned_tree.newick")
-  epa_rooting_dir = os.path.join(results_dir, "epa_rooting")
-  root_digger_output = os.path.join(results_dir, "root_digger_lwr.newick")
-  root_digger_logfile = os.path.join(root_digger_runs_dir, "root_digger.log")
-  raxml_iqtree_ll = os.path.join(results_dir, "raxml_iqtree_ll.txt")
-  gamma_ll_all = os.path.join(results_dir, "gamma_ll_all.csv")
-  gamma_median_ll_all = os.path.join(results_dir, "gamma_median_ll_all.csv")
-  raxml_iqtree_ll_all = os.path.join(results_dir, "raxml_iqtree_ll_all.csv")
-  raxmlng_param_jiggle_llhs = os.path.join(results_dir, "raxmlng_param_jiggle_llhs.csv")
-  iqtree_param_jiggle_llhs = os.path.join(results_dir, "iqtree_param_jiggle_llhs.csv")
-  iqtree_tests_output = os.path.join(results_dir, "iqtree_tests.txt")
+  _raxml_all_ml_trees_rf_distances = os.path.join(_results_dir, "raxml_all_ml_trees.rf.distances")
+  _raxml_all_ml_trees_rf_logs = os.path.join(_results_dir, "raxml_all_ml_trees.rf.logs")
+  _rf_distance_report = os.path.join(_results_dir, "rf_distance_report.txt")
+  _mptp_output = os.path.join(_results_dir, "mptp_output.txt")
+  _thinning_dir = os.path.join(_results_dir, "tree_thinning")
+  _max_support_thinned_tree = os.path.join(_thinning_dir, "max_support_thinned_tree.newick")
+  _leaves_thinned_tree = os.path.join(_thinning_dir, "leaves_thinned_tree.newick")
+  _epa_rooting_dir = os.path.join(_results_dir, "epa_rooting")
+  _root_digger_output = os.path.join(_results_dir, "root_digger_lwr.newick")
+  _root_digger_logfile = os.path.join(_root_digger_runs_dir, "root_digger.log")
+  _raxml_iqtree_ll = os.path.join(_results_dir, "raxml_iqtree_ll.txt")
+  _gamma_ll_all = os.path.join(_results_dir, "gamma_ll_all.csv")
+  _gamma_median_ll_all = os.path.join(_results_dir, "gamma_median_ll_all.csv")
+  _raxml_iqtree_ll_all = os.path.join(_results_dir, "raxml_iqtree_ll_all.csv")
+  _raxmlng_param_jiggle_llhs = os.path.join(_results_dir, "raxmlng_param_jiggle_llhs.csv")
+  _iqtree_param_jiggle_llhs = os.path.join(_results_dir, "iqtree_param_jiggle_llhs.csv")
+  _iqtree_tests_output = os.path.join(_results_dir, "iqtree_tests.txt")
+
 # misc
 subst_model = "GTR+FO+R4"
 raxml_precision = "9"

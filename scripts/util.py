@@ -11,6 +11,9 @@ def fail( msg ):
 def versioned_path(version, path):
 	return os.path.join( common.work_dir, version, path)
 
+def make_path_in_workdir(*items):
+	return os.path.join( common.work_dir, *items)
+
 def version_valid( version ):
 	return os.path.isdir( versioned_path( version, "" ) )
 
