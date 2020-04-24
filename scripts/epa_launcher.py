@@ -79,7 +79,7 @@ def launch_hmmbuild(ref_msa, out_dir):
   ref_hmm="reference.hmm"
 
   cmd = []
-  cmd.append( os.path.join(common.hmmer_dir, "hmmalign") )
+  cmd.append( os.path.join(common.hmmer_dir, "hmmbuild") )
   if not util.is_slurm():
     cmd.append("--cpu")
     cmd.append(str(common.available_cores))
@@ -90,8 +90,10 @@ def launch_hmmbuild(ref_msa, out_dir):
   return os.path.join(out_dir, ref_hmm)
 
 
-def launch_hmmalign(ref_hmm, query_fasta, out_file):
+def launch_hmmalign(ref_hmm, query_fasta, out_dir):
   util.make_path(out_dir)
+
+  out_file = "both.phylip"
 
   cmd = []
   cmd.append( os.path.join(common.hmmer_dir, "hmmalign") )
@@ -100,8 +102,11 @@ def launch_hmmalign(ref_hmm, query_fasta, out_file):
     cmd.append(str(common.available_cores))
   cmd.append("-o")
   cmd.append(out_file)
+  cmd.append("--outformat")
+  cmd.append("phylip")
+  cmd.append("--mapali")
   cmd.append(ref_hmm)
   cmd.append(query_fasta)
   subprocess.check_call(cmd, cwd=out_dir)
 
-  return out_file
+  return os.path.join(out_dir, out_file)
