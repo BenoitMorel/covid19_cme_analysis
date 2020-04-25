@@ -178,15 +178,18 @@ int main( int argc, char** argv )
         ++iter;
         auto const current_cand_link_idx = entropy_sorting[current_sorted_cand];
 
-        LOG_DBG1 << "At iteration " << iter << " with candidate " << current_cand_link_idx << " with " << current_leaf_count << " leaves remaining";
-        LOG_DBG2 << "candidate subtree has entropy of " << subtree_entropies[current_cand_link_idx] << " and a subtree with " << subtree_leaf_nodes[current_cand_link_idx].size() << " leaves";
+        LOG_DBG1 << "At iteration " << iter << " with candidate " << current_cand_link_idx << " with "
+                 << current_leaf_count << " leaves remaining";
+        LOG_DBG2 << "candidate subtree has entropy of " << subtree_entropies[current_cand_link_idx]
+                 << " and a subtree with " << subtree_leaf_nodes[current_cand_link_idx].size() << " leaves";
 
         // Check if this candidate brings us below the target. If so, this is too much - we aim for
         // an exact hit (might change that later and introduce a valid range threshold instead).
         // (we do the comparison by addition instead of subtracting from the current_leaf_count,
         // to avoid integer underflow).
         // if( target_leaf_count + subtree_leaf_nodes[current_cand_link_idx].size() > current_leaf_count ) {
-        //     LOG_DBG2 << "candidate subtree has " << subtree_leaf_nodes[current_cand_link_idx].size() << " leaves, which would bring us below the target_leaf_count " << target_leaf_count << ", so we skip";
+        //     LOG_DBG2 << "candidate subtree has " << subtree_leaf_nodes[current_cand_link_idx].size()
+        //     << " leaves, which would bring us below the target_leaf_count " << target_leaf_count << ", so we skip";
         //     continue;
         // }
 
@@ -208,7 +211,8 @@ int main( int argc, char** argv )
 
         // test each previously picked subtree, by comparing their bitvectors
         // auto const cand_edge_idx = tree.link_at( current_cand_link_idx ).edge().index();
-        LOG_DBG2 << "checking candidate " << current_cand_link_idx << " against " << picked_subtrees.size() << " previously picked subtrees";
+        LOG_DBG2 << "checking candidate " << current_cand_link_idx << " against "
+                 << picked_subtrees.size() << " previously picked subtrees";
         for( auto prev_sub_link_idx : picked_subtrees ) {
 
             auto const& cbv = subtree_edges[current_cand_link_idx];
@@ -223,7 +227,8 @@ int main( int argc, char** argv )
                 // continue;
             }
             if( is_subset( cbv, pbv ) ) {
-                LOG_DBG3 << "2: candidate covered by previous subtree " << prev_sub_link_idx << " (which has " << subtree_leaf_nodes[prev_sub_link_idx].size() << " leaves)";
+                LOG_DBG3 << "2: candidate covered by previous subtree " << prev_sub_link_idx
+                         << " (which has " << subtree_leaf_nodes[prev_sub_link_idx].size() << " leaves)";
 
                 // some error check
                 if( skip_cand || !replace_prev.empty() ) {
@@ -295,7 +300,8 @@ int main( int argc, char** argv )
         }
     }
 
-    LOG_INFO << "ended with current_leaf_count " << current_leaf_count << " by pruning " << picked_subtrees.size() << " subtrees";
+    LOG_INFO << "ended with current_leaf_count " << current_leaf_count << " by pruning "
+             << picked_subtrees.size() << " subtrees";
 
     // -------------------------------------------------------------
     //     Visualize resulting pruned tree
@@ -320,7 +326,9 @@ int main( int argc, char** argv )
         ++i;
     }
 
-    write_color_tree_to_svg_file( tree, params, edge_colors, color_list, color_labels, out_file_prefix + "_pruning_tree.svg" );
+    write_color_tree_to_svg_file(
+        tree, params, edge_colors, color_list, color_labels, out_file_prefix + "_pruning_tree.svg"
+    );
 
     // -------------------------------------------------------------
     //     Pick representative sequences for each pruned subtree
