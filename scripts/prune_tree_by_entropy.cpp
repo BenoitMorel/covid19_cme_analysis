@@ -242,7 +242,8 @@ int main( int argc, char** argv )
                 // break;
             }
             if( is_subset( pbv, cbv ) ) {
-                LOG_DBG3 << "3: previous subtree (" << prev_sub_link_idx << ", which has " << subtree_leaf_nodes[prev_sub_link_idx].size() << " leaves) covered by candidate";
+                LOG_DBG3 << "3: previous subtree (" << prev_sub_link_idx << ", which has "
+                         << subtree_leaf_nodes[prev_sub_link_idx].size() << " leaves) covered by candidate";
 
                 // some error check
                 if( skip_cand ) {
@@ -316,7 +317,9 @@ int main( int argc, char** argv )
     size_t i = 0;
     for( auto subtree_idx : picked_subtrees ) {
         color_labels.push_back( std::to_string(subtree_idx) );
-        LOG_DBG1 << "subtree " << subtree_idx << " selected for pruning, which has " << subtree_leaf_nodes[subtree_idx].size() << " leaves and entropy " << subtree_entropies[subtree_idx];
+        LOG_DBG1 << "subtree " << subtree_idx << " selected for pruning, which has "
+                 << subtree_leaf_nodes[subtree_idx].size() << " leaves and entropy "
+                 << subtree_entropies[subtree_idx];
 
         for( size_t j = 0; j < subtree_edges[subtree_idx].size(); ++j ) {
             if( subtree_edges[subtree_idx][j] ) {
