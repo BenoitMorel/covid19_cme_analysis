@@ -45,7 +45,7 @@ set -e
 
 # first, check if we already have an alignment we can copy
 other_runs_dir=${version_dir}/${other_mode}/runs/preanalysis_runs
-if [[ ${include_singletons} ]]; then
+if [[ ${include_singletons} -eq 1 ]]; then
     # if we want the alignment with singletons, check if the respective smsa* exists,
     if [[ -f ${other_runs_dir}/preprocessed_with_single.fasta ]]; then
         echo "Found previous alignment results at ${other_runs_dir}, copying over and switching to singleton-included MSA"
@@ -79,7 +79,7 @@ ${scriptdir}/fasta2oneline.pl $input  > ${name}_oneline.fasta
 ${scriptdir}/getFullSeq.pl -in  ${name}_oneline.fasta -length 29000 > ${name}_oneline_fullseq.fasta
 ${scriptdir}/filterSequences.pl -in ${name}_oneline_fullseq.fasta > ${name}_oneline_fullseq_ns.fasta
 
-if [[ ! ${include_outgroups} ]]; then
+if [[ ${include_outgroups} -eq 0 ]]; then
     # outgroups_to_remove=/dev/null
     ${remove_sequences} ${name}_oneline_fullseq_ns.fasta ${outgroups_to_remove} ${name}_oneline_fullseq_ns_tmp.fasta covid_outgroups_untrimmed.fasta
     mv ${name}_oneline_fullseq_ns_tmp.fasta ${name}_oneline_fullseq_ns.fasta
@@ -91,7 +91,7 @@ $alignment --thread $cores ${name}_oneline_fullseq_ns.fasta > ${name}_oneline_fu
 ${scriptdir}/fasta2oneline.pl ${name}_oneline_fullseq_ns.aln > ${name}_oneline_fullseq_ns_oneline.aln
 ${scriptdir}/trimalignment.pl -in _oneline_fullseq_ns_oneline.aln -l 1000 > preprocessed.fasta
 
-if [[ ! ${include_singletons} ]]; then
+if [[ ${include_singletons} -eq 0 ]]; then
     # singleton removal
     ${scriptdir}/removekclass.pl -in preprocessed.fasta -k 1 > tmp.fasta
     mv preprocessed.fasta preprocessed_with_single.fasta
