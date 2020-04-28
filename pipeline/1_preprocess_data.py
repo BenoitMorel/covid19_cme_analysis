@@ -4,21 +4,20 @@ import os
 import sys
 sys.path.insert(0, 'scripts')
 import common
-import remove_duplicates
+import preprocessing
 import util
 
 paths = common.Paths( sys.argv )
 
-remove_duplicates.trim_separate_align(  paths.raw_sequences,
-                                        paths.version,
-                                        paths.preanalysis_runs_dir )
+preprocessing.trim_separate_align(paths.raw_sequences,
+                                  paths.dataset,
+                                  paths.preanalysis_runs_dir,
+                                  util.make_path_in_workdir(paths.version) )
 
-result_file=os.path.join( paths.preanalysis_runs_dir, "{}_nooutgroup_trimmed_nosingle.aln".format( paths.version ) )
+result_file=os.path.join( paths.preanalysis_runs_dir, "preprocessed.fasta" )
 util.expect_file_exists( result_file )
 util.copy( result_file, paths.raw_alignment )
 
-remove_duplicates.remove_duplicates(paths.raw_alignment,
-									common.outgroup_spec,
-									paths.alignment,
-									paths.duplicates_json,
-									paths.outgroup_trashbin )
+preprocessing.remove_duplicates(paths.raw_alignment,
+              									paths.alignment,
+              									paths.duplicates_json )

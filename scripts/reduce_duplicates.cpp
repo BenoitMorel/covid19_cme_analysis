@@ -34,29 +34,6 @@ using namespace genesis::utils;
 #include <string>
 #include <fstream>
 
-std::vector<std::string> get_nonempty_noncomment_lines( std::string const& file )
-{
-    std::string const comment_token("#");
-
-    std::vector<std::string> res;
-
-    std::ifstream infile(file);
-    std::string line;
-
-    while (std::getline(infile, line)) {
-        // trim whitespace from left and right
-        line = trim_right( trim_left( line ) );
-
-        if( not line.empty()
-            and not starts_with( line, comment_token ) ) {
-            res.push_back( line );
-        }
-    }
-
-
-    return res;
-}
-
 int main( int argc, char** argv )
 {
     // Activate logging.
@@ -64,25 +41,16 @@ int main( int argc, char** argv )
     utils::Logging::details.time = true;
 
     // Get the files from command line
-    if (argc != 6) {
+    if (argc != 4) {
         throw std::runtime_error(
-            std::string( "Usage: " ) + argv[0] + " <input-msa> <outgroup-names-file> <output-fasta> <output-json> <outgroup-output-fasta>"
+            std::string( "Usage: " ) + argv[0] + " <input-msa> <output-fasta> <output-json>"
         );
     }
     auto const infile = std::string( argv[1] );
-    auto const outgroup_file = std::string( argv[2] );
-    auto const outfile = std::string( argv[3] );
-    auto const outfilejson = std::string( argv[4] );
-    auto const outfile_outgroup = std::string( argv[5] );
+    auto const outfile = std::string( argv[2] );
+    auto const outfilejson = std::string( argv[3] );
 
     LOG_INFO << "Specified: infile = " << infile;
-    LOG_INFO << "Specified: outgroup_file = " << outgroup_file;
-
-    // parse the outgroup names
-    auto outgroups = get_nonempty_noncomment_lines( outgroup_file );
-
-    // set up a sequence_set for the outgroup seqs
-    SequenceSet outgroup_seqs;
 
     // Prepare duplicate map, from sequences to all labels that have that sequence
     std::unordered_map<std::string, std::vector<std::string>> seq_map;
@@ -99,22 +67,13 @@ int main( int argc, char** argv )
             throw std::runtime_error( "Invalid sequences with empty label or sites." );
         }
 
-        if( contains_ci( outgroups, seq.label() ) ) {
-            // outgroup case
-            outgroup_seqs.add( Sequence( seq.label(), seq.sites() ) );
-        } else {
-            // normal case
-            seq_map[ seq.sites() ].push_back( seq.label() );
-            ++cnt;
-        }
+        // normal case
+        seq_map[ seq.sites() ].push_back( seq.label() );
+        ++cnt;
 
         ++fasta_in;
     }
     LOG_INFO << "Found " << cnt << " sequences, thereof " << seq_map.size() << " unique.";
-    LOG_INFO << "Found " << outgroup_seqs.size() << " outgroup seqeunces out of " << outgroups.size() << " that were specified.";
-
-    // Write out the outgroup file
-    FastaWriter().to_file( outgroup_seqs, outfile_outgroup );
 
     // Write out the reduced fasta file
     std::ofstream out_stream;

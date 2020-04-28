@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os
 import util
@@ -40,6 +40,7 @@ class Paths():
 
     self._version = version
     self._dataset = argv[-1] #dataset
+    # options: ["fmsao", "fmsan", "smsao", "smsan"]
 
     os.makedirs(util.make_path_in_workdir(self.version, self.dataset),
         exist_ok=True)
@@ -53,16 +54,16 @@ class Paths():
     return self._dataset
 
   @property
+  def raw_sequences(self):
+    return util.make_path_in_workdir(self.version, self._raw_sequences)
+
+  @property
   def root_data_dir(self):
     return util.make_path_in_workdir(self.version, self.dataset, self._root_data_dir)
 
   @property
   def data_path(self):
     return util.make_path_in_workdir(self.version, self.dataset, self._data_path)
-
-  @property
-  def raw_sequences(self):
-    return util.make_path_in_workdir(self.version, self.dataset, self._raw_sequences)
 
   @property
   def raw_alignment(self):
@@ -83,10 +84,6 @@ class Paths():
   @property
   def duplicates_json(self):
     return util.make_path_in_workdir(self.version, self.dataset, self._duplicates_json)
-
-  @property
-  def outgroup_trashbin(self):
-    return util.make_path_in_workdir(self.version, self.dataset, self._outgroup_trashbin)
 
 
   @property
@@ -239,25 +236,27 @@ class Paths():
     return util.make_path_in_workdir(self.version, self.dataset, self._iqtree_tests_output)
 
   _version = "UNDEFINED"
+
+  # dl from gisaid
+  _raw_sequences = "covid_raw_unaligned.fasta"
+
   # data
   _root_data_dir = "data"
   _data_path = os.path.join(_root_data_dir)
-  _raw_sequences = os.path.join(_data_path, "covid_raw_unaligned.fasta")
   _raw_alignment = os.path.join(_data_path, "covid_raw.fasta")
   _alignment = os.path.join(_data_path, "covid_edited.fasta")
   _duplicates_json = os.path.join(_data_path, "covid_duplicates.json")
-  _outgroup_trashbin = os.path.join(_data_path, "outgroups_removed_by_app.fasta")
 
   # runs
   _root_runs_dir = "runs"
   _runs_dir = os.path.join(_root_runs_dir)
-  _preanalysis_runs_dir = os.path.join(_runs_dir, "preanalysis")
+  _preanalysis_runs_dir = os.path.join(_runs_dir, "preanalysis_runs")
   _raxml_ml_runs_dir = os.path.join(_runs_dir, "raxml_runs")
   _pargenes_runs_dir = os.path.join(_runs_dir, "pargenes_runs")
   _modeltest_runs_dir = os.path.join(_runs_dir, "modeltest_runs")
   _root_digger_runs_dir = os.path.join(_runs_dir, "root_digger_runs")
   _papara_runs_dir = os.path.join(_runs_dir, "papara_runs")
-  _hmmer_runs_dir = os.path.join(_runs_dir, "hmmer_runs_dir")
+  _hmmer_runs_dir = os.path.join(_runs_dir, "hmmer_runs")
 
 
   # results
