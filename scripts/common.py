@@ -295,7 +295,7 @@ class Paths():
   _iqtree_tests_output = os.path.join(_results_dir, "iqtree_tests.txt")
 
 # misc
-subst_model = "GTR+FO+R4"
+subst_model = "GTR+FO+G4"
 raxml_precision = "9"
 raxml_min_bl = "0.000000001"
 
