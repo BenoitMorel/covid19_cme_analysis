@@ -32,7 +32,7 @@ else:
 paths = data_versioning.setup_new_version()
 
 # only dl the data once
-p = paths[0]:
+p = paths[0]
 """
 cmd = []
 cmd.append("wget")
