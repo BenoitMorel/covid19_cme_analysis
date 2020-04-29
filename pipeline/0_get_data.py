@@ -31,29 +31,30 @@ else:
 
 paths = data_versioning.setup_new_version()
 
-for p in paths:
-  """
+# only dl the data once
+p = paths[0]:
+"""
+cmd = []
+cmd.append("wget")
+cmd.append("--no-check-certificate")
+cmd.append("https://docs.google.com/uc?export=download&id=" + data_googleid)
+cmd.append("-O")
+cmd.append( p.raw_sequences + ".gz" )
+print(" ".join(cmd))
+subprocess.call(cmd)
+"""
+
+print("Downloading the data")
+dl_gdrive.download_file_from_google_drive(data_googleid, p.raw_sequences + ".gz")
+
+print("")
+print("Version string: " + p.version)
+
+# if remote was gzipped
+if True:
   cmd = []
-  cmd.append("wget")
-  cmd.append("--no-check-certificate")
-  cmd.append("https://docs.google.com/uc?export=download&id=" + data_googleid)
-  cmd.append("-O")
-  cmd.append( p.raw_sequences + ".gz" )
-  print(" ".join(cmd))
+  cmd.append("gunzip")
+  cmd.append( p.raw_sequences+ ".gz" )
+  print((" ".join(cmd)))
   subprocess.call(cmd)
-  """
-
-  print("Downloading the data")
-  dl_gdrive.download_file_from_google_drive(data_googleid, p.raw_sequences + ".gz")
-
-  print("")
-  print("Version string: " + p.version)
-
-  # if remote was gzipped
-  if True:
-    cmd = []
-    cmd.append("gunzip")
-    cmd.append( p.raw_sequences+ ".gz" )
-    print((" ".join(cmd)))
-    subprocess.call(cmd)
 
