@@ -66,7 +66,7 @@ else
         # and apply singleton removal as usual
         ${scriptdir}/removekclass.pl -in preprocessed.fasta -k 1 > tmp.fasta
         mv preprocessed.fasta preprocessed_with_single.fasta
-        mv tmp.aln preprocessed.fasta
+        mv tmp.fasta preprocessed.fasta
 
         # and done! exit!
         exit 0
@@ -95,5 +95,5 @@ if [[ ${include_singletons} -eq 0 ]]; then
     # singleton removal
     ${scriptdir}/removekclass.pl -in preprocessed.fasta -k 1 > tmp.fasta
     mv preprocessed.fasta preprocessed_with_single.fasta
-    mv tmp.aln preprocessed.fasta
+    mv tmp.fasta preprocessed.fasta
 fi
