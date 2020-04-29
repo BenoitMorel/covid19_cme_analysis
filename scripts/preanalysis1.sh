@@ -89,7 +89,7 @@ fi
 
 $alignment --thread $cores ${name}_oneline_fullseq_ns.fasta > ${name}_oneline_fullseq_ns.aln
 ${scriptdir}/fasta2oneline.pl ${name}_oneline_fullseq_ns.aln > ${name}_oneline_fullseq_ns_oneline.aln
-${scriptdir}/trimalignment.pl -in _oneline_fullseq_ns_oneline.aln -l 1000 > preprocessed.fasta
+${scriptdir}/trimalignment.pl -in ${name}_oneline_fullseq_ns_oneline.aln -l 1000 > preprocessed.fasta
 
 if [[ ${include_singletons} -eq 0 ]]; then
     # singleton removal
