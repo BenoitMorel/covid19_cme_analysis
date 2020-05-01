@@ -23,6 +23,7 @@ genesis = os.path.join(software_path, "genesis", "bin", "apps")
 genesis_reduce_duplicates = os.path.join(genesis, "reduce_duplicates")
 genesis_reattach_duplicates = os.path.join(genesis, "reattach_duplicates")
 genesis_convert = os.path.join(genesis, "convert")
+genesis_remove_sequences = os.path.join(genesis, "remove_sequences")
 iqtree = os.path.join(software_path, "iqtree", "bin", "iqtree")
 preanalysis1 = os.path.join(scripts_dir, "preanalysis1.sh")
 mafft = os.path.join(software_path, "mafft", "mafft.bat")
@@ -45,6 +46,16 @@ class Paths():
     os.makedirs(util.make_path_in_workdir(self.version, self.dataset),
         exist_ok=True)
 
+  # =====================================================
+  # FUNCTIONS and basic values
+  # =====================================================
+
+  def dataset_has_outgroups(self):
+    return self._dataset[-1] == 'o'
+
+  def dataset_had_singletons_removed(self):
+    return self._dataset[0] == 's'
+
   @property
   def version(self):
     return self._version
@@ -52,6 +63,10 @@ class Paths():
   @property
   def dataset(self):
     return self._dataset
+
+  # =====================================================
+  # DATA
+  # =====================================================
 
   @property
   def raw_sequences(self):
@@ -74,10 +89,6 @@ class Paths():
     return util.make_path_in_workdir(self.version, self.dataset, self._alignment)
 
   @property
-  def outgroup_alignment(self):
-    return util.make_path_in_workdir(self.version, self.dataset, self._outgroup_alignment)
-
-  @property
   def outgroups_unaligned(self):
     return util.make_path_in_workdir(self.version, self.dataset, self._outgroups_unaligned)
 
@@ -85,6 +96,9 @@ class Paths():
   def duplicates_json(self):
     return util.make_path_in_workdir(self.version, self.dataset, self._duplicates_json)
 
+  # =====================================================
+  # RUNS
+  # =====================================================
 
   @property
   def root_runs_dir(self):
@@ -122,6 +136,13 @@ class Paths():
   def hmmer_runs_dir(self):
     return util.make_path_in_workdir(self.version, self.dataset, self._hmmer_runs_dir)
 
+  @property
+  def epa_runs_dir(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._epa_runs_dir)
+
+  # =====================================================
+  # RESULTS
+  # =====================================================
 
   @property
   def root_results_dir(self):
@@ -257,6 +278,7 @@ class Paths():
   _root_digger_runs_dir = os.path.join(_runs_dir, "root_digger_runs")
   _papara_runs_dir = os.path.join(_runs_dir, "papara_runs")
   _hmmer_runs_dir = os.path.join(_runs_dir, "hmmer_runs")
+  _epa_runs_dir = os.path.join(_runs_dir, "epa_runs")
 
 
   # results
@@ -272,7 +294,6 @@ class Paths():
   _raxml_all_ml_trees_ll = os.path.join(_results_dir, "raxml_all_ml_trees_with_ll.txt")
   _raxml_bootstrap_trees = os.path.join(_results_dir, "raxml_bs_trees.newick")
 
-  _outgroup_alignment = os.path.join(_papara_runs_dir, "covid_outgroups_aligned.fasta")
   _outgroups_unaligned = os.path.join(_preanalysis_runs_dir, "covid_outgroups.fasta")
 
   _raxml_all_ml_trees_rf_distances = os.path.join(_results_dir, "raxml_all_ml_trees.rf.distances")

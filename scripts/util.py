@@ -44,6 +44,10 @@ def make_path( path ):
 	if not os.path.exists( path ):
 		os.makedirs( path )
 
+def make_path_clean( path ):
+  clean_dir( path )
+  make_path( path )
+
 def expect_dir_exists( dir_path ):
 	if not os.path.isdir( dir_path ):
 		raise RuntimeError( "Directory doesn't exist: " + dir_path )

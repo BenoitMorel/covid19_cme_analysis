@@ -5,6 +5,24 @@ import common
 import subprocess
 import util
 
+def split_alignment_outgroups(input_msa, outgroup_spec, out_dir):
+  util.expect_file_exists( input_msa )
+  util.expect_file_exists( outgroup_spec )
+  util.make_path( out_dir )
+
+  new_ref_msa="reference.fasta"
+  query_msa="query.fasta"
+
+  cmd = []
+  cmd.append(common.genesis_remove_sequences)
+  cmd.append(input_msa)
+  cmd.append(outgroup_spec)
+  cmd.append(new_ref_msa)
+  cmd.append(query_msa)
+  subprocess.check_call(cmd, cwd=out_dir)
+
+  return os.path.join(out_dir, new_ref_msa), os.path.join(out_dir, query_msa)
+
 def launch_epa(tree, modelfile, ref_msa, query_msa, out_dir, thorough=True):
   util.make_path(out_dir)
 
@@ -35,14 +53,14 @@ def launch_epa(tree, modelfile, ref_msa, query_msa, out_dir, thorough=True):
   cmd.append("--verbose")
   subprocess.check_call(cmd)
 
-def launch_split4epa(ref_phylip, papara_result, out_dir):
+def launch_split4epa(ref_phylip, aln_result, out_dir):
   util.make_path(out_dir)
 
   cmd = []
   cmd.append(common.epa)
   cmd.append("--split")
   cmd.append(ref_phylip)
-  cmd.append(papara_result)
+  cmd.append(aln_result)
   cmd.append("--out-dir")
   cmd.append(out_dir)
   cmd.append("--redo")
