@@ -36,7 +36,7 @@ else:
   #create the hmm profile
   hmm_profile = placement.launch_hmmbuild( ref_msa, hmmer_out_dir )
   # align outgroups against it
-  both_phylip = placement.launch_hmmalign( hmm_profile, paths.outgroups_unaligned, hmmer_out_dir )
+  both_phylip = placement.launch_hmmalign( hmm_profile, ref_msa, paths.outgroups_unaligned, hmmer_out_dir )
 
   # then split for epa
   ref_msa, query_msa = placement.launch_split4epa( ref_msa_phylip, both_phylip, epa_out_dir )
