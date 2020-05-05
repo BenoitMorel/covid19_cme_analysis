@@ -127,7 +127,7 @@ def launch_hmmbuild(ref_msa, out_dir):
 def launch_hmmalign(ref_hmm, ref_msa, query_fasta, out_dir):
   util.make_path(out_dir)
 
-  out_file = "both.phylip"
+  out_file = "query.phylip"
 
   cmd = []
   cmd.append( os.path.join(common.hmmer_dir, "hmmalign") )
@@ -137,7 +137,7 @@ def launch_hmmalign(ref_hmm, ref_msa, query_fasta, out_dir):
   cmd.append("-o")
   cmd.append(out_file)
   cmd.append("--outformat")
-  cmd.append("phylip")
+  cmd.append("phylips")
   cmd.append("--mapali")
   cmd.append(ref_msa)
   cmd.append(ref_hmm)

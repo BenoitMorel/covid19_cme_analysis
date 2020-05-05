@@ -27,9 +27,11 @@ except Exception as e:
 # ================================================================
 
 # if outgroup is included in the alignment, separate the two from the alignment currently seen as final
-if paths.msa_has_outgroups():
+if paths.dataset_has_outgroups:
   ref_msa, query_msa = placement.split_alignment_outgroups( paths.alignment, common.outgroup_spec, epa_out_dir )
 else:
+  ref_msa = paths.alignment
+
   # create outgroup alignment using hmmer
   util.make_path_clean( hmmer_out_dir )
 
@@ -37,15 +39,18 @@ else:
   hmm_profile = placement.launch_hmmbuild( ref_msa, hmmer_out_dir )
   # align outgroups against it
   both_phylip = placement.launch_hmmalign( hmm_profile, ref_msa, paths.outgroups_unaligned, hmmer_out_dir )
+  # query_msa = os.path.join(epa_out_dir, "query.fasta")
+  # convert.convert("interleaved_phylip", "fasta", query_phylip, query_msa)
 
   # then split for epa
-  ref_msa, query_msa = placement.launch_split4epa( ref_msa_phylip, both_phylip, epa_out_dir )
+  ref_msa, query_msa = placement.launch_split4epa( ref_msa, both_phylip, epa_out_dir )
 
 # ================================================================
 # then, for every tree in the credible set, do the placement
 # ================================================================
 result_files=[]
-with open( paths.raxml_credible_ml_trees ).readlines() as ml_trees:
+with open( paths.raxml_credible_ml_trees ) as ml_trees_file:
+  ml_trees = ml_trees_file.readlines()
   i = 0
   for tree in ml_trees:
     # subdirs per tree

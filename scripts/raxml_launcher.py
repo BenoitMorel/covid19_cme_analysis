@@ -3,6 +3,7 @@ import sys
 import launcher
 import common
 import util
+import subprocess
 
 
 def launch_raxml(alignment, model, output_dir, seed, starting_trees = 1, parsimony = False, bs_trees = 0, cores = 16, debug = False, parse = False):
