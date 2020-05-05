@@ -4,9 +4,10 @@ import os
 import sys
 sys.path.insert(0, 'scripts')
 import common
-import epa_launcher
+import placement
 import convert
 import util
+import raxml_launcher
 
 paths = common.Paths( sys.argv )
 
@@ -27,18 +28,18 @@ except Exception as e:
 
 # if outgroup is included in the alignment, separate the two from the alignment currently seen as final
 if paths.msa_has_outgroups():
-  ref_msa, query_msa = epa_launcher.split_alignment_outgroups( paths.alignment, common.outgroup_spec, epa_out_dir )
+  ref_msa, query_msa = placement.split_alignment_outgroups( paths.alignment, common.outgroup_spec, epa_out_dir )
 else:
   # create outgroup alignment using hmmer
   util.make_path_clean( hmmer_out_dir )
 
   #create the hmm profile
-  hmm_profile = epa_launcher.launch_hmmbuild( ref_msa, hmmer_out_dir )
+  hmm_profile = placement.launch_hmmbuild( ref_msa, hmmer_out_dir )
   # align outgroups against it
-  both_phylip = epa_launcher.launch_hmmalign( hmm_profile, paths.outgroups_unaligned, hmmer_out_dir )
+  both_phylip = placement.launch_hmmalign( hmm_profile, paths.outgroups_unaligned, hmmer_out_dir )
 
   # then split for epa
-  ref_msa, query_msa = epa_launcher.launch_split4epa( ref_msa_phylip, both_phylip, epa_out_dir )
+  ref_msa, query_msa = placement.launch_split4epa( ref_msa_phylip, both_phylip, epa_out_dir )
 
 # ================================================================
 # then, for every tree in the credible set, do the placement
@@ -57,8 +58,11 @@ with open( paths.raxml_credible_ml_trees ).readlines() as ml_trees:
     with open(tree_file, 'w') as f:
       print( tree, file=f )
 
+    # reestimate model params for the given tree
+    cur_modelfile = raxml_launcher.evaluate(tree_file, ref_msa, cur_outdir)
+
     # place outgroup
-    epa_launcher.launch_epa( tree_file, modelfile, ref_msa, query_msa, cur_outdir, thorough=True )
+    placement.launch_epa( tree_file, cur_modelfile, ref_msa, query_msa, cur_outdir, thorough=True )
 
     result_files.append( os.path.join( cur_outdir, "epa_result.jplace") )
 
@@ -67,5 +71,9 @@ with open( paths.raxml_credible_ml_trees ).readlines() as ml_trees:
 # finally, export the results
 # ================================================================
 result_dir = paths.epa_rooting_dir
-# TODO
-
+# the overall result evaluation
+placement.outgroup_check( result_files, result_dir )
+# also export the individual results
+for f in result_files:
+  d = os.path.dirname( f )
+  util.copy_dir( d, result_dir )

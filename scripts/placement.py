@@ -23,6 +23,22 @@ def split_alignment_outgroups(input_msa, outgroup_spec, out_dir):
 
   return os.path.join(out_dir, new_ref_msa), os.path.join(out_dir, query_msa)
 
+def outgroup_check(jplace_files, out_dir):
+  for f in jplace_files:
+    util.expect_file_exists( f )
+  util.make_path( out_dir )
+
+  cmd = []
+  cmd.append(common.outgroup_check)
+  for f in jplace_files:
+    cmd.append(f)
+
+  outfile = os.path.join( out_dir, "outgroup_check.txt" )
+  with open( outfile ) as f:
+    subprocess.check_call(cmd, stdout=f)
+
+  return outfile
+
 def launch_epa(tree, modelfile, ref_msa, query_msa, out_dir, thorough=True):
   util.make_path(out_dir)
 
@@ -128,3 +144,4 @@ def launch_hmmalign(ref_hmm, query_fasta, out_dir):
   subprocess.check_call(cmd, cwd=out_dir)
 
   return os.path.join(out_dir, out_file)
+
