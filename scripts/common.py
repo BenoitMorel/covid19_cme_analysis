@@ -3,8 +3,6 @@
 import os
 import util
 
-FNULL = open(os.devnull, 'w')
-
 scripts_dir = os.path.dirname( os.path.realpath(__file__) )
 base_dir = os.path.abspath( os.path.realpath( os.path.join(
             os.path.dirname( os.path.abspath( os.path.realpath( __file__ ))),

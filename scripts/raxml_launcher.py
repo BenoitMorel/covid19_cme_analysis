@@ -3,7 +3,7 @@ import sys
 import launcher
 import common
 import util
-import subprocess
+import subprocess as sub
 
 
 def launch_raxml(alignment, model, output_dir, seed, starting_trees = 1, parsimony = False, bs_trees = 0, cores = 16, debug = False, parse = False):
@@ -70,7 +70,7 @@ def evaluate(tree_file, ref_msa, out_dir):
   cmd.append('nr_safe')
   cmd.append('--redo')
 
-  subprocess.check_call(cmd, cwd=out_dir, stdout=FNULL)
+  sub.check_call(cmd, cwd=out_dir, stdout=sub.DEVNULL)
 
   modelfile = os.path.join( out_dir, prefix + ".raxml.bestModel" )
 

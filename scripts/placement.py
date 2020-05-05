@@ -2,7 +2,7 @@ import os
 import sys
 import launcher
 import common
-import subprocess
+import subprocess as sub
 import util
 
 def split_alignment_outgroups(input_msa, outgroup_spec, out_dir):
@@ -19,7 +19,7 @@ def split_alignment_outgroups(input_msa, outgroup_spec, out_dir):
   cmd.append(outgroup_spec)
   cmd.append(new_ref_msa)
   cmd.append(query_msa)
-  subprocess.check_call(cmd, cwd=out_dir)
+  sub.check_call(cmd, cwd=out_dir)
 
   return os.path.join(out_dir, new_ref_msa), os.path.join(out_dir, query_msa)
 
@@ -35,7 +35,7 @@ def outgroup_check(jplace_files, out_dir):
 
   outfile = os.path.join( out_dir, "outgroup_check.txt" )
   with open( outfile ) as logfile:
-    subprocess.check_call(cmd, stdout=logfile)
+    sub.check_call(cmd, stdout=logfile)
 
   return outfile
 
@@ -67,7 +67,7 @@ def launch_epa(tree, modelfile, ref_msa, query_msa, out_dir, thorough=True):
   cmd.append(out_dir)
   cmd.append("--redo")
   cmd.append("--verbose")
-  subprocess.check_call(cmd, stdout=common.FNULL)
+  sub.check_call(cmd, stdout=sub.DEVNULL)
 
 def launch_split4epa(ref_phylip, aln_result, out_dir):
   util.make_path(out_dir)
@@ -80,7 +80,7 @@ def launch_split4epa(ref_phylip, aln_result, out_dir):
   cmd.append("--out-dir")
   cmd.append(out_dir)
   cmd.append("--redo")
-  subprocess.check_call(cmd)
+  sub.check_call(cmd)
 
   return os.path.join(out_dir, "reference.fasta"), os.path.join(out_dir, "query.fasta")
 
@@ -103,7 +103,7 @@ def launch_papara(tree, ref_phylip, query_fasta, out_dir):
   cmd.append("-r")
   cmd.append("-n")
   cmd.append(name)
-  subprocess.check_call(cmd, cwd=out_dir)
+  sub.check_call(cmd, cwd=out_dir)
 
   return os.path.join( out_dir, "papara_alignment." + name )
 
@@ -119,7 +119,7 @@ def launch_hmmbuild(ref_msa, out_dir):
     cmd.append(str(common.available_cores))
   cmd.append(ref_hmm)
   cmd.append(ref_msa)
-  subprocess.check_call(cmd, cwd=out_dir)
+  sub.check_call(cmd, cwd=out_dir)
 
   return os.path.join(out_dir, ref_hmm)
 
@@ -142,7 +142,7 @@ def launch_hmmalign(ref_hmm, ref_msa, query_fasta, out_dir):
   cmd.append(ref_msa)
   cmd.append(ref_hmm)
   cmd.append(query_fasta)
-  subprocess.check_call(cmd, cwd=out_dir)
+  sub.check_call(cmd, cwd=out_dir)
 
   return os.path.join(out_dir, out_file)
 
