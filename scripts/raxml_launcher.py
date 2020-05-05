@@ -70,7 +70,7 @@ def evaluate(tree_file, ref_msa, out_dir):
   cmd.append('nr_safe')
   cmd.append('--redo')
 
-  subprocess.check_call(cmd, cwd=out_dir)
+  subprocess.check_call(cmd, cwd=out_dir, stdout=FNULL)
 
   modelfile = os.path.join( out_dir, prefix + ".raxml.bestModel" )
 

@@ -38,12 +38,10 @@ else:
   #create the hmm profile
   hmm_profile = placement.launch_hmmbuild( ref_msa, hmmer_out_dir )
   # align outgroups against it
-  both_phylip = placement.launch_hmmalign( hmm_profile, ref_msa, paths.outgroups_unaligned, hmmer_out_dir )
-  # query_msa = os.path.join(epa_out_dir, "query.fasta")
-  # convert.convert("interleaved_phylip", "fasta", query_phylip, query_msa)
+  both_msa = placement.launch_hmmalign( hmm_profile, ref_msa, paths.outgroups_unaligned, hmmer_out_dir )
 
   # then split for epa
-  ref_msa, query_msa = placement.launch_split4epa( ref_msa, both_phylip, epa_out_dir )
+  ref_msa, query_msa = placement.launch_split4epa( ref_msa, both_msa, epa_out_dir )
 
 # ================================================================
 # then, for every tree in the credible set, do the placement
@@ -51,8 +49,10 @@ else:
 result_files=[]
 with open( paths.raxml_credible_ml_trees ) as ml_trees_file:
   ml_trees = ml_trees_file.readlines()
+  total = len(ml_trees) - 1
   i = 0
   for tree in ml_trees:
+    print(i, " / ", total)
     # subdirs per tree
     cur_outdir = os.path.join( epa_out_dir, str(i) )
     i += 1

@@ -34,8 +34,8 @@ def outgroup_check(jplace_files, out_dir):
     cmd.append(f)
 
   outfile = os.path.join( out_dir, "outgroup_check.txt" )
-  with open( outfile ) as f:
-    subprocess.check_call(cmd, stdout=f)
+  with open( outfile ) as logfile:
+    subprocess.check_call(cmd, stdout=logfile)
 
   return outfile
 
@@ -67,7 +67,7 @@ def launch_epa(tree, modelfile, ref_msa, query_msa, out_dir, thorough=True):
   cmd.append(out_dir)
   cmd.append("--redo")
   cmd.append("--verbose")
-  subprocess.check_call(cmd)
+  subprocess.check_call(cmd, stdout=common.FNULL)
 
 def launch_split4epa(ref_phylip, aln_result, out_dir):
   util.make_path(out_dir)
@@ -127,7 +127,7 @@ def launch_hmmbuild(ref_msa, out_dir):
 def launch_hmmalign(ref_hmm, ref_msa, query_fasta, out_dir):
   util.make_path(out_dir)
 
-  out_file = "query.phylip"
+  out_file = "both.afa"
 
   cmd = []
   cmd.append( os.path.join(common.hmmer_dir, "hmmalign") )
@@ -137,7 +137,7 @@ def launch_hmmalign(ref_hmm, ref_msa, query_fasta, out_dir):
   cmd.append("-o")
   cmd.append(out_file)
   cmd.append("--outformat")
-  cmd.append("phylips")
+  cmd.append("afa")
   cmd.append("--mapali")
   cmd.append(ref_msa)
   cmd.append(ref_hmm)
