@@ -29,7 +29,7 @@ def outgroup_check(jplace_files, out_dir):
   util.make_path( out_dir )
 
   cmd = []
-  cmd.append(common.outgroup_check)
+  cmd.append(common.genesis_outgroup_check)
   for f in jplace_files:
     cmd.append(f)
 

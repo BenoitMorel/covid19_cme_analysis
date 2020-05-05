@@ -97,3 +97,9 @@ if [[ ${include_singletons} -eq 0 ]]; then
     mv preprocessed.fasta preprocessed_with_single.fasta
     mv tmp.fasta preprocessed.fasta
 fi
+
+# EVEN if we included the outgroups in the alignment, we still need to remove them after!
+if [[ ${include_outgroups} -eq 1 ]]; then
+    mv preprocessed.fasta preprocessed_with_outgroups.fasta
+    ${remove_sequences} preprocessed_with_outgroups.fasta ${outgroups_to_remove} preprocessed.fasta covid_outgroups.fasta
+fi

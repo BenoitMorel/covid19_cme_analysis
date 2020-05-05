@@ -26,8 +26,11 @@ except Exception as e:
 # start by ensuring we have the outgroups aligned against the ref
 # ================================================================
 
+util.make_path_clean( epa_out_dir )
+
 # if outgroup is included in the alignment, separate the two from the alignment currently seen as final
 if paths.dataset_has_outgroups:
+  ref_msa = paths.alignment
   ref_msa, query_msa = placement.split_alignment_outgroups( paths.alignment, common.outgroup_spec, epa_out_dir )
 else:
   ref_msa = paths.alignment
