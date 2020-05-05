@@ -51,9 +51,11 @@ class Paths():
   # FUNCTIONS and basic values
   # =====================================================
 
+  @property
   def dataset_has_outgroups(self):
     return self._dataset[-1] == 'o'
 
+  @property
   def dataset_had_singletons_removed(self):
     return self._dataset[0] == 's'
 
