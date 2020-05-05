@@ -65,7 +65,7 @@ def evaluate(tree_file, ref_msa, out_dir):
   cmd.append('--prefix')
   cmd.append(prefix)
   cmd.append('--threads')
-  cmd.append(str(common.raxmlng_eval_cores))
+  cmd.append(str(common.iqtree_threads))
   cmd.append('--blopt')
   cmd.append('nr_safe')
   cmd.append('--redo')
