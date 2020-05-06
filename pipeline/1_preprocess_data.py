@@ -18,6 +18,12 @@ result_file=os.path.join( paths.preanalysis_runs_dir, "preprocessed.fasta" )
 util.expect_file_exists( result_file )
 util.copy( result_file, paths.raw_alignment )
 
+outgroup_file=os.path.join( paths.preanalysis_runs_dir, "outgroups.fasta" )
+util.expect_file_exists( outgroup_file )
+util.copy( outgroup_file, paths.outgroup_file )
+
 preprocessing.remove_duplicates(paths.raw_alignment,
               									paths.alignment,
               									paths.duplicates_json )
+
+

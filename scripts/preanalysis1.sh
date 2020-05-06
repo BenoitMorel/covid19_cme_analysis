@@ -54,6 +54,13 @@ if [[ ${include_singletons} -eq 1 ]]; then
         # and rename preprocessed_with_single.fasta to preprocessed.fasta
         mv preprocessed_with_single.fasta preprocessed.fasta
 
+        # in the include outgroups case however, we are copying an alignment that still includes the outgroup.
+        # so remove it
+        if [[ ${include_outgroups} -eq 1 ]]; then
+            mv preprocessed.fasta preprocessed_with_outgroups.fasta
+            ${remove_sequences} preprocessed_with_outgroups.fasta ${outgroups_to_remove} preprocessed.fasta covid_outgroups.fasta
+        fi
+
         # and done! exit!
         exit 0
     fi

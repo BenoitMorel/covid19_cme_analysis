@@ -92,8 +92,8 @@ class Paths():
     return util.make_path_in_workdir(self.version, self.dataset, self._alignment)
 
   @property
-  def outgroups_unaligned(self):
-    return util.make_path_in_workdir(self.version, self.dataset, self._outgroups_unaligned)
+  def outgroups_file(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._outgroups_file)
 
   @property
   def duplicates_json(self):
@@ -297,7 +297,7 @@ class Paths():
   _raxml_all_ml_trees_ll = os.path.join(_results_dir, "raxml_all_ml_trees_with_ll.txt")
   _raxml_bootstrap_trees = os.path.join(_results_dir, "raxml_bs_trees.newick")
 
-  _outgroups_unaligned = os.path.join(_preanalysis_runs_dir, "covid_outgroups.fasta")
+  _outgroups_file = os.path.join(_data_path, "covid_outgroups.fasta")
 
   _raxml_all_ml_trees_rf_distances = os.path.join(_results_dir, "raxml_all_ml_trees.rf.distances")
   _raxml_all_ml_trees_rf_logs = os.path.join(_results_dir, "raxml_all_ml_trees.rf.logs")
