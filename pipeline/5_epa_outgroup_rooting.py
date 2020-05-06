@@ -31,7 +31,8 @@ util.make_path_clean( epa_out_dir )
 # if outgroup is included in the alignment, separate the two from the alignment currently seen as final
 if paths.dataset_has_outgroups:
   ref_msa = paths.alignment
-  ref_msa, query_msa = placement.split_alignment_outgroups( paths.alignment, common.outgroup_spec, epa_out_dir )
+  query_msa = paths.outgroups_file
+  # ref_msa, query_msa = placement.split_alignment_outgroups( paths.alignment, common.outgroup_spec, epa_out_dir )
 else:
   ref_msa = paths.alignment
 
@@ -41,7 +42,7 @@ else:
   #create the hmm profile
   hmm_profile = placement.launch_hmmbuild( ref_msa, hmmer_out_dir )
   # align outgroups against it
-  both_msa = placement.launch_hmmalign( hmm_profile, ref_msa, paths.outgroups_unaligned, hmmer_out_dir )
+  both_msa = placement.launch_hmmalign( hmm_profile, ref_msa, paths.outgroups_file, hmmer_out_dir )
 
   # then split for epa
   ref_msa, query_msa = placement.launch_split4epa( ref_msa, both_msa, epa_out_dir )

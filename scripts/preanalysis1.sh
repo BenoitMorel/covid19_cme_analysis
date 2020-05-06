@@ -58,6 +58,7 @@ if [[ ${include_singletons} -eq 1 ]]; then
         # so remove it
         if [[ ${include_outgroups} -eq 1 ]]; then
             mv preprocessed.fasta preprocessed_with_outgroups.fasta
+            mv covid_outgroups.fasta outgroups_no_single.fasta
             ${remove_sequences} preprocessed_with_outgroups.fasta ${outgroups_to_remove} preprocessed.fasta covid_outgroups.fasta
         fi
 
