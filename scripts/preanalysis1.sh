@@ -89,10 +89,8 @@ ${scriptdir}/filterSequences.pl -in ${name}_oneline_fullseq.fasta > ${name}_onel
 
 if [[ ${include_outgroups} -eq 0 ]]; then
     # outgroups_to_remove=/dev/null
-    ${remove_sequences} ${name}_oneline_fullseq_ns.fasta ${outgroups_to_remove} ${name}_oneline_fullseq_ns_tmp.fasta covid_outgroups_untrimmed.fasta
+    ${remove_sequences} ${name}_oneline_fullseq_ns.fasta ${outgroups_to_remove} ${name}_oneline_fullseq_ns_tmp.fasta covid_outgroups.fasta
     mv ${name}_oneline_fullseq_ns_tmp.fasta ${name}_oneline_fullseq_ns.fasta
-    ${scriptdir}/fasta2oneline.pl covid_outgroups_untrimmed.fasta >  covid_outgroups_untrimmed_oneline.fasta
-    ${scriptdir}/trimalignment.pl -in covid_outgroups_untrimmed_oneline.fasta -l 1000 > covid_outgroups.fasta
 fi
 
 $alignment --thread $cores ${name}_oneline_fullseq_ns.fasta > ${name}_oneline_fullseq_ns.aln
