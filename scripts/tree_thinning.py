@@ -2,6 +2,8 @@ import sys
 import os
 from ete3 import Tree
 
+
+
 def rec_leaves_thinning(node, leaves_to_keep):
   if (node.is_leaf()):
     return
@@ -31,7 +33,7 @@ def leaves_thinning(input_tree_file, output_tree_file):
 
 def rec_bs_sum_thin(node, max_children, do_prune):
   if (node.is_leaf()):
-    return 100
+    return 0
   children_tuples = []
   for child in node.get_children():
     support_sum = rec_bs_sum_thin(child, 2, do_prune)
@@ -53,6 +55,7 @@ def rec_bs_sum_thin(node, max_children, do_prune):
 """
 def max_bootstrap_sum_thinning(input_tree_file, output_tree_file):
   tree = Tree(input_tree_file, format = 0)
+  tree.unroot()
   print("  Initial tree size: " + str(len(tree.get_leaves())))
   tree.set_outgroup(tree.get_midpoint_outgroup())
   max_support_sum = rec_bs_sum_thin(tree, len(tree.get_children()), False) # unrooted tree -> allow 3 children
