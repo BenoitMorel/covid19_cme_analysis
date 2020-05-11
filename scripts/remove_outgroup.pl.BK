@@ -17,14 +17,9 @@ open(IN, $infile) or die "Coudln't open $infile for input\n";
 
 my $cnt = 0;
 my $cntrem = 0;
-my $cntinitial = 0;
 while( defined(my $ln=<IN>)){
     if($ln =~ /^\s*$/){ next; }
     chomp($ln);
-
-    if($ln =~ /^\s*>/){
-	$cntinitial++;
-    }
 
     if($ln =~ /^\s*>/ && $ln =~ /$outgroup/){
 	$cntrem++;
@@ -43,4 +38,4 @@ while( defined(my $ln=<IN>)){
     print $ln, "\n";
 }
 
-print STDERR "Initially there were $cntinitial lines, $cnt lines remained... $cntrem lines were removed\n";	
+print STDERR "$cnt lines remained... $cntrem lines were removed\n";	
