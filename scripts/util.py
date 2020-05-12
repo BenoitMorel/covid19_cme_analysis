@@ -1,29 +1,30 @@
 from shutil import rmtree, copyfile, copytree
 import os
 import sys
+import stat
 import common
 import subprocess
 
 def fail( msg ):
-	print( msg )
-	sys.exit(1)
+  print( msg )
+  sys.exit(1)
 
 def versioned_path(version, path):
-	return os.path.join( common.work_dir, version, path)
+  return os.path.join( common.work_dir, version, path)
 
 def make_path_in_workdir(*items):
-	return os.path.join( common.work_dir, *items)
+  return os.path.join( common.work_dir, *items)
 
 def version_valid( version ):
-	return os.path.isdir( versioned_path( version, "" ) )
+  return os.path.isdir( versioned_path( version, "" ) )
 
 def get_version( argv, i=1 ):
-	if len(argv) < i+1:
-		fail("Insufficient arguments (version string?)")
-	version = argv[i]
-	if not version_valid( version ):
-		fail("Invalid version: {}".format(version))
-	return version
+  if len(argv) < i+1:
+    fail("Insufficient arguments (version string?)")
+  version = argv[i]
+  if not version_valid( version ):
+    fail("Invalid version: {}".format(version))
+  return version
 
 def copy( src, dest ):
   copyfile( src, dest)
@@ -32,37 +33,51 @@ def copy_dir( src, dest ):
   copytree( src, dest)
 
 def clean_dir( path ):
-	if os.path.exists( path ):
-		rmtree( path, ignore_errors=True )
+  if os.path.exists( path ):
+    rmtree( path, ignore_errors=True )
 
 def clean_file ( path ):
   if os.path.exists( path ):
     os.remove( path )
 
+def chmod_path( path ):
+  if not os.path.isdir( path ):
+    raise RuntimeError( "Directory doesn't exist: " + path )
+  else:
+    os.chmod( path, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO )
+
+def chmod_file( file_path ):
+  if not os.path.isfile( file_path ):
+    raise RuntimeError( "File doesn't exist: " + file_path )
+  else:
+    os.chmod( file_path, stat.S_IRUSR|stat.S_IWUSR|stat.S_IRGRP|stat.S_IWGRP|stat.S_IROTH|stat.S_IWOTH )
+
 def mkdirp( path ):
-	if not os.path.exists( path ):
-		os.mkdir( path )
+  if not os.path.exists( path ):
+    os.mkdir( path )
+    chmod_path( path )
 
 def make_path( path ):
-	if not os.path.exists( path ):
-		os.makedirs( path )
+  if not os.path.exists( path ):
+    os.makedirs( path )
+    chmod_path( path )
 
 def make_path_clean( path ):
   clean_dir( path )
   make_path( path )
 
 def expect_dir_exists( dir_path ):
-	if not os.path.isdir( dir_path ):
-		raise RuntimeError( "Directory doesn't exist: " + dir_path )
+  if not os.path.isdir( dir_path ):
+    raise RuntimeError( "Directory doesn't exist: " + dir_path )
 
 def expect_file_exists( file_path ):
-	if not os.path.isfile( file_path ):
-		raise RuntimeError( "File doesn't exist: " + file_path )
+  if not os.path.isfile( file_path ):
+    raise RuntimeError( "File doesn't exist: " + file_path )
 
 def expect_executable_exists( executable ):
-	import distutils.spawn
-	if not distutils.spawn.find_executable( executable ):
-		raise RuntimeError( "Executable not found: " + executable )
+  import distutils.spawn
+  if not distutils.spawn.find_executable( executable ):
+    raise RuntimeError( "Executable not found: " + executable )
 
 """
   returns the first occurence of the string matching
