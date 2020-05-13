@@ -4,6 +4,7 @@ import launcher
 import shutil
 import common
 
+import util
   
 def relative_symlink(src, dest):
   relative_path = os.path.relpath(src, os.path.dirname(dest))
@@ -14,10 +15,10 @@ def relative_symlink(src, dest):
 
 
 def launch_pargenes(alignment, model, output_dir, seed, rand_trees, pars_trees, bs_trees, cores):
-  os.mkdir(output_dir)
+  util.make_path_clean(output_dir)
   debug = False 
   alignment_dir = os.path.join(output_dir, "alignments")
-  os.mkdir(alignment_dir)
+  util.mkdirp(alignment_dir)
   alignment_symlink = os.path.join(alignment_dir, common.pargenes_ali_name)
   raxml_options_file = os.path.join(output_dir, "raxml_options.txt")
   with open(raxml_options_file, "w") as writer:

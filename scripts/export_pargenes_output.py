@@ -22,6 +22,7 @@ def export(pargenes_run_dir, paths):
   shutil.copy(src, paths.raxml_best_tree)
 
 # export best tree with duplicates reattached
+  #if ("thinned" not in paths.dataset):
   reattach_duplicates.reattach_duplicates(src, paths.raxml_best_tree_with_duplicate, paths.duplicates_json)
   
 # export best tree with TBE values

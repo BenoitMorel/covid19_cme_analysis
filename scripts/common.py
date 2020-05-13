@@ -216,8 +216,8 @@ class Paths():
     return util.make_path_in_workdir(self.version, self.dataset, self._thinning_dir)
 
   @property
-  def max_support_thinned_tree(self):
-    return util.make_path_in_workdir(self.version, self.dataset, self._max_support_thinned_tree)
+  def ss_mre_thinned_tree(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._ss_mre_thinned_tree)
 
   @property
   def leaves_thinned_tree(self):
@@ -309,7 +309,7 @@ class Paths():
   _rf_distance_report = os.path.join(_results_dir, "rf_distance_report.txt")
   _mptp_output = os.path.join(_results_dir, "mptp_output.txt")
   _thinning_dir = os.path.join(_results_dir, "tree_thinning")
-  _max_support_thinned_tree = os.path.join(_thinning_dir, "max_support_thinned_tree.newick")
+  _ss_mre_thinned_tree = os.path.join(_thinning_dir, "ss_mre_thinned_tree.newick")
   _leaves_thinned_tree = os.path.join(_thinning_dir, "leaves_thinned_tree.newick")
   _epa_rooting_dir = os.path.join(_results_dir, "epa_rooting")
   _root_digger_output = os.path.join(_results_dir, "root_digger_lwr.newick")

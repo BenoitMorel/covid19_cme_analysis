@@ -8,7 +8,9 @@ import util
 
 paths = common.Paths( sys.argv )
 
-input_tree = paths.raxml_consensus_MR_tree 
+input_tree = paths.raxml_consensus_MRE_tree 
 util.mkdirp(paths.thinning_dir)
-support_tree_thinning.support_selection_tree_thinning(input_tree, paths.max_support_thinned_tree)
+ss_mre_taxa_number = support_tree_thinning.support_selection_tree_thinning(input_tree, paths.ss_mre_thinned_tree)
+
+# @Lucas: ss_mre_taxa_number is the number of taxa after applying my thinning approach
 

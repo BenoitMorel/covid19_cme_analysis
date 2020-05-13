@@ -184,7 +184,7 @@ def support_selection_tree_thinning(input_tree_filename, output_tree_filename):
   pruned_newick = tree.compute_best_asv_newick()
   tree = Utree(pruned_newick)
   open(output_tree_filename, "w").write(pruned_newick)
-
+  return len(tree.get_all_leaves())
 
 """
   One single test is better than no test at all
