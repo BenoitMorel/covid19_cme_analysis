@@ -14,10 +14,7 @@ def relative_symlink(src, dest):
 
 
 def launch_pargenes(alignment, model, output_dir, seed, rand_trees, pars_trees, bs_trees, cores):
-  try:
-    os.mkdir(output_dir)
-  except:
-    pass
+  os.mkdir(output_dir)
   debug = False 
   alignment_dir = os.path.join(output_dir, "alignments")
   os.mkdir(alignment_dir)

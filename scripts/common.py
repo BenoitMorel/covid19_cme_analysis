@@ -184,6 +184,10 @@ class Paths():
     return util.make_path_in_workdir(self.version, self.dataset, self._raxml_consensus_MR_tree)
 
   @property
+  def raxml_consensus_MRE_tree(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._raxml_consensus_MRE_tree)
+
+  @property
   def raxml_all_ml_trees_rf_distances(self):
     return util.make_path_in_workdir(self.version, self.dataset, self._raxml_all_ml_trees_rf_distances)
 
@@ -294,6 +298,7 @@ class Paths():
   _raxml_all_ml_trees = os.path.join(_results_dir, "raxml_all_ml_trees.newick")
   _raxml_credible_ml_trees = os.path.join(_results_dir, "raxml_credible_ml_trees.newick")
   _raxml_consensus_MR_tree = os.path.join(_results_dir, "raxml_consensus_tree_MR.newick")
+  _raxml_consensus_MRE_tree = os.path.join(_results_dir, "raxml_consensus_tree_MRE.newick")
   _raxml_all_ml_trees_ll = os.path.join(_results_dir, "raxml_all_ml_trees_with_ll.txt")
   _raxml_bootstrap_trees = os.path.join(_results_dir, "raxml_bs_trees.newick")
 

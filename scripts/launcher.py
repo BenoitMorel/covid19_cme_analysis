@@ -3,6 +3,7 @@ import datetime
 import sys
 import subprocess
 import shutil
+import common
 import util
 
 def submit_haswell(prefix, cmd, cores = 16, debug =  False):
