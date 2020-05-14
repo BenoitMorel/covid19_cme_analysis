@@ -3,12 +3,13 @@ import os
 import sys
 sys.path.insert(0, 'scripts')
 import common
-import extract_dataset_from_tree
+import thinned_dataset_extraction
 
 paths = common.Paths( sys.argv )
 
-# Support Selection MRE thinned 
-suffix = "-ss_mre_thinned"
-tree = paths.ss_mre_thinned_tree
-extract_dataset_from_tree.extract(paths, suffix, tree)
+# Support Selection thinning 
+thinned_dataset_extraction.extract_ss(paths, "-ss_thinned", paths.ss_mre_thinned_tree)
+
+# Clade compression thinning
+thinned_dataset_extraction.extract_cc(paths, "-cc_thinned", paths.cc_thinned_alignment)
 

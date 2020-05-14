@@ -23,6 +23,7 @@ genesis = os.path.join(software_path, "genesis", "bin", "apps")
 genesis_reduce_duplicates = os.path.join(genesis, "reduce_duplicates")
 genesis_reattach_duplicates = os.path.join(genesis, "reattach_duplicates")
 genesis_convert = os.path.join(genesis, "convert")
+genesis_clade_compression = os.path.join(genesis, "prune_tree_by_entropy")
 genesis_remove_sequences = os.path.join(genesis, "remove_sequences")
 genesis_outgroup_check = os.path.join(genesis, "jplace_outgroup_check")
 iqtree = os.path.join(software_path, "iqtree", "bin", "iqtree")
@@ -143,6 +144,10 @@ class Paths():
   def epa_runs_dir(self):
     return util.make_path_in_workdir(self.version, self.dataset, self._epa_runs_dir)
 
+  @property
+  def cc_thinning_runs_dir(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._cc_thinning_runs_dir)
+
   # =====================================================
   # RESULTS
   # =====================================================
@@ -218,6 +223,10 @@ class Paths():
   @property
   def ss_mre_thinned_tree(self):
     return util.make_path_in_workdir(self.version, self.dataset, self._ss_mre_thinned_tree)
+  
+  @property
+  def cc_thinned_alignment(self):
+    return util.make_path_in_workdir(self.version, self.dataset, self._cc_thinned_alignment)
 
   @property
   def leaves_thinned_tree(self):
@@ -286,6 +295,7 @@ class Paths():
   _papara_runs_dir = os.path.join(_runs_dir, "papara_runs")
   _hmmer_runs_dir = os.path.join(_runs_dir, "hmmer_runs")
   _epa_runs_dir = os.path.join(_runs_dir, "epa_runs")
+  _cc_thinning_runs_dir = os.path.join(_runs_dir, "cc_thinning_runs")
 
 
   # results
@@ -310,6 +320,7 @@ class Paths():
   _mptp_output = os.path.join(_results_dir, "mptp_output.txt")
   _thinning_dir = os.path.join(_results_dir, "tree_thinning")
   _ss_mre_thinned_tree = os.path.join(_thinning_dir, "ss_mre_thinned_tree.newick")
+  _cc_thinned_alignment = os.path.join(_thinning_dir, "clade_compression_thinned_alignment.fasta")
   _leaves_thinned_tree = os.path.join(_thinning_dir, "leaves_thinned_tree.newick")
   _epa_rooting_dir = os.path.join(_results_dir, "epa_rooting")
   _root_digger_output = os.path.join(_results_dir, "root_digger_lwr.newick")
