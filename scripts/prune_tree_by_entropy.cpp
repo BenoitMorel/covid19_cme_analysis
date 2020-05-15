@@ -28,10 +28,12 @@ using namespace genesis::sequence;
 using namespace genesis::tree;
 using namespace genesis::utils;
 
+#include <cstdlib>
 #include <fstream>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
 #ifdef GENESIS_OPENMP
@@ -148,13 +150,13 @@ int main( int argc, char** argv )
     }
     write_tree_to_svg_file( treebeard, params, out_file_prefix + "_entropy_tree.svg" );
 
-    // Get the sorted entropies, from smalles to largest. We only get the sorting order here,
-    // without actually sorting the list, so that we keep the indices to the subtrees correct.
-    auto const entropy_sorting = sort_indices( subtree_entropies.begin(), subtree_entropies.end() );
-
     // -------------------------------------------------------------
     //     Find low entropy subtrees
     // -------------------------------------------------------------
+
+    // Get the sorted entropies, from smalles to largest. We only get the sorting order here,
+    // without actually sorting the list, so that we keep the indices to the subtrees correct.
+    auto const entropy_sorting = sort_indices( subtree_entropies.begin(), subtree_entropies.end() );
 
     // List of all subtrees (by their link index) that we pick to be pruned (i.e., combinded
     // into one single leaf representative)
@@ -162,7 +164,7 @@ int main( int argc, char** argv )
 
     // We move along the sorted subtree entropy list and chose candidates from there.
     // Use this variable to store the index into entropy_sorting of the current candidate.
-    // We first skip all the -1 entries that come from edges.
+    // We first skip all the -1 entries that come from tip edges.
     size_t current_sorted_cand = 0;
     while( subtree_entropies[entropy_sorting[current_sorted_cand]] < 0.0 ) {
         ++current_sorted_cand;
@@ -286,7 +288,7 @@ int main( int argc, char** argv )
                 // them would have been represented by one leaf in the end.
                 current_leaf_count += subtree_leaf_nodes[ rep_pre ].size() - 1;
 
-                // Now do the replacement
+                // Remove the colliding one
                 picked_subtrees.erase(rep_pre);
             }
 
@@ -354,6 +356,10 @@ int main( int argc, char** argv )
         return matches;
     };
 
+    // collect the sequences that we prune away. we might need them later, if we did not exaclty
+    // hit the correct number of taxa.
+    std::vector<std::pair<std::string, std::string>> removed_seqs;
+
     // go through all picked subtrees that we want to prune, find the sequence within each of them
     // that best represents its respective subtree, and use it as a replacement for all sequences
     // in the subtree
@@ -390,8 +396,28 @@ int main( int argc, char** argv )
             if( node_idx == best_node_idx ) {
                 LOG_DBG2 << "winner " << name;
             } else {
+                removed_seqs.emplace_back( name, aln_map[name] );
                 aln_map.erase( name );
             }
+        }
+    }
+
+    // Add back pruned sequences to fill up to exactly the desired leaf count.
+    if( current_leaf_count < target_leaf_count ) {
+        LOG_INFO << "as the current number of remaining leave nodes " << current_leaf_count
+                 << " is below the desired number " << target_leaf_count
+                 << ", we now add some more random sequences picked from the pruned subtrees until "
+                 << "we reach exactly the correct number of leaves.";
+
+        // Not very efficient, but get's the job done for now.
+        while( current_leaf_count < target_leaf_count ) {
+            auto const n = std::rand() % removed_seqs.size();
+            auto const& e = removed_seqs[n];
+
+            LOG_DBG2 << "adding " << e.first;
+            aln_map[ e.first ] = e.second;
+            removed_seqs.erase( removed_seqs.begin() + n );
+            ++current_leaf_count;
         }
     }
 
