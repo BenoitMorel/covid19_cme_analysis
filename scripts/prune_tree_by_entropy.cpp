@@ -54,13 +54,14 @@ int main( int argc, char** argv )
     // Get the files from command line
     if (argc != 5) {
         throw std::runtime_error(
-            "Usage: " + std::string( argv[0] ) + " <in_newick_file> <in_fasta_file> <target_leaf_count> <out_file_prefix>"
+            "Usage: " + std::string( argv[0] ) + " <in_newick_file> <in_fasta_file> <target_leaf_count> <max_pruned_clade_size> <out_file_prefix>"
         );
     }
     auto const in_newick_file = std::string( argv[1] );
     auto const in_fasta_file = std::string( argv[2] );
     auto const target_leaf_count = static_cast<size_t>( std::stoi( argv[3] ));
-    auto const out_file_prefix = std::string( argv[4] );
+    auto const max_pruned_clade_size = static_cast<size_t>( std::stoi( argv[4] ));
+    auto const out_file_prefix = std::string( argv[5] );
     LOG_INFO << "Started";
 
     // General tree drawing params that we will need later
@@ -110,16 +111,24 @@ int main( int argc, char** argv )
             continue;
         }
 
+        // Get the indices of all edges in the subtree.
+        auto const edge_indices = get_subtree_edges( tree.link_at( i ));
+
+        // If there are more than the max specified clade size, we do not want to consider that
+        // clade at all, so let's just skip it.
+        if( edge_indices.size() > max_pruned_clade_size ) {
+            continue;
+        }
+
         // Init a sequence counter, that collects which nucleotides at which position appear how often
         auto counts = SiteCounts( "ACGT", aln[0].size() );
 
         // Init bitvector that contains all edges of the subtree
         subtree_edges[i] = Bitvector( tree.edge_count() );
 
-        // Get the indices of all edges in the subtree, then iterate them and sum up all nucleotides
+        // Now iterate the edges of the subtree, and sum up all nucleotides
         // that we find in there. There are more efficient ways, but for the small data,
         // this works, and is easier to understand.
-        auto const edge_indices = get_subtree_edges( tree.link_at( i ));
         for( auto edge_idx : edge_indices ) {
             subtree_edges[i].set( edge_idx );
 
@@ -173,10 +182,17 @@ int main( int argc, char** argv )
         throw std::runtime_error( "no unset entropy values. this cannot be." );
     }
 
+    // Iterate all candidate clades, and stop either if we have pruned away enough,
+    // or, if we pruned all available ones, stop there as well (which means, that the max_pruned_clade_size
+    // was set to a value that is too small to actually reach the target number of leaves)
     LOG_INFO << "Selecting candidate subtrees for pruning";
     size_t iter = 0;
     size_t current_leaf_count = leaf_node_count(tree);
-    for( ; current_leaf_count > target_leaf_count ; ++current_sorted_cand ) {
+    for(
+        ;
+        current_leaf_count > target_leaf_count && current_sorted_cand < entropy_sorting.size() ;
+        ++current_sorted_cand
+    ) {
         ++iter;
         auto const current_cand_link_idx = entropy_sorting[current_sorted_cand];
 
@@ -305,6 +321,12 @@ int main( int argc, char** argv )
 
     LOG_INFO << "ended with current_leaf_count " << current_leaf_count << " by pruning "
              << picked_subtrees.size() << " subtrees";
+
+    if( current_leaf_count > target_leaf_count ) {
+        LOG_WARN << "this is more than was specified by <target_leaf_count>, which means that "
+                 << "we could not find enough clades for pruning. you have to increase the value "
+                 << "of <max_pruned_clade_size> to get down to the desired number of leaf taxa!";
+    }
 
     // -------------------------------------------------------------
     //     Visualize resulting pruned tree
