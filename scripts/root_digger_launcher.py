@@ -16,5 +16,6 @@ def launch_root_digger(tree, alignment, model, treefile, logfile, cores, factor 
   cmd.extend(["--treefile", treefile])
   cmd.extend(["--early-stop"])
   #cmd.extend(["--verbose"])
-  cmd.extend(["|", "tee", logfile])
-  subprocess.check_call(cmd)
+  print(cmd)
+  with open(logfile, 'w') as outfile:
+    subprocess.check_call(cmd, stdout = outfile, stderr = outfile)
