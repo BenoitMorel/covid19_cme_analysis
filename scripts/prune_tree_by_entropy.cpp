@@ -52,9 +52,12 @@ int main( int argc, char** argv )
     LOG_INFO << "Using " << utils::Options::get().number_of_threads() << " threads";
 
     // Get the files from command line
-    if (argc != 5) {
+    if (argc != 6) {
         throw std::runtime_error(
-            "Usage: " + std::string( argv[0] ) + " <in_newick_file> <in_fasta_file> <target_leaf_count> <max_pruned_clade_size> <out_file_prefix>"
+            "Usage: " + std::string( argv[0] ) + " <in_newick_file> <in_fasta_file> "
+            "<target_leaf_count> <max_pruned_clade_size> <out_file_prefix>\n"
+            "max_pruned_clade_size = 0 is a special case, "
+            "where the max_pruned_clade_size check is deactivated"
         );
     }
     auto const in_newick_file = std::string( argv[1] );
@@ -102,21 +105,13 @@ int main( int argc, char** argv )
     auto subtree_edges = std::vector<Bitvector>( tree.link_count() );
 
     // Compute the entropy of all subtrees
-    LOG_INFO << "Compute the entropy of all subtrees";
+    LOG_INFO << "Compute the entropy of all " << subtree_entropies.size() << " subtrees";
+    size_t subtree_cnt = 0;
     #pragma omp parallel for
     for( size_t i = 0; i < tree.link_count(); ++i ) {
 
         // No need for single edge subtrees
         if( is_leaf( tree.link_at( i ))) {
-            continue;
-        }
-
-        // Get the indices of all edges in the subtree.
-        auto const edge_indices = get_subtree_edges( tree.link_at( i ));
-
-        // If there are more than the max specified clade size, we do not want to consider that
-        // clade at all, so let's just skip it.
-        if( edge_indices.size() > max_pruned_clade_size ) {
             continue;
         }
 
@@ -126,9 +121,10 @@ int main( int argc, char** argv )
         // Init bitvector that contains all edges of the subtree
         subtree_edges[i] = Bitvector( tree.edge_count() );
 
-        // Now iterate the edges of the subtree, and sum up all nucleotides
+        // Get the indices of all edges in the subtree, iterate it, and sum up all nucleotides
         // that we find in there. There are more efficient ways, but for the small data,
         // this works, and is easier to understand.
+        auto const edge_indices = get_subtree_edges( tree.link_at( i ));
         for( auto edge_idx : edge_indices ) {
             subtree_edges[i].set( edge_idx );
 
@@ -146,8 +142,18 @@ int main( int argc, char** argv )
             counts.add_sequence( aln_map.at( name ));
         }
 
+        // If there are more than the max specified clade size, we do not want to consider that
+        // clade at all, so let's just skip it.
+        if( max_pruned_clade_size != 0 && subtree_leaf_nodes[i].size() > max_pruned_clade_size ) {
+            LOG_DBG1 << "skipping subtree with " << subtree_leaf_nodes[i].size() << " leaves";
+            continue;
+        }
+        LOG_DBG1 << "using    subtree with " << subtree_leaf_nodes[i].size() << " leaves";
+
         subtree_entropies[i] = averaged_entropy( counts, false, SiteEntropyOptions::kIncludeGaps );
+        ++subtree_cnt;
     }
+    LOG_DBG1 << "collected entropy of " << subtree_cnt << " subtrees";
 
     // Visualize the tree with all its entropy values.
     // Naturally, as this is a tree with ent. values, we call it treebeard.
@@ -181,6 +187,8 @@ int main( int argc, char** argv )
     if( current_sorted_cand == 0 ) {
         throw std::runtime_error( "no unset entropy values. this cannot be." );
     }
+    LOG_DBG1 << "skipped to index " << current_sorted_cand << " of "
+             << subtree_entropies.size() << " (" << entropy_sorting.size() << ")";
 
     // Iterate all candidate clades, and stop either if we have pruned away enough,
     // or, if we pruned all available ones, stop there as well (which means, that the max_pruned_clade_size
@@ -323,9 +331,10 @@ int main( int argc, char** argv )
              << picked_subtrees.size() << " subtrees";
 
     if( current_leaf_count > target_leaf_count ) {
-        LOG_WARN << "this is more than was specified by <target_leaf_count>, which means that "
-                 << "we could not find enough clades for pruning. you have to increase the value "
-                 << "of <max_pruned_clade_size> to get down to the desired number of leaf taxa!";
+        LOG_WARN << "this is more than was specified by <target_leaf_count> = " << target_leaf_count
+                 << ", which means that we could not find enough clades for pruning. you have to "
+                 << "increase the value of <max_pruned_clade_size> to get down to the desired "
+                 << "number of leaf taxa!";
     }
 
     // -------------------------------------------------------------
@@ -388,7 +397,7 @@ int main( int argc, char** argv )
     LOG_INFO << "compute consensus and pick best representatives for each subtree";
     for( auto subtree_idx : picked_subtrees ) {
         auto const& subtree_nodes = subtree_leaf_nodes[ subtree_idx ];
-        LOG_DBG1 << "pruning subtree " << subtree_idx << " with " << subtree_nodes.size() << " leaves";
+        LOG_DBG1 << "replacing subtree " << subtree_idx << " with " << subtree_nodes.size() << " leaves";
 
         // Compute consensus sequence for the subtree
         auto counts = SiteCounts( "ACGT", aln[0].size() );
