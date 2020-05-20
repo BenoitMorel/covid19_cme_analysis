@@ -27,6 +27,8 @@ install_raxmlng() {
   git clone --recursive https://github.com/amkozlov/raxml-ng.git
   echo "Installing raxml-ng..."
   cd raxml-ng
+  git checkout addc2a8b6ec0215daf77b2a22b43b400b8c2103d
+  git submodule update --recursive
   mkdir -p build && cd build
   cmake -DUSE_MPI=ON ..
   make -j
