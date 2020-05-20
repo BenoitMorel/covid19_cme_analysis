@@ -34,7 +34,7 @@ def outgroup_check(jplace_files, out_dir):
     cmd.append(f)
 
   outfile = os.path.join( out_dir, "outgroup_check.txt" )
-  with open( outfile ) as logfile:
+  with open( outfile, "w+" ) as logfile:
     sub.check_call(cmd, stdout=logfile)
 
   return outfile

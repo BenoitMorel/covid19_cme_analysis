@@ -25,11 +25,18 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <numeric>
+#include <vector>
 
 using namespace genesis;
 using namespace genesis::placement;
 using namespace genesis::tree;
 using namespace genesis::utils;
+
+struct stats {
+  double mean;
+  double stddev;
+};
 
 struct signal {
   size_t weak     = 0;
@@ -37,11 +44,37 @@ struct signal {
   size_t strong   = 0;
 
   size_t sum() const { return weak + possible + strong; };
+
+  std::vector<double> entropies;
+
+  stats entropy_stats() const
+  {
+    stats res;
+    double sum = std::accumulate(entropies.begin(), entropies.end(), 0.0);
+    auto mean = res.mean = sum / entropies.size();
+
+    std::vector<double> diff(entropies.size());
+    std::transform(entropies.begin(), entropies.end(), diff.begin(), [mean](double x) { return x - mean; });
+    double sq_sum = std::inner_product(diff.begin(), diff.end(), diff.begin(), 0.0);
+    res.stddev = std::sqrt(sq_sum / entropies.size());
+
+    return res;
+  };
 };
 
 constexpr double STRONG   = 0.5;
 constexpr double WEAK     = 0.15;
 constexpr double MAJORITY = 2.0 / 3.0;
+
+static double get_entropy( Pquery const& pq )
+{
+  double entropy = 0.0;
+  for( auto const& p : pq.placements() ) {
+    auto lwr = p.like_weight_ratio;
+    entropy += lwr * std::log(lwr);
+  }
+  return -entropy;
+}
 
 /**
  *  Assumes input jplace files contain potential outgroups, evaluates their use for rooting.
@@ -69,7 +102,7 @@ int main( int argc, char** argv )
   auto const num_queries = samples[ 0 ].size();
   for( size_t i = 0; i < samples.size(); ++i ) {
     auto const& sample_name = samples.name_at( i );
-    std::cout << sample_name << "\n";
+    // std::cout << sample_name << "\n";
     auto& sample = samples[ i ];
 
     if( sample.size() != num_queries ) {
@@ -85,7 +118,8 @@ int main( int argc, char** argv )
       // fail if samples don't contain the same queries
       if( elem == results.end() ) {
         throw std::runtime_error(
-            std::string( "Samples don't contain the same queries.\nOffending Query: " ) + name + "\nOffending Sample: " + sample_name );
+            std::string( "Samples don't contain the same queries.\nOffending Query: " ) 
+            + name + "\nOffending Sample: " + sample_name );
       }
       auto& cur_signal = elem->second;
 
@@ -100,6 +134,8 @@ int main( int argc, char** argv )
       } else {
         cur_signal.possible++;
       }
+
+      cur_signal.entropies.push_back( get_entropy( pq ) );
     }
   }
 
@@ -110,7 +146,8 @@ int main( int argc, char** argv )
     auto const sum        = signal.sum();
     size_t const majority = sum * MAJORITY;
 
-    std::cout << query;
+    std::cout << query << ":\n";
+    std::cout << "Best-Hit signal";
     if( signal.weak > majority ) {
       std::cout << " is majority \"weak\" (" << std::to_string( signal.weak ) << " / " << std::to_string( sum ) << ")\n";
     } else if( signal.possible > majority ) {
@@ -123,6 +160,12 @@ int main( int argc, char** argv )
                 << std::to_string( signal.possible ) << ", "
                 << std::to_string( signal.weak ) << ")\n";
     }
+    std::cout << "LWR Entropy:\n";
+    auto stats = signal.entropy_stats();
+    std::cout << "  mean: " << std::to_string( stats.mean ) << "\n";
+    std::cout << "  stdd: " << std::to_string( stats.stddev ) << "\n";
+
+    std::cout << "\n";
   }
 
   return 0;
