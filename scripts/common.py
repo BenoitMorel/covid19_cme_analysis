@@ -39,6 +39,7 @@ outgroup_spec = os.path.join(config_dir, "outgroups.txt")
 class Paths():
   """docstring for Paths"""
   def __init__( self, argv, i=1 ):
+    argv = util.preprocess_argv(argv, i)
     version = util.get_version( argv[:-1], i )
 
     self._version = version

@@ -18,6 +18,24 @@ def make_path_in_workdir(*items):
 def version_valid( version ):
   return os.path.isdir( versioned_path( version, "" ) )
 
+def splitpath(path, maxdepth=20):
+  path = os.path.normpath(path) 
+  ( head, tail ) = os.path.split(path)
+  return splitpath(head, maxdepth - 1) + [ tail ] if maxdepth and head and head != path else [ head or tail ]
+
+# awful hack to allow calling 
+# ./pipeline step.py work_dir/2020-05-05/smsan
+def preprocess_argv( argv, i ):
+  if len(argv) == i + 1:
+    sp = splitpath(argv[i])
+    print(sp)
+    if (os.path.abspath(sp[0]) == common.work_dir):
+      res = [""] * i
+      res.append(sp[1])
+      res.append(sp[2])
+      return res
+  return argv
+
 def get_version( argv, i=1 ):
   if len(argv) < i+1:
     fail("Insufficient arguments (version string?)")
