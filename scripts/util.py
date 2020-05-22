@@ -28,7 +28,6 @@ def splitpath(path, maxdepth=20):
 def preprocess_argv( argv, i ):
   if len(argv) == i + 1:
     sp = splitpath(argv[i])
-    print(sp)
     if (os.path.abspath(sp[0]) == common.work_dir):
       res = [""] * i
       res.append(sp[1])

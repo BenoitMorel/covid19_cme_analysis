@@ -15,7 +15,6 @@ def relative_symlink(src, dest):
 def get_current_version_id( date ):
   pattern = os.path.join(common.work_dir, date + r"_[0-9][0-9]")
   files = glob.glob(pattern)
-  # print(files)
   return str(len(files)).zfill(2)
 
 def setup_directory(directory, subdirectory, version):
@@ -23,9 +22,9 @@ def setup_directory(directory, subdirectory, version):
   util.make_path(real_current)
 
 def setup_new_dataset(path):
-  util.make_path(path.root_data_dir)
-  util.make_path(path.root_runs_dir)
-  util.make_path(path.root_results_dir)
+  util.make_path(path.data_dir)
+  util.make_path(path.runs_dir)
+  util.make_path(path.results_dir)
 
 
 def setup_new_version( date=datetime.datetime.now().strftime("%Y-%m-%d"),

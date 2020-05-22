@@ -79,24 +79,24 @@ class Paths():
     return os.path.join(self._version_root, "covid_raw_unaligned.fasta")
 
   @property
-  def data_path(self):
+  def data_dir(self):
     return os.path.join(self._dataset_root, "data")
 
   @property
   def raw_alignment(self):
-    return os.path.join(self.data_path, "covid_raw.fasta")
+    return os.path.join(self.data_dir, "covid_raw.fasta")
 
   @property
   def alignment(self):
-    return os.path.join(self.data_path, "covid_edited.fasta")
+    return os.path.join(self.data_dir, "covid_edited.fasta")
 
   @property
   def outgroups_file(self):
-    return os.path.join(self.data_path, "covid_outgroups.fasta")
+    return os.path.join(self.data_dir, "covid_outgroups.fasta")
 
   @property
   def duplicates_json(self):
-    return os.path.join(self.data_path, "covid_duplicates.json")
+    return os.path.join(self.data_dir, "covid_duplicates.json")
 
   # =====================================================
   # RUNS
