@@ -273,7 +273,7 @@ class Paths():
   def iqtree_param_jiggle_llhs(self):
     return os.path.join(self.likelihoods_dir, "iqtree_param_jiggle_llhs.csv")
 
-
+  @property
   def ss_mre_thinned_tree(self):
     return os.path.join(self.thinning_dir, "ss_mre_thinned_tree.newick")
   

@@ -15,7 +15,7 @@ ss_mre_taxa_number = support_tree_thinning.support_selection_tree_thinning(input
 
 print(ss_mre_taxa_number)
 
-#clade_compression_thinning.clade_compression_thinning(paths, paths.raxml_best_tree, paths.alignment, ss_mre_taxa_number, paths.cc_thinned_alignment)
-clade_compression_thinning.clade_compression_thinning(paths, paths.raxml_consensus_MRE_tree, paths.alignment, ss_mre_taxa_number, paths.cc_thinned_alignment)
+clade_compression_thinning.clade_compression_thinning(paths, paths.raxml_best_tree, paths.alignment, ss_mre_taxa_number, paths.cc_thinned_alignment)
+#clade_compression_thinning.clade_compression_thinning(paths, paths.raxml_consensus_MRE_tree, paths.alignment, ss_mre_taxa_number, paths.cc_thinned_alignment)
 
 
