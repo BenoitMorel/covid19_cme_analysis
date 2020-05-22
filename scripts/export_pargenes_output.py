@@ -45,7 +45,7 @@ def export(pargenes_run_dir, paths):
     src = os.path.join(pargenes_output, "concatenated_bootstraps", "ali_fasta.bs")
     shutil.copy(src, paths.raxml_bootstrap_trees)
 
-  av_pairwise_rf_distance = rf_distance.get_export_pairwise_rf_distance(paths.raxml_all_ml_trees, paths.raxml_all_ml_trees_rf_distances, paths.raxml_all_ml_trees_rf_logs)
+  av_pairwise_rf_distance = rf_distance.get_export_pairwise_rf_distance(paths.raxml_all_ml_trees, paths.raxml_all_ml_trees_rf_distances)
   toprint0 = "Average pairwise RF distance between all ML trees: " + str(av_pairwise_rf_distance)
   print(av_pairwise_rf_distance) 
 

@@ -197,10 +197,6 @@ class Paths():
     return util.make_path_in_workdir(self.version, self.dataset, self._raxml_all_ml_trees_rf_distances)
 
   @property
-  def raxml_all_ml_trees_rf_logs(self):
-    return util.make_path_in_workdir(self.version, self.dataset, self._raxml_all_ml_trees_rf_logs)
-
-  @property
   def raxml_all_ml_trees_ll(self):
     return util.make_path_in_workdir(self.version, self.dataset, self._raxml_all_ml_trees_ll)
 
@@ -311,7 +307,6 @@ class Paths():
   _outgroups_file = os.path.join(_data_path, "covid_outgroups.fasta")
 
   _raxml_all_ml_trees_rf_distances = os.path.join(_results_dir, "raxml_all_ml_trees.rf.distances")
-  _raxml_all_ml_trees_rf_logs = os.path.join(_results_dir, "raxml_all_ml_trees.rf.logs")
   _rf_distance_report = os.path.join(_results_dir, "rf_distance_report.txt")
   _mptp_output = os.path.join(_results_dir, "mptp_output.txt")
   _thinning_dir = os.path.join(_results_dir, "tree_thinning")

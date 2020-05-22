@@ -5,7 +5,7 @@ import subprocess
 import util
 import shutil
 
-def get_export_pairwise_rf_distance(input_trees_file, output_distances, output_summary):
+def get_export_pairwise_rf_distance(input_trees_file, output_distances):
   cmd = []
   tmp_prefix = input_trees_file + ".rf.tmp"
   cmd.append(common.raxml)
@@ -15,7 +15,6 @@ def get_export_pairwise_rf_distance(input_trees_file, output_distances, output_s
   cmd.append(tmp_prefix)
   logs = subprocess.check_output(cmd, encoding='utf-8')
   shutil.move(tmp_prefix + ".raxml.rfDistances", output_distances)
-  shutil.move(tmp_prefix + ".raxml.log", output_summary)
   rf = util.find_string_between(logs, "Average relative RF distance in this tree set: ", "\n")
   return rf 
 
