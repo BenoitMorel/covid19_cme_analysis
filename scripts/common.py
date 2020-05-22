@@ -151,62 +151,129 @@ class Paths():
     return os.path.join(self._dataset_root, "results")
   
   @property
-  def raxml_best_tree(self):
-    return os.path.join(self.results_dir, "raxml_best_tree.newick")
+  def trees_dir(self):
+    res = os.path.join(self.results_dir, "trees")
+    util.mkdirp(res)
+    return res
+  
+  @property 
+  def rfdistance_dir(self):
+    res = os.path.join(self.results_dir, "rfdistances")
+    util.mkdirp(res)
+    return res
 
   @property
-  def raxml_best_tree_tbe(self):
-    return os.path.join(self.results_dir, "raxml_best_tree_tbe.newick")
+  def models_dir(self):
+    res = os.path.join(self.results_dir, "models")
+    util.mkdirp(res)
+    return res
 
   @property
-  def raxml_best_tree_with_duplicate(self):
-    return os.path.join(self.results_dir, "raxml_best_tree_with_duplicate.newick")
+  def species_delimitation_dir(self):
+    res = os.path.join(self.results_dir, "species_delimitation")
+    util.mkdirp(res)
+    return res
 
-  @property
-  def raxml_best_model(self):
-    return os.path.join(self.results_dir, "raxml_best_model.txt")
-
-  @property
-  def raxml_all_ml_trees(self):
-    return os.path.join(self.results_dir, "raxml_all_ml_trees.newick")
-
-  @property
-  def raxml_credible_ml_trees(self):
-    return os.path.join(self.results_dir, "raxml_credible_ml_trees.newick")
-
-  @property
-  def raxml_consensus_MR_tree(self):
-    return os.path.join(self.results_dir, "raxml_consensus_tree_MR.newick")
-
-  @property
-  def raxml_consensus_MRE_tree(self):
-    return os.path.join(self.results_dir, "raxml_consensus_tree_MRE.newick")
-
-  @property
-  def raxml_all_ml_trees_rf_distances(self):
-    return os.path.join(self.results_dir, "raxml_all_ml_trees.rf.distances")
-
-  @property
-  def raxml_all_ml_trees_ll(self):
-    return os.path.join(self.results_dir, "raxml_all_ml_trees_with_ll.txt")
-
-  @property
-  def raxml_bootstrap_trees(self):
-    return os.path.join(self.results_dir, "raxml_bs_trees.newick")
-
-  @property
-  def rf_distance_report(self):
-    return os.path.join(self.results_dir, "rf_distance_report.txt")
-
-  @property
-  def mptp_output(self):
-    return os.path.join(self.results_dir, "mptp_output.txt")
+  @property 
+  def likelihoods_dir(self):
+    res = os.path.join(self.results_dir, "likelihoods")
+    util.mkdirp(res)
+    return res
 
   @property
   def thinning_dir(self):
-    return os.path.join(self.results_dir, "tree_thinning")
+    res = os.path.join(self.results_dir, "tree_thinning")
+    util.mkdirp(res)
+    return res
+  
+  @property
+  def epa_rooting_dir(self):
+    return os.path.join(self.results_dir, "epa_rooting")
 
   @property
+  def rootdigger_dir(self):
+    res = os.path.join(self.results_dir, "rootdigger_rooting")
+    util.mkdirp(res)
+    return res
+
+  @property
+  def raxml_best_tree(self):
+    return os.path.join(self.trees_dir, "best_ml_tree.newick")
+
+  @property
+  def raxml_best_tree_tbe(self):
+    return os.path.join(self.trees_dir, "best_ml_tree.newick_tbe.newick")
+
+  @property
+  def raxml_bootstrap_trees(self):
+    return os.path.join(self.trees_dir, "bootstrap_trees.newick")
+
+  @property
+  def raxml_best_tree_with_duplicate(self):
+    return os.path.join(self.trees_dir, "best_ml_tree.newick_duplicate_reattached.newick")
+
+  @property
+  def raxml_all_ml_trees(self):
+    return os.path.join(self.trees_dir, "all_ml_trees.newick")
+
+  @property
+  def raxml_credible_ml_trees(self):
+    return os.path.join(self.trees_dir, "credible_ml_trees.newick")
+
+  @property
+  def raxml_consensus_MR_tree(self):
+    return os.path.join(self.trees_dir, "MR_consensus_tree.newick")
+
+  @property
+  def raxml_consensus_MRE_tree(self):
+    return os.path.join(self.trees_dir, "MRE_consensus_tree.newick")
+
+  @property
+  def raxml_all_ml_trees_rf_distances(self):
+    return os.path.join(self.rfdistance_dir, "all_rfdistances.txt")
+
+  @property
+  def rf_distance_report(self):
+    return os.path.join(self.rfdistance_dir, "summary.txt")
+ 
+
+  @property
+  def raxml_best_model(self):
+    return os.path.join(self.models_dir, "raxml_best_model.txt")
+
+  @property
+  def mptp_output(self):
+    return os.path.join(self.species_delimitation_dir, "mptp_output.txt")
+
+  @property
+  def raxml_all_ml_trees_ll(self):
+    return os.path.join(self.likelihoods_dir, "all_ml_trees_with_likelihood.txt")
+
+  @property
+  def raxml_iqtree_ll(self):
+    return os.path.join(self.likelihoods_dir, "raxml_iqtree_ll.txt")
+
+  @property
+  def raxml_iqtree_ll_all(self):
+    return os.path.join(self.likelihoods_dir, "raxml_iqtree_ll_all.csv")
+
+  @property
+  def gamma_ll_all(self):
+    return os.path.join(self.likelihoods_dir, "gamma_ll_all.csv")
+
+  @property
+  def gamma_median_ll_all(self):
+    return os.path.join(self.likelihoods_dir, "gamma_median_ll_all.csv")
+
+  @property
+  def raxmlng_param_jiggle_llhs(self):
+    return os.path.join(self.likelihoods_dir, "raxmlng_param_jiggle_llhs.csv")
+
+  @property
+  def iqtree_param_jiggle_llhs(self):
+    return os.path.join(self.likelihoods_dir, "iqtree_param_jiggle_llhs.csv")
+
+
   def ss_mre_thinned_tree(self):
     return os.path.join(self.thinning_dir, "ss_mre_thinned_tree.newick")
   
@@ -219,40 +286,12 @@ class Paths():
     return os.path.join(self.thinning_dir, "leaves_thinned_tree.newick")
 
   @property
-  def epa_rooting_dir(self):
-    return os.path.join(self.results_dir, "epa_rooting")
-
-  @property
   def root_digger_output(self):
     return os.path.join(self.results_dir, "root_digger_lwr.newick")
 
   @property
   def root_digger_logfile(self):
     return os.path.join(self.results_dir, "root_digger.log")
-
-  @property
-  def raxml_iqtree_ll(self):
-    return os.path.join(self.results_dir, "raxml_iqtree_ll.txt")
-
-  @property
-  def raxml_iqtree_ll_all(self):
-    return os.path.join(self.results_dir, "raxml_iqtree_ll_all.csv")
-
-  @property
-  def gamma_ll_all(self):
-    return os.path.join(self.results_dir, "gamma_ll_all.csv")
-
-  @property
-  def gamma_median_ll_all(self):
-    return os.path.join(self.results_dir, "gamma_median_ll_all.csv")
-
-  @property
-  def raxmlng_param_jiggle_llhs(self):
-    return os.path.join(self.results_dir, "raxmlng_param_jiggle_llhs.csv")
-
-  @property
-  def iqtree_param_jiggle_llhs(self):
-    return os.path.join(self.results_dir, "iqtree_param_jiggle_llhs.csv")
 
   _version = "UNDEFINED"
 
