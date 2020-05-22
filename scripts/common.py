@@ -268,10 +268,6 @@ class Paths():
   def iqtree_param_jiggle_llhs(self):
     return util.make_path_in_workdir(self.version, self.dataset, self._iqtree_param_jiggle_llhs)
 
-  @property
-  def iqtree_tests_output(self):
-    return util.make_path_in_workdir(self.version, self.dataset, self._iqtree_tests_output)
-
   _version = "UNDEFINED"
 
   # dl from gisaid
@@ -331,7 +327,6 @@ class Paths():
   _raxml_iqtree_ll_all = os.path.join(_results_dir, "raxml_iqtree_ll_all.csv")
   _raxmlng_param_jiggle_llhs = os.path.join(_results_dir, "raxmlng_param_jiggle_llhs.csv")
   _iqtree_param_jiggle_llhs = os.path.join(_results_dir, "iqtree_param_jiggle_llhs.csv")
-  _iqtree_tests_output = os.path.join(_results_dir, "iqtree_tests.txt")
 
 # misc
 subst_model = "GTR+FO+G4"

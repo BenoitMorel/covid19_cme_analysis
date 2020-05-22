@@ -47,40 +47,9 @@ def extract_tests_results(iqtree_tests_file):
       end = i
   res = []
   for line in lines[begin: end]:
-    #if (line.startswith("Tree")):
-      #res.append(line.replace("\n", ""))
     if (line.strip().split(" ")[0].isdigit()):
       res.append(line.replace("\n", ""))
   return res
-
-"""
-def get_per_test_values(iqtree_tests_file):
-  iqtree_lines = extract_tests_results(iqtree_tests_file)
-   
-  header = iqtree_lines[0].split()
-  per_test_values = {}
-  tests = []
-  to_skip = set(["Tree", "logL", "deltaL", "bp-RELL"])
-  key_position = {}
-  for i in range(0, len(header)):
-    key = header[i]
-    if (len(key.strip()) != 0 and not key in to_skip):
-      per_test_values[key] = []
-      tests.append(key)
-      key_position[key] = i
-  #print(tests) 
-  #print(header)
-  #print(key_position)
-  for line in iqtree_lines[1:]:
-    values = line.replace(" + ", " ").replace(" - ", " ").split()
-    #print(values)
-    for key in key_position:
-      per_test_values[key].append(values[key_position[key]])
-  #print(per_test_values)
-  print("ITS ALL WRONG")
-  assert(False)
-  return per_test_values
-"""
 
 
 def filter_accepted_trees(iqtree_tests_file, ml_trees_file):
@@ -102,8 +71,7 @@ def perform_all_tests(paths):
   iqtree_ll = iqtree_tests(paths.alignment, common.subst_model, paths.raxml_all_ml_trees, paths.raxml_best_tree, iqtree_dir)
   raxml_ll = float(open(paths.raxml_all_ml_trees_ll).readline().split(" ")[0])
   iqtree_tests_output = os.path.join(iqtree_dir, "iqtree_tests.iqtree")
-  shutil.copy(iqtree_tests_output, paths.iqtree_tests_output)
-  accepted_trees = filter_accepted_trees(paths.iqtree_tests_output, paths.raxml_all_ml_trees)
+  accepted_trees = filter_accepted_trees(iqtree_tests_output, paths.raxml_all_ml_trees)
   print(str(len(accepted_trees)) + " tree passed all IQTree consistency tests") 
   with open(paths.raxml_credible_ml_trees, "w") as writer:
     for tree in accepted_trees:
