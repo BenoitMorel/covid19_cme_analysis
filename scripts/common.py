@@ -287,11 +287,11 @@ class Paths():
 
   @property
   def root_digger_output(self):
-    return os.path.join(self.results_dir, "root_digger_lwr.newick")
+    return os.path.join(self.rootdigger_dir, "root_digger_lwr.newick")
 
   @property
   def root_digger_logfile(self):
-    return os.path.join(self.results_dir, "root_digger.log")
+    return os.path.join(self.rootdigger_dir, "root_digger.log")
 
   _version = "UNDEFINED"
 

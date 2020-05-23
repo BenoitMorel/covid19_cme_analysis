@@ -12,7 +12,16 @@ import csv
 def compute_entropy(tree):
   acc = 0.0
   for node in tree.traverse("postorder"):
-    acc -= node.LWR * numpy.log2(node.LWR)
+    lwr = 0.0
+    # some nodes do not have LWR set and ete3
+    # does not allow to check that a feature is set
+    try:
+      lwr = float(node.LWR)
+    except:
+      continue
+    if (lwr == 0.0):
+      continue
+    acc -= lwr * numpy.log2(lwr)
   return acc
 
 paths = common.Paths(sys.argv)
@@ -43,6 +52,7 @@ sample_trees_len = (len(sorted_trees) // 10) + 1
 
 os.makedirs(runs_dir, exist_ok=True)
 
+
 index = 0
 print("running", sample_trees_len, "iterations")
 for lh, tree in sorted_trees[:sample_trees_len]:
@@ -61,15 +71,16 @@ results = []
 
 for root, dirs, files in os.walk(runs_dir):
   for f in files:
-    with open(f) as infile:
+    if (not f.endswith(".tree") or "in" in f):
+      continue
+    with open(os.path.join(root, f)) as infile:
       tree = ete3.Tree(infile.read())
-
     index = int(os.path.splitext(os.path.basename(f))[0])
     results.append({'lh' : sorted_trees[index][0],
                     'index': index,
                     'entropy': compute_entropy(tree)})
 
-with open(outfile) as csv_file:
+with open(outfile, "w") as csv_file:
   writer = csv.DictWriter(csv_file, fieldnames=results[0].keys())
   for r in results:
     writer.writerow(r)
