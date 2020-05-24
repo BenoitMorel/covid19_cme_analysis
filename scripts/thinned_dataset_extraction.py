@@ -7,7 +7,6 @@ from ete3 import SeqGroup
 
 
 def extract_ss(input_path, suffix, tree_file): 
-  
   tree = Tree(tree_file, format = 1)
   leaves_set = set(tree.get_leaf_names())
   msa = SeqGroup(input_path.alignment, "fasta")
@@ -22,12 +21,14 @@ def extract_ss(input_path, suffix, tree_file):
       new_msa.set_seq(label, sequence)
   open(output_path.alignment, "w").write(new_msa.write(format = "fasta"))
   shutil.copy(input_path.duplicates_json, output_path.duplicates_json)
+  shutil.copy(input_path.outgroups_file, output_path.outgroups_file)
 
 def extract_cc(input_path, suffix, alignment_file):
   path_argv = [input_path._version, input_path._dataset + suffix]
   output_path = common.Paths(path_argv, 0)
   data_versioning.setup_new_dataset(output_path)
   shutil.copy(alignment_file, output_path.alignment)
+  shutil.copy(input_path.outgroups_file, output_path.outgroups_file)
   shutil.copy(input_path.duplicates_json, output_path.duplicates_json)
 
 
