@@ -44,10 +44,14 @@ def get_version( argv, i=1 ):
   return version
 
 def copy( src, dest ):
-  copyfile( src, dest)
+  copyfile( src, dest )
 
-def copy_dir( src, dest ):
-  copytree( src, dest)
+def copy_dir( src, dest, ignore=None ):
+  if ignore:
+    ign_f = shutil.ignore_patterns(*ignore)
+  else:
+    ign_f = None
+  copytree( src, dest, ignore=ign_f )
 
 def clean_dir( path ):
   if os.path.exists( path ):

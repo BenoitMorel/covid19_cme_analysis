@@ -86,7 +86,7 @@ placement.outgroup_check( result_files, result_dir )
 # also export the individual results
 for f in result_files:
   d = os.path.dirname( f )
-  util.copy_dir( d, os.path.join( result_dir, os.path.basename(d) ) )
+  util.copy_dir( d, os.path.join( result_dir, os.path.basename(d) ), ["*.rba", "*.phy", "*.startTree"] )
 
 # further, we might want to do lwr histograms:
 # gappa examine lwr --jplace-path ./*/*.jplace --no-list-file --out-dir ../../results/epa_rooting/
