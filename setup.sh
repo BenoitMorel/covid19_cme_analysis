@@ -91,13 +91,21 @@ install_papara() {
 }
 
 install_genesis() {
-  git clone https://github.com/lczech/genesis.git
+  git clone --recursive https://github.com/lczech/genesis.git
   echo "Installing genesis..."
   cd genesis/apps
   ln -s ../../../scripts/*.cpp .
   cd ..
   make -j
   make update -j
+  cd ..
+}
+
+install_gappa() {
+  git clone --recursive https://github.com/lczech/gappa.git
+  echo "Installing gappa..."
+  cd gappa
+  make -j
   cd ..
 }
 
@@ -145,6 +153,7 @@ install_mptp
 install_epa
 install_papara
 install_genesis
+install_gappa
 install_iqtree
 install_root_digger
 install_mafft
