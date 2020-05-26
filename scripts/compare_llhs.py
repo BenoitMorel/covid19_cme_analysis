@@ -101,7 +101,7 @@ def evaluate_all_trees(paths):
   iqtree_eval_dir_gamma = os.path.join(paths.runs_dir, 'iqtree_eval_gamma')
   util.mkdirp(iqtree_eval_dir_gamma)
   raxml_eval_dir_gamma = os.path.join(paths.runs_dir, 'raxml_eval_gamma')
-  util.mkdirp(raxml_eval_dir_gamma)
+  util.make_path_clean(raxml_eval_dir_gamma)
   raxmlng_eval_dir_gamma = os.path.join(paths.runs_dir, 'raxmlng_eval_gamma')
   util.mkdirp(raxmlng_eval_dir_gamma)
   iqtree_eval_dir_gamma_median = os.path.join(paths.runs_dir, 'iqtree_eval_gamma_median')
@@ -156,7 +156,7 @@ def evaluate_all_trees(paths):
   print('done')
 
   print('Evaluating trees with RAxML (including model & brlen optimization)... ', end = '')
-  raxml_lls = raxml_eval_all(paths.alignment, 'GTRGAMMAX', paths.raxml_all_ml_trees, os.path.join(raxmlng_eval_dir_gamma, 'eval'))
+  raxml_lls = raxml_eval_all(paths.alignment, 'GTRGAMMAX', paths.raxml_all_ml_trees, os.path.join(raxml_eval_dir_gamma, 'eval'))
   print('done')
 
   with open(paths.gamma_ll_all, "w") as writer:
