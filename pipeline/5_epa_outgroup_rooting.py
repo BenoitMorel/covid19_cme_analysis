@@ -75,18 +75,22 @@ with open( paths.raxml_credible_ml_trees ) as ml_trees_file:
 
     result_files.append( os.path.join( cur_outdir, "epa_result.jplace") )
 
+# ================================================================
+# post-analysis
+# ================================================================
+result_dir = paths.epa_rooting_dir
+util.make_path_clean( result_dir )
+# do the summary high level stats
+placement.outgroup_check( result_files, result_dir )
+# also generate the lwr histograms
+hist_csv_file = placement.gappa_examine_lwr( os.path.join( epa_out_dir, "*/*.jplace" ), result_dir )
+placement.ggplot_lwr_histogram( hist_csv_file, result_dir)
 
 # ================================================================
 # finally, export the results
 # ================================================================
-result_dir = paths.epa_rooting_dir
-util.make_path_clean( result_dir )
-# the overall result evaluation
-placement.outgroup_check( result_files, result_dir )
 # also export the individual results
 for f in result_files:
   d = os.path.dirname( f )
   util.copy_dir( d, os.path.join( result_dir, os.path.basename(d) ), ["*.rba", "*.phy", "*.startTree"] )
 
-# further, we might want to do lwr histograms:
-# gappa examine lwr --jplace-path ./*/*.jplace --no-list-file --out-dir ../../results/epa_rooting/
