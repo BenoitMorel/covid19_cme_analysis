@@ -4,6 +4,7 @@ import launcher
 import common
 import subprocess as sub
 import util
+from glob import glob
 
 def split_alignment_outgroups(input_msa, outgroup_spec, out_dir):
   util.expect_file_exists( input_msa )
@@ -38,6 +39,41 @@ def outgroup_check(jplace_files, out_dir):
     sub.check_call(cmd, stdout=logfile)
 
   return outfile
+
+def gappa_examine_lwr(jplace_path, out_dir):
+  util.make_path( out_dir )
+
+  # gappa examine lwr --jplace-path ./*/*.jplace --no-list-file --out-dir ../../results/epa_rooting/
+  cmd = []
+  cmd.append(common.gappa)
+  cmd.append("examine")
+  cmd.append("lwr")
+  cmd.append("--jplace-path")
+  cmd += glob(jplace_path)
+  cmd.append("--no-list-file")
+  cmd.append("--no-compat-check")
+  cmd.append("--histogram-bins")
+  cmd.append("20")
+  cmd.append("--out-dir")
+  cmd.append(out_dir)
+  sub.check_call(cmd)
+
+  return os.path.join( out_dir, "lwr_histogram.csv" )
+
+def ggplot_lwr_histogram(hist_csv_file, out_dir):
+  util.make_path( out_dir )
+
+  # gappa examine lwr --jplace-path ./*/*.jplace --no-list-file --out-dir ../../results/epa_rooting/
+  cmd = []
+  cmd.append( os.path.join(common.scripts_dir, "lwr_hist.r") )
+  cmd.append(hist_csv_file)
+  # get the input file name without ending
+  f_name=os.path.splitext( os.path.basename(hist_csv_file) )[0]
+  out_file=os.path.join(out_dir, f_name+".pdf")
+  cmd.append(out_file)
+  sub.check_call(cmd)
+
+  return out_file
 
 def launch_epa(tree, modelfile, ref_msa, query_msa, out_dir, thorough=True):
   util.make_path(out_dir)
