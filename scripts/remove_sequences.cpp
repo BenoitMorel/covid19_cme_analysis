@@ -81,14 +81,10 @@ int main( int argc, char** argv )
     auto excluded = get_nonempty_noncomment_lines( exclude_file );
 
     // output iterator for the retained sequences
-    std::ofstream retained_out_stream;
-    file_output_stream( outfile, retained_out_stream );
-    FastaOutputIterator retained{ retained_out_stream };
+    FastaOutputIterator retained{ to_file(outfile) };
 
     // output iterator for the removed sequences
-    std::ofstream removed_out_stream;
-    file_output_stream( trimmed_seqs, removed_out_stream );
-    FastaOutputIterator removed{ removed_out_stream };
+    FastaOutputIterator removed{ to_file(trimmed_seqs) };
 
     // Read the file
     LOG_INFO << "Started";
@@ -104,18 +100,18 @@ int main( int argc, char** argv )
 
         if( contains_ci( excluded, seq.label() ) ) {
             // removed case
-            removed = seq;
+            removed << seq;
             ++cnt;
         } else {
             // normal case
-            retained = seq;
+            retained << seq;
         }
 
         ++fasta_in;
     }
     // LOG_INFO << "Found " << cnt << " sequences, thereof " << seq_map.size() << " unique.";
     LOG_INFO << "Removed " << cnt << " seqeunces.";
-    
+
     LOG_INFO << "Finished";
     return 0;
 }
