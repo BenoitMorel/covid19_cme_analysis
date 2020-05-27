@@ -150,7 +150,7 @@ int main( int argc, char** argv )
         }
         LOG_DBG1 << "using    subtree with " << subtree_leaf_nodes[i].size() << " leaves";
 
-        subtree_entropies[i] = averaged_entropy( counts, false, SiteEntropyOptions::kIncludeGaps );
+        subtree_entropies[i] = average_entropy( counts, false, SiteEntropyOptions::kIncludeGaps );
         ++subtree_cnt;
     }
     LOG_DBG1 << "collected entropy of " << subtree_cnt << " subtrees";
@@ -457,11 +457,10 @@ int main( int argc, char** argv )
     // -------------------------------------------------------------
 
     LOG_INFO << "write out final alignment";
-    std::ofstream fasta_out;
-    utils::file_output_stream( out_file_prefix + "_pruned_alignment.fasta",  fasta_out );
-    FastaOutputIterator fasta_out_it( fasta_out );
+    auto const outfile = out_file_prefix + "_pruned_alignment.fasta";
+    FastaOutputIterator fasta_out_it( to_file( outfile ));
     for( auto const& seq : aln_map ) {
-        fasta_out_it = Sequence( seq.first, seq.second );
+        fasta_out_it << Sequence( seq.first, seq.second );
     }
 
     LOG_INFO << "Finished";
