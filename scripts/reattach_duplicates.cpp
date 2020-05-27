@@ -83,7 +83,7 @@ int main( int argc, char** argv )
     }
 
     // Write new newick file
-    CommonTreeNewickWriter().to_file( tree, output_newick_file);
+    CommonTreeNewickWriter().write( tree, to_file( output_newick_file ));
     LOG_INFO << "Wrote tree with " << leaf_node_count(tree) << " leaf nodes.";
 
     LOG_INFO << "Finished";

@@ -67,9 +67,9 @@ int main( int argc, char** argv )
         }
 
         if ( out_type == "fasta") {
-            FastaWriter().to_file( set, out_file );
+            FastaWriter().write( set, to_file( out_file ));
         } else if ( out_type == "phylip") {
-            PhylipWriter().line_length(0).to_file( set, out_file );
+            PhylipWriter().line_length(0).write( set, to_file( out_file ));
         } else if ( out_type == "interleaved_phylip") {
             //PhylipWriter().mode()
             //    .to_stream( set, std::cout );

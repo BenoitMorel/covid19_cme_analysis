@@ -52,15 +52,19 @@ int main( int argc, char** argv )
     LOG_INFO << "Using " << utils::Options::get().number_of_threads() << " threads";
 
     // Get the files from command line
-    if (argc != 5) {
+    if (argc != 6) {
         throw std::runtime_error(
-            "Usage: " + std::string( argv[0] ) + " <in_newick_file> <in_fasta_file> <target_leaf_count> <out_file_prefix>"
+            "Usage: " + std::string( argv[0] ) + " <in_newick_file> <in_fasta_file> "
+            "<target_leaf_count> <max_pruned_clade_size> <out_file_prefix>\n"
+            "max_pruned_clade_size = 0 is a special case, "
+            "where the max_pruned_clade_size check is deactivated"
         );
     }
     auto const in_newick_file = std::string( argv[1] );
     auto const in_fasta_file = std::string( argv[2] );
     auto const target_leaf_count = static_cast<size_t>( std::stoi( argv[3] ));
-    auto const out_file_prefix = std::string( argv[4] );
+    auto const max_pruned_clade_size = static_cast<size_t>( std::stoi( argv[4] ));
+    auto const out_file_prefix = std::string( argv[5] );
     LOG_INFO << "Started";
 
     // General tree drawing params that we will need later
@@ -101,7 +105,8 @@ int main( int argc, char** argv )
     auto subtree_edges = std::vector<Bitvector>( tree.link_count() );
 
     // Compute the entropy of all subtrees
-    LOG_INFO << "Compute the entropy of all subtrees";
+    LOG_INFO << "Compute the entropy of all " << subtree_entropies.size() << " subtrees";
+    size_t subtree_cnt = 0;
     #pragma omp parallel for
     for( size_t i = 0; i < tree.link_count(); ++i ) {
 
@@ -116,7 +121,7 @@ int main( int argc, char** argv )
         // Init bitvector that contains all edges of the subtree
         subtree_edges[i] = Bitvector( tree.edge_count() );
 
-        // Get the indices of all edges in the subtree, then iterate them and sum up all nucleotides
+        // Get the indices of all edges in the subtree, iterate it, and sum up all nucleotides
         // that we find in there. There are more efficient ways, but for the small data,
         // this works, and is easier to understand.
         auto const edge_indices = get_subtree_edges( tree.link_at( i ));
@@ -137,8 +142,18 @@ int main( int argc, char** argv )
             counts.add_sequence( aln_map.at( name ));
         }
 
-        subtree_entropies[i] = averaged_entropy( counts, false, SiteEntropyOptions::kIncludeGaps );
+        // If there are more than the max specified clade size, we do not want to consider that
+        // clade at all, so let's just skip it.
+        if( max_pruned_clade_size != 0 && subtree_leaf_nodes[i].size() > max_pruned_clade_size ) {
+            LOG_DBG1 << "skipping subtree with " << subtree_leaf_nodes[i].size() << " leaves";
+            continue;
+        }
+        LOG_DBG1 << "using    subtree with " << subtree_leaf_nodes[i].size() << " leaves";
+
+        subtree_entropies[i] = average_entropy( counts, false, SiteEntropyOptions::kIncludeGaps );
+        ++subtree_cnt;
     }
+    LOG_DBG1 << "collected entropy of " << subtree_cnt << " subtrees";
 
     // Visualize the tree with all its entropy values.
     // Naturally, as this is a tree with ent. values, we call it treebeard.
@@ -172,11 +187,20 @@ int main( int argc, char** argv )
     if( current_sorted_cand == 0 ) {
         throw std::runtime_error( "no unset entropy values. this cannot be." );
     }
+    LOG_DBG1 << "skipped to index " << current_sorted_cand << " of "
+             << subtree_entropies.size() << " (" << entropy_sorting.size() << ")";
 
+    // Iterate all candidate clades, and stop either if we have pruned away enough,
+    // or, if we pruned all available ones, stop there as well (which means, that the max_pruned_clade_size
+    // was set to a value that is too small to actually reach the target number of leaves)
     LOG_INFO << "Selecting candidate subtrees for pruning";
     size_t iter = 0;
     size_t current_leaf_count = leaf_node_count(tree);
-    for( ; current_leaf_count > target_leaf_count ; ++current_sorted_cand ) {
+    for(
+        ;
+        current_leaf_count > target_leaf_count && current_sorted_cand < entropy_sorting.size() ;
+        ++current_sorted_cand
+    ) {
         ++iter;
         auto const current_cand_link_idx = entropy_sorting[current_sorted_cand];
 
@@ -306,6 +330,13 @@ int main( int argc, char** argv )
     LOG_INFO << "ended with current_leaf_count " << current_leaf_count << " by pruning "
              << picked_subtrees.size() << " subtrees";
 
+    if( current_leaf_count > target_leaf_count ) {
+        LOG_WARN << "this is more than was specified by <target_leaf_count> = " << target_leaf_count
+                 << ", which means that we could not find enough clades for pruning. you have to "
+                 << "increase the value of <max_pruned_clade_size> to get down to the desired "
+                 << "number of leaf taxa!";
+    }
+
     // -------------------------------------------------------------
     //     Visualize resulting pruned tree
     // -------------------------------------------------------------
@@ -366,7 +397,7 @@ int main( int argc, char** argv )
     LOG_INFO << "compute consensus and pick best representatives for each subtree";
     for( auto subtree_idx : picked_subtrees ) {
         auto const& subtree_nodes = subtree_leaf_nodes[ subtree_idx ];
-        LOG_DBG1 << "pruning subtree " << subtree_idx << " with " << subtree_nodes.size() << " leaves";
+        LOG_DBG1 << "replacing subtree " << subtree_idx << " with " << subtree_nodes.size() << " leaves";
 
         // Compute consensus sequence for the subtree
         auto counts = SiteCounts( "ACGT", aln[0].size() );
@@ -426,11 +457,10 @@ int main( int argc, char** argv )
     // -------------------------------------------------------------
 
     LOG_INFO << "write out final alignment";
-    std::ofstream fasta_out;
-    utils::file_output_stream( out_file_prefix + "_pruned_alignment.fasta",  fasta_out );
-    FastaOutputIterator fasta_out_it( fasta_out );
+    auto const outfile = out_file_prefix + "_pruned_alignment.fasta";
+    FastaOutputIterator fasta_out_it( to_file( outfile ));
     for( auto const& seq : aln_map ) {
-        fasta_out_it = Sequence( seq.first, seq.second );
+        fasta_out_it << Sequence( seq.first, seq.second );
     }
 
     LOG_INFO << "Finished";

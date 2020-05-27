@@ -76,12 +76,10 @@ int main( int argc, char** argv )
     LOG_INFO << "Found " << cnt << " sequences, thereof " << seq_map.size() << " unique.";
 
     // Write out the reduced fasta file
-    std::ofstream out_stream;
-    file_output_stream( outfile, out_stream );
-    FastaOutputIterator fasta_out{ out_stream };
+    FastaOutputIterator fasta_out{ to_file(outfile) };
     for( auto const& seq : seq_map ) {
         auto const tmp_seq = Sequence( seq.second[0], seq.first );
-        fasta_out = tmp_seq;
+        fasta_out << tmp_seq;
     }
 
     // Write out a json file with the mapping. We write the name that is used in the fasta file
@@ -97,7 +95,7 @@ int main( int argc, char** argv )
             doc[ seq.second[0] ] = arr;
         }
     }
-    JsonWriter().to_file( doc, outfilejson );
+    JsonWriter().write( doc, to_file( outfilejson ));
 
     LOG_INFO << "Finished";
     return 0;
