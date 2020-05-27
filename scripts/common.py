@@ -50,6 +50,20 @@ class Paths():
 
     os.makedirs(self._dataset_root, exist_ok=True)
 
+  def from_version_and_dataset(version, data):
+    return Paths([version, data], 0)
+
+  def get_all_datasets(version):
+    version_path = util.make_path_in_workdir(version)
+    datasets = []
+    version_dir = util.make_path_in_workdir(version)
+    for dataset in os.listdir(version_dir):
+      datadir = os.path.join(version_dir, dataset)
+      if (os.path.isdir(datadir)):
+        if ("results" in os.listdir(datadir)):
+          datasets.append(dataset)
+    return sorted(datasets)
+
   # =====================================================
   # FUNCTIONS and basic values
   # =====================================================
