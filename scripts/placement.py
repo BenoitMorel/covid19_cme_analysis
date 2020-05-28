@@ -52,6 +52,7 @@ def gappa_examine_lwr(jplace_path, out_dir):
   cmd += glob(jplace_path)
   cmd.append("--no-list-file")
   cmd.append("--no-compat-check")
+  cmd.append("--allow-file-overwriting")
   cmd.append("--histogram-bins")
   cmd.append("20")
   cmd.append("--out-dir")
