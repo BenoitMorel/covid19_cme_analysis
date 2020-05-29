@@ -38,6 +38,36 @@ struct stats {
   double stddev;
 };
 
+std::ostream& operator<<( std::ostream& os, stats const& s )
+{
+  os << "  mean: " << std::to_string( s.mean ) << "\n";
+  os << "  stdd: " << std::to_string( s.stddev ) << "\n";
+  return os;
+}
+
+std::ostream& operator<<( std::ostream& os, std::unordered_map<std::string, size_t> const& map )
+{
+  for( auto const& elem : map ) {
+    os << "  " << std::to_string(elem.second) << " x " << elem.first << "\n";
+  }
+
+  return os;
+}
+
+static stats get_stats(std::vector<double> const& v)
+{
+  stats res;
+  double sum = std::accumulate(v.begin(), v.end(), 0.0);
+  auto mean = res.mean = sum / v.size();
+
+  std::vector<double> diff(v.size());
+  std::transform(v.begin(), v.end(), diff.begin(), [mean](double x) { return x - mean; });
+  double sq_sum = std::inner_product(diff.begin(), diff.end(), diff.begin(), 0.0);
+  res.stddev = std::sqrt(sq_sum / v.size());
+
+  return res;
+}
+
 struct signal {
   size_t weak     = 0;
   size_t possible = 0;
@@ -45,21 +75,10 @@ struct signal {
 
   size_t sum() const { return weak + possible + strong; };
 
+  std::vector<double> best_hits;
   std::vector<double> entropies;
+  std::unordered_map<std::string, size_t> closest_hit_label;
 
-  stats entropy_stats() const
-  {
-    stats res;
-    double sum = std::accumulate(entropies.begin(), entropies.end(), 0.0);
-    auto mean = res.mean = sum / entropies.size();
-
-    std::vector<double> diff(entropies.size());
-    std::transform(entropies.begin(), entropies.end(), diff.begin(), [mean](double x) { return x - mean; });
-    double sq_sum = std::inner_product(diff.begin(), diff.end(), diff.begin(), 0.0);
-    res.stddev = std::sqrt(sq_sum / entropies.size());
-
-    return res;
-  };
 };
 
 constexpr double STRONG   = 0.5;
@@ -129,12 +148,17 @@ int main( int argc, char** argv )
 
       if( best_hit_lwr > STRONG ) {
         cur_signal.strong++;
+        auto const& edge = pq.placement_at( 0 ).edge();
+        // get the label if there is one
+        auto const& label = edge.secondary_node().data<PlacementNodeData>().name;
+        cur_signal.closest_hit_label[label]++;
       } else if( best_hit_lwr < WEAK ) {
         cur_signal.weak++;
       } else {
         cur_signal.possible++;
       }
 
+      cur_signal.best_hits.push_back( best_hit_lwr );
       cur_signal.entropies.push_back( get_entropy( pq ) );
     }
   }
@@ -153,18 +177,20 @@ int main( int argc, char** argv )
     } else if( signal.possible > majority ) {
       std::cout << " is majority \"possible\" (" << std::to_string( signal.possible ) << " / " << std::to_string( sum ) << ")\n";
     } else if( signal.strong > majority ) {
-      std::cout << " is majority \"strong\" (" << std::to_string( signal.strong ) << " / " << std::to_string( sum ) << ")\n";
+      std::cout << " is majority \"strong\" (" << std::to_string( signal.strong ) << " / " << std::to_string( sum ) << "):\n";
+      std::cout << signal.closest_hit_label;
     } else {
       std::cout << " is inconclusive ("
                 << std::to_string( signal.strong ) << ", "
                 << std::to_string( signal.possible ) << ", "
                 << std::to_string( signal.weak ) << ")\n";
     }
+    std::cout << "LWR Best Hit:\n";
+    std::cout << get_stats(signal.best_hits);
+    
     std::cout << "LWR Entropy:\n";
-    auto stats = signal.entropy_stats();
-    std::cout << "  mean: " << std::to_string( stats.mean ) << "\n";
-    std::cout << "  stdd: " << std::to_string( stats.stddev ) << "\n";
-
+    std::cout << get_stats(signal.entropies);
+    
     std::cout << "\n";
   }
 
