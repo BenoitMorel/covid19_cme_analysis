@@ -56,14 +56,12 @@ std::ostream& operator<<( std::ostream& os, std::unordered_map<std::string, size
 
 static stats get_stats(std::vector<double> const& v)
 {
-  stats res;
-  double sum = std::accumulate(v.begin(), v.end(), 0.0);
-  auto mean = res.mean = sum / v.size();
 
-  std::vector<double> diff(v.size());
-  std::transform(v.begin(), v.end(), diff.begin(), [mean](double x) { return x - mean; });
-  double sq_sum = std::inner_product(diff.begin(), diff.end(), diff.begin(), 0.0);
-  res.stddev = std::sqrt(sq_sum / v.size());
+  auto stddevpair = mean_stddev(v);
+  stats res;
+
+  res.mean = stddevpair.mean;
+  res.stddev = stddevpair.stddev;
 
   return res;
 }
@@ -90,7 +88,7 @@ static double get_entropy( Pquery const& pq )
   double entropy = 0.0;
   for( auto const& p : pq.placements() ) {
     auto lwr = p.like_weight_ratio;
-    entropy += lwr * std::log(lwr);
+    entropy += lwr * std::log2(lwr);
   }
   return -entropy;
 }
@@ -159,6 +157,8 @@ int main( int argc, char** argv )
       }
 
       cur_signal.best_hits.push_back( best_hit_lwr );
+      
+      normalize_weight_ratios( pq );
       cur_signal.entropies.push_back( get_entropy( pq ) );
     }
   }
