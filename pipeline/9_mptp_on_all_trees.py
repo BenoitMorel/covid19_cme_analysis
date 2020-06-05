@@ -10,7 +10,7 @@ from collections import Counter
 from statistics import pvariance
 import glob
 
-#paths = common.Paths( sys.argv )
+paths = common.Paths( sys.argv )
 
 def get_species_count(path : str) -> int:
   lines = open(path)
