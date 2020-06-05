@@ -2,6 +2,7 @@
 
 import os
 import util
+import re
 
 scripts_dir = os.path.dirname( os.path.realpath(__file__) )
 base_dir = os.path.abspath( os.path.realpath( os.path.join(
@@ -72,11 +73,11 @@ class Paths():
 
   @property
   def dataset_has_outgroups(self):
-    return self._dataset[-1] == 'o'
+    return re.search("msa.", self._dataset).group(0)[-1] == 'o'
 
   @property
   def dataset_had_singletons_removed(self):
-    return self._dataset[0] == 's'
+    return re.search(".msa", self._dataset).group(0)[0] == 's'
 
   @property
   def version(self):
