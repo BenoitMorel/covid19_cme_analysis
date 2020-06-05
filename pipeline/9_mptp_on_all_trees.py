@@ -57,7 +57,7 @@ def summarize_species(n_trees: int, spec_counts: dict, csv_outpath: str, summary
 
 # run mptp on a NEWICK file with multiple rooted trees, separated line by line
 # create a csv file with tree_id, species_count_ml, species_count_mcmc in it
-# also create a summary text file with a species count histogram, min species count, max species count, and species count standard deviation
+# also create a summary text file with a species count histogram, min species count, max species count, and species count variance
 def run_mptp_on_trees(treesfile: str, output_path: str, csv_outpath: str, summary_outpath: str, mptp_fix: bool) -> None:
   lines = open(treesfile).readlines()
   spec_counts = {}
