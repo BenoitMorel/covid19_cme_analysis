@@ -17,7 +17,7 @@ old_raxml = os.path.join(software_path, "standard-RAxML", "raxml")
 modeltest = os.path.join(software_path, "modeltest", "bin", "modeltest-ng-mpi")
 pargenes = os.path.join(software_path, "ParGenes", "pargenes", "pargenes-hpc.py")
 mptp = os.path.join(software_path, "mptp", "bin", "mptp")
-mptp_fix = os.path.join(software_path, "mptp_fix", "bin", "mptp_fix")
+mptp_fix = os.path.join(software_path, "mptp_fix", "bin", "mptp")
 epa = os.path.join(software_path, "epa-ng", "bin", "epa-ng")
 papara = os.path.join(software_path, "papara", "papara")
 root_digger = os.path.join(software_path, "root_digger", "bin", "rd")
@@ -261,6 +261,14 @@ class Paths():
   @property
   def mptp_output(self):
     return os.path.join(self.species_delimitation_dir, "mptp_output.txt")
+
+  @property
+  def mptp_output_csv(self):
+    return os.path.join(self.species_delimitation_dir, "mptp.csv")
+
+  @property
+  def mptp_output_summary(self):
+    return os.path.join(self.species_delimitation_dir, "mptp_summary.txt")
 
   @property
   def raxml_all_ml_trees_ll(self):

@@ -10,7 +10,6 @@ from collections import Counter
 from statistics import pvariance
 import glob
 
-paths = common.Paths( sys.argv )
 
 def get_species_count(path : str) -> int:
   lines = open(path)
@@ -88,6 +87,5 @@ def run_mptp_on_trees(treesfile: str, output_path: str, csv_outpath: str, summar
   summarize_species(len(lines), spec_counts, csv_outpath, summary_outpath)
 
 if __name__ == "__main__":
-  # Sarah's testing code
-  pass
-  #run_mptp_on_trees('3_trees.txt', 'mptp_test_output', 'csv_test.csv', 'summary_test.txt', False)
+  paths = common.Paths( sys.argv )
+  run_mptp_on_trees(paths.raxml_credible_ml_trees, paths.mptp_output, paths.mptp_output_csv, paths.mptp_output_summary, False)
