@@ -31,4 +31,12 @@ def extract_cc(input_path, suffix, alignment_file):
   shutil.copy(input_path.outgroups_file, output_path.outgroups_file)
   shutil.copy(input_path.duplicates_json, output_path.duplicates_json)
 
+def extract_rand(input_path, suffix, alignment_file):
+  path_argv = [input_path._version, input_path._dataset + suffix]
+  output_path = common.Paths(path_argv, 0)
+  data_versioning.setup_new_dataset(output_path)
+  shutil.copy(alignment_file, output_path.alignment)
+  shutil.copy(input_path.outgroups_file, output_path.outgroups_file)
+  shutil.copy(input_path.duplicates_json, output_path.duplicates_json)
+
 

@@ -13,3 +13,7 @@ thinned_dataset_extraction.extract_ss(paths, "-ss_thinned", paths.ss_mre_thinned
 # Clade compression thinning
 thinned_dataset_extraction.extract_cc(paths, "-cc_thinned", paths.cc_thinned_alignment)
 
+# Clade compression thinning
+thinned_dataset_extraction.extract_rand(paths, "-rand_thinned", paths.rand_thinned_alignment)
+
+

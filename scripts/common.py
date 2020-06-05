@@ -299,6 +299,10 @@ class Paths():
     return os.path.join(self.thinning_dir, "clade_compression_thinned_alignment.fasta")
 
   @property
+  def rand_thinned_alignment(self):
+    return os.path.join(self.thinning_dir, "random_thinned_alignment.fasta")
+
+  @property
   def leaves_thinned_tree(self):
     return os.path.join(self.thinning_dir, "leaves_thinned_tree.newick")
 

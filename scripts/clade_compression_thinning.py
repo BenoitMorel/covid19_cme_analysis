@@ -14,12 +14,12 @@ def clade_compression_thinning(paths, input_tree_filename, input_alignment, taxa
   command.append(input_tree_filename)
   command.append(input_alignment)
   command.append(str(taxa_number))
+  command.append(str(10000))
   command.append(prefix)
   print(" ".join(command))
   subprocess.check_call(command)
  
   shutil.move(prefix + "_pruned_alignment.fasta", output_alignment)
-
 
 
 
