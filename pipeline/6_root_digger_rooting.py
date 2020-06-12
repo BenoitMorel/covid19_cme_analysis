@@ -27,7 +27,7 @@ def compute_entropy(tree):
 paths = common.Paths(sys.argv)
 
 alignment = paths.alignment
-outfile = paths.root_digger_output
+outfile = paths.root_digger_output_csv
 runs_dir = paths.root_digger_runs_dir
 credible_trees_file = paths.raxml_credible_ml_trees
 all_trees_file = paths.raxml_all_ml_trees_ll
@@ -82,5 +82,6 @@ for root, dirs, files in os.walk(runs_dir):
 
 with open(outfile, "w") as csv_file:
   writer = csv.DictWriter(csv_file, fieldnames=results[0].keys())
+  writer.writeheader()
   for r in results:
     writer.writerow(r)

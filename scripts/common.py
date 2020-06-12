@@ -319,6 +319,10 @@ class Paths():
     return os.path.join(self.rootdigger_dir, "root_digger_lwr.newick")
 
   @property
+  def root_digger_output_csv(self):
+    return os.path.join(self.rootdigger_dir, "root_digger_lwr.csv")
+
+  @property
   def root_digger_logfile(self):
     return os.path.join(self.rootdigger_dir, "root_digger.log")
 
