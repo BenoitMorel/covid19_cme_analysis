@@ -61,7 +61,7 @@ def run_mptp_on_trees(treesfile: str, output_path: str, csv_outpath: str, summar
   lines = open(treesfile).readlines()
   spec_counts = {}
   for i in range(len(lines)):
-    tmp_tree_path = "tmp_tree.newick"
+    tmp_tree_path = os.path.join(output_path, "tmp_tree.newick")
     outfile = open(tmp_tree_path, 'w')
     outfile.write(lines[i])
     outfile.close()
