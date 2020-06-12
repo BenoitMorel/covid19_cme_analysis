@@ -49,9 +49,12 @@ class Paths():
     self._dataset = argv[-1] #dataset
     self._version_root = util.make_path_in_workdir(self.version)
     self._dataset_root = os.path.join(self._version_root, self.dataset)
-    # options: ["fmsao", "fmsan", "smsao", "smsan"]
 
-    os.makedirs(self._dataset_root, exist_ok=True)
+    if not os.path.isdir( self._dataset_root ):
+      util.fail( "No such dataset: " + self.dataset )
+
+    # os.makedirs(self._dataset_root, exist_ok=True)
+      # why is this here this should fail!
 
   def from_version_and_dataset(version, data):
     return Paths([version, data], 0)
