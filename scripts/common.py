@@ -194,6 +194,12 @@ class Paths():
     util.mkdirp(res)
     return res
 
+  @property
+  def species_delimitation_runs_dir(self):
+    res = os.path.join(self.runs_dir, "species_delimitation")
+    util.mkdirp(res)
+    return res
+
   @property 
   def likelihoods_dir(self):
     res = os.path.join(self.results_dir, "likelihoods")
@@ -263,7 +269,7 @@ class Paths():
 
   @property
   def mptp_output(self):
-    return os.path.join(self.species_delimitation_dir, "mptp_output.txt")
+    return os.path.join(self.species_delimitation_runs_dir, "mptp_output")
 
   @property
   def mptp_output_csv(self):
