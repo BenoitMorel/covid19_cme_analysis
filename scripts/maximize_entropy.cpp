@@ -150,9 +150,13 @@ int main( int argc, char** argv )
             );
 
             // if this is larger than what we currently have, store it
+            #pragma omp flush( max_e )
             if( entr > max_e ) {
-                max_e = entr;
-                max_i = i;
+                #pragma omp critical( MAX_ENTR )
+                if( entr > max_e ) {
+                    max_e = entr;
+                    max_i = i;
+                }
             }
         }
 
