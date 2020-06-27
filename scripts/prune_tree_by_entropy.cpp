@@ -45,6 +45,7 @@ int main( int argc, char** argv )
     // Activate logging.
     utils::Logging::log_to_stdout();
     utils::Logging::details.time = true;
+    // utils::Logging::max_level( utils::Logging::LoggingLevel::kDebug3 );
     utils::Logging::max_level( utils::Logging::LoggingLevel::kInfo );
 
     // Set threading
@@ -91,6 +92,10 @@ int main( int argc, char** argv )
         }
         aln_map[ seq.label() ] = seq.sites();
     }
+
+    auto all_counts = SiteCounts( "ACGT", aln[0].size() );
+    all_counts.add_sequences(aln);
+    LOG_INFO << "avg entr of input aln : " << average_entropy( all_counts, false, SiteEntropyOptions::kIncludeGaps );
 
     // -------------------------------------------------------------
     //     Compute entropy of subtrees
@@ -387,7 +392,7 @@ int main( int argc, char** argv )
         return matches;
     };
 
-    // collect the sequences that we prune away. we might need them later, if we did not exaclty
+    // collect the sequences that we prune away. we need them later, if we did not exaclty
     // hit the correct number of taxa.
     std::vector<std::pair<std::string, std::string>> removed_seqs;
 
@@ -437,18 +442,67 @@ int main( int argc, char** argv )
     if( current_leaf_count < target_leaf_count ) {
         LOG_INFO << "as the current number of remaining leave nodes " << current_leaf_count
                  << " is below the desired number " << target_leaf_count
-                 << ", we now add some more random sequences picked from the pruned subtrees until "
-                 << "we reach exactly the correct number of leaves.";
+                 << ", we now add some more sequences picked from the pruned subtrees until "
+                 << "we reach exactly the correct number of leaves. "
+                 << "we pick sequences so that they maximize entropy.";
+
+        // create site counts object as a base for entropy calclation
+        auto base_counts = SiteCounts( "ACGT", aln[0].size() );
+        for( auto const& seq : aln_map ) {
+            base_counts.add_sequence( Sequence( seq.first, seq.second ));
+        }
+        LOG_INFO << "avg entr of base aln : " << average_entropy(
+            base_counts, false, SiteEntropyOptions::kIncludeGaps
+        );
 
         // Not very efficient, but get's the job done for now.
         while( current_leaf_count < target_leaf_count ) {
-            auto const n = std::rand() % removed_seqs.size();
-            auto const& e = removed_seqs[n];
+            LOG_DBG1 << "adding more sequences to get from current_leaf_count=" << current_leaf_count
+                     << " to target_leaf_count=" << target_leaf_count;
 
+            // find sequence that maximized entropy of resulting set. we make a copy of the counts
+            // object every time, which is so inefficient, but so convenient...
+            size_t max_i = 0;
+            double max_e = -1.0;
+            #pragma omp parallel for
+            for( size_t i = 0; i < removed_seqs.size(); ++i ) {
+
+                // compute entropy of all currently selected sequences plus exactly one from
+                // the removed ones.
+                auto copy_counts = base_counts;
+                auto const& r = removed_seqs[i];
+                copy_counts.add_sequence( Sequence( r.first, r.second ));
+                double entr = average_entropy(
+                    copy_counts, false, SiteEntropyOptions::kIncludeGaps
+                );
+
+                // if this is larger than what we currently have, store it
+                if( entr > max_e ) {
+                    max_e = entr;
+                    max_i = i;
+                }
+            }
+
+            // Now we have traversed all sequences that were previously removed, and found the one
+            // that maximized entropy. move it from the removed set to the result set.
+            auto const& e = removed_seqs[max_i];
             LOG_DBG2 << "adding " << e.first;
             aln_map[ e.first ] = e.second;
-            removed_seqs.erase( removed_seqs.begin() + n );
+            base_counts.add_sequence( Sequence( e.first, e.second ));
+            removed_seqs.erase( removed_seqs.begin() + max_i );
             ++current_leaf_count;
+
+            // we are done here. we iterate, and in the next iteration, that sequence is now part of
+            // the base, and will be considered while we continue until we have added enough sequences.
+
+            // old, random picking
+            // auto const n = std::rand() % removed_seqs.size();
+            // auto const& e = removed_seqs[n];
+            //
+            // LOG_DBG2 << "adding " << e.first;
+            // aln_map[ e.first ] = e.second;
+            // removed_seqs.erase( removed_seqs.begin() + n );
+            // ++current_leaf_count;
         }
     }
 
@@ -459,9 +513,17 @@ int main( int argc, char** argv )
     LOG_INFO << "write out final alignment";
     auto const outfile = out_file_prefix + "_pruned_alignment.fasta";
     FastaOutputIterator fasta_out_it( to_file( outfile ));
+    SequenceSet final_aln;
     for( auto const& seq : aln_map ) {
         fasta_out_it << Sequence( seq.first, seq.second );
+        final_aln.add( Sequence( seq.first, seq.second ));
     }
+
+    auto final_counts = SiteCounts( "ACGT", final_aln[0].size() );
+    final_counts.add_sequences(final_aln);
+    LOG_INFO << "avg entr of final aln : " << average_entropy(
+        final_counts, false, SiteEntropyOptions::kIncludeGaps
+    );
 
     LOG_INFO << "Finished";
     return 0;
