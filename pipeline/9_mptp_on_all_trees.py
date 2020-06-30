@@ -9,7 +9,7 @@ import mptp_launcher
 from collections import Counter
 from statistics import pvariance
 import glob
-
+import util
 
 def get_species_count(path : str) -> int:
   lines = open(path)
@@ -60,6 +60,7 @@ def summarize_species(n_trees: int, spec_counts: dict, csv_outpath: str, summary
 def run_mptp_on_trees(treesfile: str, output_path: str, csv_outpath: str, summary_outpath: str, mptp_fix: bool) -> None:
   lines = open(treesfile).readlines()
   spec_counts = {}
+  util.mkdirp(output_path)
   for i in range(len(lines)):
     tmp_tree_path = os.path.join(output_path, "tmp_tree.newick")
     outfile = open(tmp_tree_path, 'w')
@@ -88,4 +89,4 @@ def run_mptp_on_trees(treesfile: str, output_path: str, csv_outpath: str, summar
 
 if __name__ == "__main__":
   paths = common.Paths( sys.argv )
-  run_mptp_on_trees(paths.raxml_credible_ml_trees, paths.mptp_output, paths.mptp_output_csv, paths.mptp_output_summary, False)
+  run_mptp_on_trees(paths.raxml_credible_ml_trees, paths.mptp_output, paths.mptp_output_csv, paths.mptp_output_summary, True)
