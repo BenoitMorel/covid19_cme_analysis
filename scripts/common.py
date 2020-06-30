@@ -26,6 +26,7 @@ genesis_reduce_duplicates = os.path.join(genesis, "reduce_duplicates")
 genesis_reattach_duplicates = os.path.join(genesis, "reattach_duplicates")
 genesis_convert = os.path.join(genesis, "convert")
 genesis_clade_compression = os.path.join(genesis, "prune_tree_by_entropy")
+genesis_max_entropy = os.path.join(genesis, "maximize_entropy")
 genesis_remove_sequences = os.path.join(genesis, "remove_sequences")
 genesis_outgroup_check = os.path.join(genesis, "jplace-outgroup-check")
 gappa = os.path.join(software_path, "gappa", "bin", "gappa")
@@ -44,14 +45,17 @@ class Paths():
   def __init__( self, argv, i=1 ):
     argv = util.preprocess_argv(argv, i)
     version = util.get_version( argv[:-1], i )
-
     self._version = version
     self._dataset = argv[-1] #dataset
     self._version_root = util.make_path_in_workdir(self.version)
     self._dataset_root = os.path.join(self._version_root, self.dataset)
 
-    if not os.path.isdir( self._dataset_root ):
-      util.fail( "No such dataset: " + self.dataset )
+    # we need to create a Path like that
+    # when extracting a thinned dataset
+    util.mkdirp(self._dataset_root)
+    
+  #if not os.path.isdir( self._dataset_root ):
+  #    util.fail( "No such dataset: " + self.dataset )
 
     # os.makedirs(self._dataset_root, exist_ok=True)
       # why is this here this should fail!
@@ -161,6 +165,10 @@ class Paths():
   @property
   def cc_thinning_runs_dir(self):
     return os.path.join(self.runs_dir, "cc_thinning_runs")
+
+  @property
+  def me_thinning_runs_dir(self):
+    return os.path.join(self.runs_dir, "me_thinning_runs")
 
   # =====================================================
   # RESULTS
@@ -314,6 +322,10 @@ class Paths():
   @property
   def cc_thinned_alignment(self):
     return os.path.join(self.thinning_dir, "clade_compression_thinned_alignment.fasta")
+
+  @property
+  def me_thinned_alignment(self):
+    return os.path.join(self.thinning_dir, "max_entropy_thinned_alignment.fasta")
 
   @property
   def rand_thinned_alignment(self):
