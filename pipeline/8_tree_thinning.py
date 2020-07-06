@@ -19,8 +19,8 @@ print(ss_mre_taxa_number)
 
 #clade_compression_thinning.clade_compression_thinning(paths, paths.raxml_best_tree, paths.alignment, ss_mre_taxa_number, paths.cc_thinned_alignment)
 
-max_entropy_thinning.max_entropy_thinning(paths, paths.alignment, ss_mre_taxa_number, paths.me_thinned_alignment)
+#max_entropy_thinning.max_entropy_thinning(paths, paths.alignment, ss_mre_taxa_number, paths.me_thinned_alignment)
 
-#random_alignment_thinning.thin(paths.alignment, paths.rand_thinned_alignment, ss_mre_taxa_number)
+random_alignment_thinning.thin(paths.alignment, paths.rand_thinned_alignment, ss_mre_taxa_number)
 
 

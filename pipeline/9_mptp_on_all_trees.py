@@ -89,4 +89,4 @@ def run_mptp_on_trees(treesfile: str, output_path: str, csv_outpath: str, summar
 
 if __name__ == "__main__":
   paths = common.Paths( sys.argv )
-  run_mptp_on_trees(paths.raxml_credible_ml_trees, paths.mptp_output, paths.mptp_output_csv, paths.mptp_output_summary, True)
+  run_mptp_on_trees(paths.raxml_credible_ml_trees, paths.mptp_output, paths.mptp_output_csv, paths.mptp_output_summary, mptp_fix = False)
