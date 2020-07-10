@@ -6,6 +6,7 @@
 #include <omp.h>
 #include <stdexcept>
 #include <cstdlib>
+#include <algorithm>
 
 using namespace genesis;
 using namespace genesis::sequence;
@@ -101,6 +102,17 @@ void buildHistogram(Tree const &tree, std::string const &infile, std::string con
 	for (size_t i = 0; i < species.size(); ++i) {
 		hist[species[i]]++;
 	}
+	std::sort(species.begin(), species.end());
+	size_t min_species = species[0];
+	size_t max_species = species[species.size() - 1];
+	size_t median_species = species[species.size() / 2]; // not truly median as in case of even number of trees we avoid taking the average between the two middle entries here.
+
+	output << "Minimum species count: " << min_species << std::endl;
+	output << "Maximum species count: " << max_species << std::endl;
+	output << "Median species count: " << median_s[ecies << std::endl;
+
+	output << std::endl << "Species count histogram (all computed using --ml option):" << std::endl;
+
 	for (size_t i = 0; i < n; ++i) {
 		if (hist[i] != 0) {
 			output << i << "," << hist[i] << std::endl;
