@@ -87,8 +87,42 @@ def run_mptp_on_trees(treesfile: str, output_path: str, csv_outpath: str, summar
     os.remove(tmp_tree_path)
   summarize_species(len(lines), spec_counts, csv_outpath, summary_outpath)
 
+def get_all_rootings_counts(outfile: str) -> tuple:
+  # TODO
+  return (0,0,0)
+  pass
+
+def summarize_species_all_rootings(n_trees: int, min_species: List[int], max_species: List[int], median_species: List[int], summary_outpath: str) -> None:
+  # TODO
+  pass
+
+def run_mptp_all_rootings_on_trees(treesfile: str, output_path: str, summary_outpath: str) -> None:
+  # This always uses vanilla mpp and never uses mptp_fix!
+  lines = open(treesfile).readlines()
+  min_species = []
+  max_species = []
+  median_species = []
+  util.mkdirp(output_path)
+  for i in range(len(lines)):
+    tmp_tree_path = os.path.join(output_path, "tmp_tree.newick")
+    outfile = open(tmp_tree_path, 'w')
+    outfile.write(lines[i])
+    outfile.close()
+    results_all_rootings_ml = output_path + "/" + str(i) + "/all_rootings_ml_output"
+    if os.path.isdir(results_all_rootings_ml):
+      shutil.rmtree(results_all_rootings_ml)
+      os.makedirs(results_all_rootings_ml)
+    mptp_launcher.launch_mptp_all_rootings(tmp_tree_path, results_all_rootings + "/output.txt")
+    
+    min_s, max_s, median_s = get_all_rootings_counts(results_all_rootings + "/output.txt")
+    min_species.append(min_s)
+    max_species.append(max_s)
+    median_species.append(median_s)
+
+    os.remove(tmp_tree_path)
+  summarize_species_all_rootings(len(lines), min_species, max_species, median_species, summary_outpath)
+
 if __name__ == "__main__":
   paths = common.Paths( sys.argv )
   run_mptp_on_trees(paths.raxml_credible_ml_trees, paths.mptp_output, paths.mptp_output_csv, paths.mptp_output_summary, mptp_fix = False)
-
-  # TODO: add usage of genesis_mptp_all_rootings in order to create summary statistics regarding all possible rootings
+  run_mptp_all_rootings_on_trees(paths.raxml_credible_ml_trees, paths.mptp_output, paths.mptp_output_summary_all_rootings)
