@@ -22,15 +22,6 @@ Then, to run one of the following scripts on this data, use:
 
 Several parameters can be set in scripts/common.py.
 
-*******************
-** Requirements: **
-*******************
-
-All the software used in the pipeline should be installed under the directory software.
-TODO: either list them or write a script to  install them.
-Meanwhile, all paths to executables we use are listed in scripts/common.py
-
-
 
 **************************
 ** Directory  structure **
