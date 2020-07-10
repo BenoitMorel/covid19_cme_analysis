@@ -88,9 +88,16 @@ def run_mptp_on_trees(treesfile: str, output_path: str, csv_outpath: str, summar
   summarize_species(len(lines), spec_counts, csv_outpath, summary_outpath)
 
 def get_all_rootings_counts(outfile: str) -> tuple:
-  # TODO
-  return (0,0,0)
-  pass
+  min_s, max_s, median_s = 0, 0, 0
+  lines = open(outfile)
+  for line in lines:
+    if line.startswith("Minimum species count"):
+      min_s = int(line.split(": ")[1])
+    elif line.startswith("Maximum species count"):
+      max_s = int(line.split(": ")[1])
+    elif line.startswith("Median species count"):
+      median_s = int(line.split(": ")[1])
+  return (min_s, max_s, median_s)
 
 def summarize_species_all_rootings(n_trees: int, min_species: List[int], max_species: List[int], median_species: List[int], summary_outpath: str) -> None:
   # TODO
