@@ -109,7 +109,7 @@ void buildHistogram(Tree const &tree, std::string const &infile, std::string con
 
 	output << "Minimum species count: " << min_species << std::endl;
 	output << "Maximum species count: " << max_species << std::endl;
-	output << "Median species count: " << median_s[ecies << std::endl;
+	output << "Median species count: " << median_species << std::endl;
 
 	output << std::endl << "Species count histogram (all computed using --ml option):" << std::endl;
 
