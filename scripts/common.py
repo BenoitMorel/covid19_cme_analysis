@@ -289,6 +289,10 @@ class Paths():
     return os.path.join(self.species_delimitation_dir, "mptp_summary.txt")
 
   @property
+  def mptp_output_summary_all_rootings(self):
+    return os.path.join(self.species_delimitation_dir, "mptp_summary_all_rootings.txt")
+
+  @property
   def raxml_all_ml_trees_ll(self):
     return os.path.join(self.likelihoods_dir, "all_ml_trees_with_likelihood.txt")
 
