@@ -76,6 +76,7 @@ install_epa() {
   git clone --recursive https://github.com/Pbdas/epa-ng.git
   echo "Installing epa-ng..."
   cd epa-ng
+  git checkout tags/v0.3.7
   make -j
   cd ..
 }
