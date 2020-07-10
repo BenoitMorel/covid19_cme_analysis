@@ -10,7 +10,7 @@ from collections import Counter
 from statistics import pvariance
 import glob
 import util
-from typing import List
+from typing import List, Tuple
 
 def get_species_count(path : str) -> int:
   lines = open(path)
