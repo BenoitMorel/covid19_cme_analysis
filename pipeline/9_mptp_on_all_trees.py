@@ -121,7 +121,7 @@ def summarize_species_all_rootings(n_trees: int, min_species: List[int], max_spe
   summary_file.close()
 
 def run_mptp_all_rootings_on_trees(treesfile: str, output_path: str, summary_outpath: str) -> None:
-  # This always uses vanilla mpp and never uses mptp_fix!
+  # This always uses vanilla mptp and never uses mptp_fix!
   lines = open(treesfile).readlines()
   min_species = []
   max_species = []
