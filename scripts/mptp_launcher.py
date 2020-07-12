@@ -50,7 +50,7 @@ def launch_mptp_fixed(tree, output):
 
 def launch_mptp_all_rootings(tree, output):
   cmd = []
-  cmd.append(genesis_mptp_all_rootings)
+  cmd.append(common.genesis_mptp_all_rootings)
   cmd.append(tree)
   cmd.append(output)
   subprocess.check_call(cmd)
