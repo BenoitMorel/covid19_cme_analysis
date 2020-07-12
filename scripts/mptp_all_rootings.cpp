@@ -75,7 +75,7 @@ void buildHistogram(Tree const &tree, std::string const &infile, std::string con
 
 		std::cout << outgroup << std::endl;
 		// found the outgroup, now we can call mptp
-		std::string mptpCall = "mptp --ml --tree_file " + infile + " --output_file " + tempOutFilename + " --multi --outgroup " + outgroup;
+		std::string mptpCall = "software/mptp/bin/mptp --ml --tree_file " + infile + " --output_file " + tempOutFilename + " --multi --outgroup " + outgroup;
 		int status = std::system(mptpCall.c_str());
 		if (!WIFEXITED(status)) {
 			throw std::runtime_error("Something went wrong while running mptp!");
