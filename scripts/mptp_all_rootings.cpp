@@ -42,9 +42,8 @@ void buildHistogram(Tree const &tree, std::string const &path_to_mptp, std::stri
 		throw std::runtime_error("The tree is not bifurcating");
 	}
 
-	std::vector<size_t> species;
-
-#pragma omp parallel for schedule(dynamic)
+	std::vector<size_t> species(tree.edge_count());
+  #pragma omp parallel for schedule(dynamic)
 	for (size_t edgeId = 0; edgeId < tree.edge_count(); ++edgeId) {
 		auto const& edge = tree.edge_at(edgeId);
 
@@ -73,7 +72,7 @@ void buildHistogram(Tree const &tree, std::string const &path_to_mptp, std::stri
 
 		std::string tempOutFilename = "tempOutFooBar_" + std::to_string(edge.index());
 
-		std::cout << outgroup << std::endl;
+		//std::cout << outgroup << std::endl;
 		// found the outgroup, now we can call mptp
 		std::string mptpCall = path_to_mptp + " --ml --tree_file " + infile + " --output_file " + tempOutFilename + " --multi --quiet --outgroup " + outgroup;
 		int status = std::system(mptpCall.c_str());
@@ -91,7 +90,7 @@ void buildHistogram(Tree const &tree, std::string const &path_to_mptp, std::stri
 		std::getline(infile, line);
 		std::getline(infile, line);
 		line = line.substr(line.find(": ") + 2);
-		species.emplace_back(atoi(line.c_str()));
+		species[edgeId] = atoi(line.c_str());
 		std::remove(tempOutFilename.c_str());
 	}
 
