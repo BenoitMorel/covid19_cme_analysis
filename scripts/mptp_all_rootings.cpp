@@ -13,7 +13,7 @@ using namespace genesis::sequence;
 using namespace genesis::tree;
 using namespace genesis::utils;
 
-void buildHistogram(Tree const &tree, std::string const &infile, std::string const &outfile) {
+void buildHistogram(Tree const &tree, std::string const &path_to_mptp, std::string const &infile, std::string const &outfile) {
 	std::vector<size_t> linkToEulerLeafIndex(tree.link_count());
 	std::vector<size_t> eulerTourLeaves;
 	for (auto it : eulertour(tree)) {
@@ -75,7 +75,7 @@ void buildHistogram(Tree const &tree, std::string const &infile, std::string con
 
 		std::cout << outgroup << std::endl;
 		// found the outgroup, now we can call mptp
-		std::string mptpCall = "software/mptp/bin/mptp --ml --tree_file " + infile + " --output_file " + tempOutFilename + " --multi --outgroup " + outgroup;
+		std::string mptpCall = path_to_mptp + " --ml --tree_file " + infile + " --output_file " + tempOutFilename + " --multi --quiet --outgroup " + outgroup;
 		int status = std::system(mptpCall.c_str());
 		if (!WIFEXITED(status)) {
 			throw std::runtime_error("Something went wrong while running mptp!");
@@ -129,11 +129,12 @@ int main(int argc, char* argv[]) {
 	std::cin.tie(NULL);
 
 	// Get the files from command line
-	if (argc != 3) {
-		throw std::runtime_error(std::string( "Usage: " ) + argv[0] + " <tree-file> <output-file>");
+	if (argc != 4) {
+		throw std::runtime_error(std::string( "Usage: " ) + argv[0] + " <path-to-mptp> <tree-file> <output-file>");
 	}
-	std::string treePath = argv[1];
-	std::string outputPath = argv[2];
+	std::string path_to_mptp = argv[1];
+	std::string treePath = argv[2];
+	std::string outputPath = argv[3];
 
 	/*std::ifstream infile(outputPath);
 	if (infile.good()) {
@@ -144,6 +145,6 @@ int main(int argc, char* argv[]) {
 	//read tree
 	auto tree = CommonTreeNewickReader().read( from_file( treePath ) );
 
-	buildHistogram(tree, treePath, outputPath);
+	buildHistogram(tree, path_to_mptp, treePath, outputPath);
 	return 0;
 }
