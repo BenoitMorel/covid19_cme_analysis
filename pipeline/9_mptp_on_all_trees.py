@@ -136,9 +136,9 @@ def run_mptp_all_rootings_on_trees(treesfile: str, output_path: str, summary_out
     if os.path.isdir(results_all_rootings_ml):
       shutil.rmtree(results_all_rootings_ml)
       os.makedirs(results_all_rootings_ml)
-    mptp_launcher.launch_mptp_all_rootings(tmp_tree_path, results_all_rootings + "/output.txt")
+    mptp_launcher.launch_mptp_all_rootings(tmp_tree_path, results_all_rootings_ml + "/output.txt")
     
-    min_s, max_s, median_s = get_all_rootings_counts(results_all_rootings + "/output.txt")
+    min_s, max_s, median_s = get_all_rootings_counts(results_all_rootings_ml + "/output.txt")
     min_species.append(min_s)
     max_species.append(max_s)
     median_species.append(median_s)
