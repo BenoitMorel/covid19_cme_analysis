@@ -105,16 +105,16 @@ def summarize_species_all_rootings(n_trees: int, min_species: List[int], max_spe
   max_hist = Counter(max_species)
   median_hist = Counter(median_species)
   summary_file = open(summary_outpath, 'w')
-  summary_file.write('The following 3 histograms show the distribution of min/max/median species count that was encountered when trying all rootings for a tree, and this taken over all trees in the input data set./n/n')
+  summary_file.write('The following 3 histograms show the distribution of min/max/median species count that was encountered when trying all rootings for a tree, and this taken over all trees in the input data set.\n\n')
   summary_file.write('Minimum species count histogram:\n')
   for x in min_hist:
     if min_hist[x] > 0:
       summary_file.write(str(x) + ': ' + str(min_hist[x]) + '\n')
-  summary_file.write('/n/nMaximum species count histogram:\n')
+  summary_file.write('\n\nMaximum species count histogram:\n')
   for x in max_hist:
     if max_hist[x] > 0:
       summary_file.write(str(x) + ': ' + str(max_hist[x]) + '\n')
-  summary_file.write('/n/nMedian species count histogram:\n')
+  summary_file.write('\n\nMedian species count histogram:\n')
   for x in median_hist:
     if median_hist[x] > 0:
       summary_file.write(str(x) + ': ' + str(median_hist[x]) + '\n')
