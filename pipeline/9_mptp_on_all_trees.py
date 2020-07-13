@@ -100,6 +100,12 @@ def get_all_rootings_counts(outfile: str) -> tuple:
       median_s = int(line.split(": ")[1])
   return (min_s, max_s, median_s)
 
+def get_all_rootings_counts_one_histogram(outfile: str, species):
+  lines = open(outfile)
+  for i in range(4, len(lines)):
+    species[int(line.split(",")[0])] += int(line.split(",")[1])
+  return species
+
 def summarize_species_all_rootings(n_trees: int, min_species: List[int], max_species: List[int], median_species: List[int], summary_outpath: str) -> None:
   min_hist = Counter(min_species)
   max_hist = Counter(max_species)
@@ -118,6 +124,16 @@ def summarize_species_all_rootings(n_trees: int, min_species: List[int], max_spe
   for x in median_hist:
     if median_hist[x] > 0:
       summary_file.write(str(x) + ': ' + str(median_hist[x]) + '\n')
+  summary_file.close()
+
+
+def summarize_species_all_rootings_one_histogram(n_trees: int, species, summary_outpath: str) -> None:
+  summary_file = open(summary_outpath, 'w')
+  summary_file.write('The following histogram shows the distribution of species count that was encountered when trying all rootings for all trees in the input data set.\n\n')
+  summary_file.write('Species count histogram:\n')
+  for x in species:
+    if species[x] > 0:
+      summary_file.write(str(x) + ': ' + str(species[x]) + '\n')
   summary_file.close()
 
 def run_mptp_all_rootings_on_trees(treesfile: str, output_path: str, summary_outpath: str) -> None:
@@ -146,7 +162,30 @@ def run_mptp_all_rootings_on_trees(treesfile: str, output_path: str, summary_out
     os.remove(tmp_tree_path)
   summarize_species_all_rootings(len(lines), min_species, max_species, median_species, summary_outpath)
 
+def run_mptp_all_rootings_on_trees_one_histogram(treesfile: str, output_path: str, summary_outpath: str) -> None:
+  # This always uses vanilla mptp and never uses mptp_fix!
+  lines = open(treesfile).readlines()
+  species = Counter()
+  util.mkdirp(output_path)
+  for i in range(len(lines)):
+    tmp_tree_path = os.path.join(output_path, "tmp_tree.newick")
+    outfile = open(tmp_tree_path, 'w')
+    outfile.write(lines[i])
+    outfile.close()
+    results_all_rootings_ml = output_path + "/" + str(i) + "/all_rootings_ml_output"
+    if os.path.isdir(results_all_rootings_ml):
+      shutil.rmtree(results_all_rootings_ml)
+    os.makedirs(results_all_rootings_ml)
+    mptp_launcher.launch_mptp_all_rootings(tmp_tree_path, results_all_rootings_ml + "/output.txt")
+    
+    species = get_all_rootings_counts_one_histogram(results_all_rootings_ml + "/output.txt", species)
+
+    os.remove(tmp_tree_path)
+  summarize_species_all_rootings_one_histogram(len(lines), species, summary_outpath)
+
+
 if __name__ == "__main__":
   paths = common.Paths( sys.argv )
   run_mptp_on_trees(paths.raxml_credible_ml_trees, paths.mptp_output, paths.mptp_output_csv, paths.mptp_output_summary, mptp_fix = False)
   run_mptp_all_rootings_on_trees(paths.raxml_credible_ml_trees, paths.mptp_output, paths.mptp_output_summary_all_rootings)
+  run_mptp_all_rootings_on_trees_one_histogram(paths.raxml_credible_ml_trees, paths.mptp_output, paths.mptp_output_summary_all_rootings_one_histogram)
