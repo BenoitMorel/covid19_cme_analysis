@@ -84,13 +84,13 @@ void buildHistogram(Tree const &tree, std::string const &path_to_mptp, std::stri
 
 		std::ifstream infile(tempOutFilename);
 		std::string line;
-		std::getline(infile, line);
-		std::getline(infile, line);
-		std::getline(infile, line);
-		std::getline(infile, line);
-		std::getline(infile, line);
-		line = line.substr(line.find(": ") + 2);
-		species[edgeId] = atoi(line.c_str());
+		while (std::getline(infile, line)) {
+			if (line.rfind("Number of delimited species:", 0) == 0) {
+				line = line.substr(line.find(": ") + 2);
+				species[edgeId] = atoi(line.c_str());
+				break;
+			}
+		}
 		std::remove(tempOutFilename.c_str());
 	}
 
