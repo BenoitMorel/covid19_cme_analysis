@@ -199,82 +199,87 @@ static std::vector<std::string> country_order = {
     // "Canada"
 };
 
+// List of countries as found in the tree provided by Dimitrios,
+// using the order of nextstrain, so that our colors roughly match.
+// our list is a bit different though, and we included several chinese cities (right after the entry
+// for china), as well as some other names, but on the other hand did not need some of the
+// nextstrain countries, and hence commented them out here.
 static std::vector<std::string> country_order_dimitrios = {
-    "Mongolia",
+    // "Mongolia",
     "China",
-    "WUHAN",
-    "BEIJING",
-    "CHONGQING",
-    "FOSHAN",
-    "FUJIAN",
-    "FUYANG",
-    "GUANGDONG",
-    "GUANGZHOU",
-    "HANGZHOU",
-    "JIAN",
-    "JIANGSU",
-    "JINGZHOU",
-    "NANCHANG",
-    "PINGXIANG",
-    "SHANDONG",
-    "SHANGHAI",
-    "SHANGRAO",
-    "SHENZHEN",
-    "SICHUAN",
-    "TIANMEN",
-    "XINYU",
-    "YUNNAN",
+    "Wuhan",
+    "Beijing",
+    "Chongqing",
+    "Foshan",
+    "Fujian",
+    "Fuyang",
+    "Guangdong",
+    "Guangzhou",
+    "Hangzhou",
+    "Jian",
+    "Jiangsu",
+    "Jingzhou",
+    "Nanchang",
+    "Pingxiang",
+    "Shandong",
+    "Shanghai",
+    "Shangrao",
+    "Shenzhen",
+    "Sichuan",
+    "Tianmen",
+    "Xinyu",
+    "Yunnan",
     "HongKong",
     "Taiwan",
     "Philippines",
     "Japan",
     "SouthKorea",
-    "KOREA",
+    "Korea",
     "Nepal",
     "India",
-    "Bangladesh",
+    // "Bangladesh",
     "SriLanka",
     "Vietnam",
     "Cambodia",
     "Thailand",
-    "Myanmar",
+    // "Myanmar",
     "Malaysia",
     "Singapore",
     "Brunei",
     "Indonesia",
-    "Guam",
-    "Timor-Leste",
+    // "Guam",
+    // "Timor-Leste",
     "Australia",
     "NewZealand",
     "SaudiArabia",
     "Qatar",
     "UnitedArabEmirates",
     "Kuwait",
-    "Lebanon",
-    "Oman",
-    "Iran",
+    // "Lebanon",
+    // "Oman",
+    // "Iran",
     "Israel",
     "Jordan",
     "Turkey",
     "Pakistan",
     "Kazakhstan",
-    "Kyrgyzstan",
+    // "Kyrgyzstan",
     "Georgia",
     "Russia",
-    "Serbia",
-    "Romania",
-    "Europe",
+    // "Serbia",
+    // "Romania",
+    // "Europe",
     "Latvia",
     "Slovakia",
     "Slovenia",
-    "BosniaandHerzegovina",
+    // "BosniaandHerzegovina",
     "Poland",
     "Belarus",
     "Estonia",
-    "Lithuania",
-    "Bulgaria",
+    // "Lithuania",
+    // "Bulgaria",
     "Hungary",
-    "Croatia",
+    // "Croatia",
     "France",
     "Iceland",
     "Norway",
@@ -286,50 +291,50 @@ static std::vector<std::string> country_order_dimitrios = {
     "Austria",
     "Switzerland",
     "Italy",
-    "Cyprus",
+    // "Cyprus",
     "Spain",
     "CzechRepublic",
-    "UnitedKingdom",
-    "ENGLAND",
-    "SCOTLAND",
-    "WALES",
+    // "UnitedKingdom",
+    "England",
+    "Scotland",
+    "Wales",
     "Ireland",
     "Finland",
     "Sweden",
     "Portugal",
     "Greece",
     "Egypt",
-    "Nigeria",
-    "Benin",
-    "Kenya",
-    "Ghana",
+    // "Nigeria",
+    // "Benin",
+    // "Kenya",
+    // "Ghana",
     "Senegal",
     "Gambia",
     "Algeria",
-    "Tunisia",
-    "Morocco",
-    "Uganda",
-    "DemocraticRepublicoftheCongo",
+    // "Tunisia",
+    // "Morocco",
+    // "Uganda",
+    // "DemocraticRepublicoftheCongo",
     "DRC",
-    "Congo",
+    // "Congo",
     "SouthAfrica",
     "Chile",
-    "Ecuador",
+    // "Ecuador",
     "Peru",
     "Brazil",
     "Argentina",
-    "Venezuela",
-    "PUERTORICO",
-    "Uruguay",
+    // "Venezuela",
+    "PuertoRico",
+    // "Uruguay",
     "Colombia",
-    "Panama",
+    // "Panama",
     "CostaRica",
     "Mexico",
-    "Jamaica",
+    // "Jamaica",
     "USA",
-    "Canada",
-    "ENV",
-    "MINK"
+    "Canada"
+    // "ENV",
+    // "MINK"
 };
 
 static std::unordered_map<std::string, std::string> country_to_region = {
@@ -480,8 +485,8 @@ size_t get_position( std::vector<std::string> const& list, std::string const& en
             // return static_cast<double>(i) / static_cast<double>(list.size());
         }
     }
-    // throw std::runtime_error( "invalid entry " + entry );
-    LOG_ERR << "invalid entry " + entry ;
+    throw std::runtime_error( "invalid entry " + entry );
+    // LOG_ERR << "invalid entry " + entry ;
     return 0;
 }
 
@@ -520,8 +525,9 @@ void write_tree(
     std::vector<EdgeValues> edge_values,
     double min_value,
     double max_value,
-    std::vector<std::string> const& color_labels,
+    std::vector<Color> color_palette,
     std::vector<Color> color_list,
+    std::vector<std::string> const& color_labels,
     std::string const& out_name
 ) {
     // Init with grey
@@ -532,7 +538,7 @@ void write_tree(
 
     // Prepare a color mapping and a color normalization that brings all values between
     // min and max into the [0, 1] interval, so that we can nicely interpolate between them.
-    auto map = ColorMap( color_list );
+    auto map = ColorMap( color_palette );
     auto norm = ColorNormalizationLinear( min_value, max_value );
     LOG_DBG << "( min_value, max_value ); " << min_value << " " << max_value;
 
@@ -543,9 +549,9 @@ void write_tree(
             continue;
         }
         if( is_leaf( it.edge() ) ) {
-            if( edge_values[it.edge().index()].count != 1 ) {
-                LOG_DBG << "something is wrong with the edge indices for leaf nodes";
-            }
+            // if( edge_values[it.edge().index()].count != 1 ) {
+            //     LOG_DBG << "something is wrong with the edge indices for leaf nodes";
+            // }
         } else {
             if( edge_values[it.edge().index()].count != 0 ) {
                 LOG_DBG << "something is wrong with the edge indices for inner nodes";
@@ -599,11 +605,11 @@ void write_tree(
         } else{
             edge_colors[it.edge().index()] = Color(0.8, 0.8, 0.8);
 
-            LOG_DBG << "value    " << value;
-            LOG_DBG << "edge min " << edge_values[it.edge().index()].min;
-            LOG_DBG << "edge max " << edge_values[it.edge().index()].max;
-            LOG_DBG << "abs min  " << min_value;
-            LOG_DBG << "abs max  " << max_value;
+            // LOG_DBG << "value    " << value;
+            // LOG_DBG << "edge min " << edge_values[it.edge().index()].min;
+            // LOG_DBG << "edge max " << edge_values[it.edge().index()].max;
+            // LOG_DBG << "abs min  " << min_value;
+            // LOG_DBG << "abs max  " << max_value;
         }
     }
 
@@ -615,8 +621,11 @@ void write_tree(
             tree, params, edge_colors, map, norm, out_name
         );
     } else {
+        if( color_list.empty() ) {
+            color_list = ColorMap( color_palette ).color_list( color_labels.size() );
+        }
         write_color_tree_to_svg_file(
-            tree, params, edge_colors, map.color_list( color_labels.size() ), color_labels, out_name
+            tree, params, edge_colors, color_list, color_labels, out_name
         );
     }
 }
@@ -681,7 +690,7 @@ void run_with_metdata( std::string const& tree_file, std::string const& meta_fil
             // max_value = color_labels.size() - 1;
 
             // make a list of values found, just to test that our order lists contain the same elements.
-            std::set<std::string> check_list;
+            std::set<std::string> check_list_countries;
 
             // Fill the edge values with the values the we just mapped to numbers
             for( size_t e = 0; e < tree.edge_count(); ++e ) {
@@ -698,15 +707,15 @@ void run_with_metdata( std::string const& tree_file, std::string const& meta_fil
                     double const pos = get_position( color_labels, data_col[name]);
                     edge_values[e] = { pos, 1, pos, pos };
 
-                    check_list.insert(data_col[name]);
+                    check_list_countries.insert(data_col[name]);
                 }
             }
 
             min_value = 0;
-            max_value = check_list.size() - 1;
+            max_value = check_list_countries.size() - 1;
 
-            LOG_DBG << "check list (size=" << check_list.size() << ") = ";
-            for( auto const& elem : check_list ) {
+            LOG_DBG << "check list (size=" << check_list_countries.size() << ") = ";
+            for( auto const& elem : check_list_countries ) {
                 LOG_DBG1 << elem;
             }
 
@@ -771,7 +780,8 @@ void run_with_metdata( std::string const& tree_file, std::string const& meta_fil
         }
 
         write_tree(
-            tree, edge_values, min_value, max_value, color_labels, color_list_nextstrain(),
+            tree, edge_values, min_value, max_value, color_list_nextstrain(),
+            ColorMap( color_list_nextstrain() ).color_list(color_labels.size()), color_labels,
             out_prefix + data[i].name() + ".svg"
         );
     }
@@ -783,101 +793,148 @@ void run_with_tree_labels( std::string const& tree_file, std::string const& out_
     auto const tree = CommonTreeNewickReader().read( from_file( tree_file ));
     LOG_INFO << "Found tree with " << leaf_node_count( tree ) << " tips in tree file";
 
+    // Collect values for each edge for each feature, that we later use for coloring and for
+    // cunputing averages for the inner branches.
     std::vector<EdgeValues> edge_values_countries( tree.edge_count() );
     std::vector<EdgeValues> edge_values_regions( tree.edge_count() );
     std::vector<EdgeValues> edge_values_date( tree.edge_count() );
+
+    // Collect the list of labels that are then evenly (!) distributed between the min and max
+    // values found in each three features
     std::vector<std::string> color_labels_countries = country_order_dimitrios;
     std::vector<std::string> color_labels_regions = region_order;
-    std::vector<std::string> color_labels_date;
-    std::set<std::string> check_list;
 
+    // Collect the countries, in order to cross check that we do only include the labels
+    // for the ones that actually appear in the data. otherwise, the legend might be off
+    // (due to the even spread)
+    std::set<std::string> check_list_countries;
+    std::set<std::string> check_list_regions;
+
+    // Set the min and max date that we want manually
+    auto dt_min = tm_to_time( convert_to_tm( "20191224" ));
+    auto dt_max = tm_to_time( convert_to_tm( "20200426" ));
     double min_value_date = 0;
-    double max_value_date = 0;
+    double max_value_date = difftime( dt_max, dt_min );
 
-    std::map<double, size_t> date_counts;
+    // fill a list with nice dates and their colors based on our date range
+    std::vector<std::string> color_labels_date = {
+        "2019-12-24", "2020-01-01", "2020-01-15", "2020-02-01", "2020-02-15",
+        "2020-03-01", "2020-03-15", "2020-04-01", "2020-04-15", "2020-04-26"
+    };
+    std::vector<Color> color_list_date;
+    auto color_map_date = ColorMap( color_list_nextstrain() );
+    auto color_norm_date = ColorNormalizationLinear( min_value_date, max_value_date );
+    for( auto const& d : color_labels_date ) {
+        double value_date = difftime( tm_to_time( convert_to_tm( d )), dt_min );
+        assert( value_date >= 0 && value_date <= max_value_date );
+        color_list_date.push_back(
+            color_map_date( color_norm_date, value_date )
+        );
+    }
+
+    // collect which date appears how often, for debugging and cross checking only
+    std::map<size_t, size_t> date_counts;
 
     for( auto const& node : tree.nodes() ) {
-        if( is_leaf(node) ) {
-            auto const& name = node.data<CommonNodeData>().name;
-            auto const parts = utils::split( name, "_" );
-            // LOG_DBG << parts[0] << ":\t" << parts[1] << " (" << pos << ")" << "\t" << parts[2];
+        if( !is_leaf(node) ) {
+            continue;
+        }
 
-            double const pos = get_position(country_order_dimitrios, parts[1]);
-            edge_values_countries[node.primary_edge().index()] = { pos, 1, pos, pos };
-            check_list.insert(parts[1]);
+        auto const& name = node.data<CommonNodeData>().name;
+        auto const parts = utils::split( name, "_" );
+        if( parts.size() < 3 ) {
+            throw std::runtime_error("invalid taxon label " + name);
+        }
+        // LOG_DBG << parts[0] << ":\t" << parts[1] << " (" << pos << ")" << "\t" << parts[2];
 
-            if( parts[1] != "ENV" && parts[1] != "MINK" ) {
-                auto region = country_to_region.at(parts[1]);
-                double const regpos = get_position(region_order, region);
-                edge_values_regions[node.primary_edge().index()] = { regpos, 1, regpos, regpos };
-            }
+        // Exclude weird taxa
+        if( parts[1] == "ENV" || parts[1] == "MINK" ) {
+            continue;
+        }
 
-            auto date = stoi( parts[2] );
-            if( date == 2020 ) {
-                continue;
-            }
-            if( date > 201900 && date < 20190000 ) {
-                date *= 100;
-                date += 1;
-            }
+        double const pos = get_position(country_order_dimitrios, parts[1]);
+        edge_values_countries[node.primary_edge().index()] = { pos, 1, pos, pos };
+        check_list_countries.insert(to_lower(parts[1]));
 
-            auto dtb = tm_to_time( convert_to_tm( "20191201" ));
-            auto dte = tm_to_time( convert_to_tm( std::to_string(date) ));
-            auto diff_secs = difftime( dte, dtb );
+        auto region = country_to_region.at(parts[1]);
+        double const regpos = get_position(region_order, region);
+        edge_values_regions[node.primary_edge().index()] = { regpos, 1, regpos, regpos };
+        check_list_regions.insert(region);
 
-            if( min_value_date == 0) {
-                min_value_date = diff_secs;
-                max_value_date = diff_secs;
-            }
-            if( diff_secs < min_value_date ) {
-                min_value_date = diff_secs;
-            }
-            if( diff_secs > max_value_date ) {
-                max_value_date = diff_secs;
-            }
+        // Get the date. there are some weird entries. we exlcude "2020", but fix dates without day
+        // to be the first of their respective month
+        auto date = stoi( parts[2] );
+        if( date == 2020 ) {
+            continue;
+        }
+        if( date > 201900 && date < 20190000 ) {
+            date *= 100;
+            date += 1;
+        }
 
-            double ddate = diff_secs;
-            edge_values_date[node.primary_edge().index()] = { ddate, 1, ddate, ddate };
-            date_counts[date]++;
+        // After fixing, parse it as a date. wasteful, but works.
+        // Then, calculate the diff (in seconds) since our minimum date.
+        auto dte = tm_to_time( convert_to_tm( std::to_string(date) ));
+        auto diff_secs = difftime( dte, dt_min );
 
-            color_labels_date.push_back( std::to_string(date) );
+        if( diff_secs < 0 || diff_secs > max_value_date ) {
+            throw std::runtime_error("invalid date " + parts[2]);
+        }
+
+        // store this as our value
+        double ddate = diff_secs;
+        edge_values_date[node.primary_edge().index()] = { ddate, 1, ddate, ddate };
+        date_counts[date]++;
+    }
+
+    // check that we did not have any countries in the list that did not appear in the data.
+    for( auto const& c : country_order_dimitrios ) {
+        if( check_list_countries.count(to_lower(c)) == 0 ) {
+            LOG_WARN << "country " << c << " not needed";
+        }
+    }
+    for( auto const& c : region_order ) {
+        if( check_list_regions.count(c) == 0 ) {
+            LOG_WARN << "region " << c << " not needed";
         }
     }
 
     LOG_DBG << "min_value_date " << min_value_date << " max_value_date " << max_value_date;
-    date_counts.clear();
-    for( auto const& ev : edge_values_date ) {
-        if( ev.sum > 0 ) {
-            date_counts[ev.sum]++;
-        }
-    }
+    // date_counts.clear();
+    // for( auto const& ev : edge_values_date ) {
+    //     if( ev.sum > 0 ) {
+    //         date_counts[ev.sum]++;
+    //     }
+    // }
     for( auto const& dp : date_counts ) {
         LOG_DBG << dp.first << ": " << dp.second;
     }
 
     double min_value_countries = 0;
     double max_value_countries = country_order_dimitrios.size() - 1;
-    // double max_value_countries = check_list.size() - 1;
 
     double min_value_regions = 0;
     double max_value_regions = region_order.size() - 1;
-    // double max_value_regions = check_list.size() - 1;
 
-    std::sort( color_labels_date.begin(), color_labels_date.end() );
-    color_labels_date.erase( std::unique( color_labels_date.begin(), color_labels_date.end() ), color_labels_date.end() );
+    // std::sort( color_labels_date.begin(), color_labels_date.end() );
+    // color_labels_date.erase( std::unique( color_labels_date.begin(), color_labels_date.end() ), color_labels_date.end() );
 
+    LOG_INFO << "writing country tree";
     write_tree(
         tree, edge_values_countries, min_value_countries, max_value_countries,
-        color_labels_countries, color_list_nextstrain(), out_prefix + "_countries.svg"
+        color_list_nextstrain(), {}, color_labels_countries, out_prefix + "_countries.svg"
     );
 
+    LOG_INFO << "writing region tree";
     write_tree(
         tree, edge_values_regions, min_value_regions, max_value_regions,
-        color_labels_regions, color_list_nextstrain(6), out_prefix + "_regions.svg"
+        color_list_nextstrain(6), {}, color_labels_regions, out_prefix + "_regions.svg"
     );
+
+    LOG_INFO << "writing dates tree";
     write_tree(
         tree, edge_values_date, min_value_date, max_value_date,
-        color_labels_date, color_list_nextstrain(), out_prefix + "_date.svg"
+        color_list_nextstrain(), color_list_date, color_labels_date, out_prefix + "_date.svg"
     );
 }
 
