@@ -32,6 +32,8 @@ using namespace genesis::utils;
 #include <map>
 #include <unordered_map>
 
+static const Color base_gray_color = Color(0.8, 0.8, 0.8);
+
 static std::vector<std::string> region_order = {
     "Asia",
     "Oceania",
@@ -500,11 +502,13 @@ Color desaturate( Color const& color, double f )
     }
 
     assert( 0.0 <= f && f <= 1.0 );
-    auto const L = 0.3 * color.r() + 0.6 * color.g() + 0.1 * color.b();
-    auto const new_r = color.r() + f * (L - color.r());
-    auto const new_g = color.g() + f * (L - color.g());
-    auto const new_b = color.b() + f * (L - color.b());
-    return Color( new_r, new_g, new_b );
+    return interpolate( color, base_gray_color, f );
+
+    // auto const L = 0.3 * color.r() + 0.6 * color.g() + 0.1 * color.b();
+    // auto const new_r = color.r() + f * (L - color.r());
+    // auto const new_g = color.g() + f * (L - color.g());
+    // auto const new_b = color.b() + f * (L - color.b());
+    // return Color( new_r, new_g, new_b );
 }
 
 struct EdgeValues
@@ -686,7 +690,7 @@ void write_tree(
             // LOG_DBG1 << value;
             edge_colors[it.edge().index()] = desaturate( map( norm, value ), desat );
         } else{
-            edge_colors[it.edge().index()] = Color(0.8, 0.8, 0.8);
+            edge_colors[it.edge().index()] = base_gray_color;
 
             // LOG_DBG << "value    " << value;
             // LOG_DBG << "edge min " << edge_values[it.edge().index()].min;
