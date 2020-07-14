@@ -520,6 +520,88 @@ struct EdgeValues
     double max   = -std::numeric_limits<double>::infinity();
 };
 
+// Identical copy from genesis/tree/drawing/functions.cpp
+// needed here as it is local in the original source file...
+utils::SvgDocument get_color_tree_svg_doc_(
+    CommonTree const&                tree,
+    LayoutParameters const&          params,
+    std::vector<utils::Color> const& color_per_branch
+) {
+    // Make a layout tree. We need a pointer to it in order to allow for the two different classes
+    // (circular/rectancular) to be returned here. Make it a unique ptr for automatic cleanup.
+    std::unique_ptr<LayoutBase> layout = [&]() -> std::unique_ptr<LayoutBase> {
+        if( params.shape == LayoutShape::kCircular ) {
+            return utils::make_unique<CircularLayout>( tree, params.type, params.ladderize );
+        }
+        if( params.shape == LayoutShape::kRectangular ) {
+            return utils::make_unique<RectangularLayout>( tree, params.type, params.ladderize );
+        }
+        throw std::runtime_error( "Unknown Tree shape parameter." );
+    }();
+
+    // Set edge colors and strokes.
+    if( ! color_per_branch.empty() ) {
+        std::vector<utils::SvgStroke> strokes;
+        for( auto const& color : color_per_branch ) {
+            auto stroke = params.stroke;
+            stroke.color = color;
+            stroke.line_cap = utils::SvgStroke::LineCap::kRound;
+            strokes.push_back( std::move( stroke ));
+        }
+        layout->set_edge_strokes( strokes );
+    }
+
+    // Prepare svg doc.
+    auto svg_doc = layout->to_svg_document();
+    svg_doc.margin.left = svg_doc.margin.top = svg_doc.margin.bottom = svg_doc.margin.right = 200;
+    return svg_doc;
+}
+
+// Almost identical copy of the function from genesis/tree/drawing/functions.cpp
+// but adapted to be able to set the height of the legend. 1.0 means full height (of the tree),
+// and 0.5 means half the tree height, etc
+void write_color_tree_to_svg_file(
+    CommonTree const&                tree,
+    LayoutParameters const&          params,
+    std::vector<utils::Color> const& color_per_branch,
+    std::vector<utils::Color> const& color_list,
+    std::vector<std::string> const&  color_labels,
+    double                           legend_height,
+    std::string const&               svg_filename
+) {
+    // Get the basic svg tree layout.
+    auto svg_doc = get_color_tree_svg_doc_( tree, params, color_per_branch );
+
+    // Add the color legend / scale.
+
+    // Make the color list.
+    auto svg_color_list = make_svg_color_list( color_list, color_labels );
+
+    // Move it to the bottom right corner.
+    if( params.shape == LayoutShape::kCircular ) {
+        svg_color_list.transform.append( utils::SvgTransform::Translate(
+            1.2 * svg_doc.bounding_box().width() / 2.0, (0.5 - legend_height) * svg_doc.bounding_box().height()
+        ));
+        // svg_doc.margin.right = 0.2 * svg_doc.bounding_box().width() / 2.0 + 2 * svg_pal_settings.width + 200;
+    }
+    if( params.shape == LayoutShape::kRectangular ) {
+        throw std::runtime_error("tree drawing only adapted for circular trees...");
+    }
+
+    // Apply a scale factor that scales the box to be half the figure height.
+    // The denominator is the number items in the list times their height (15px, used by make_svg_color_list)
+    auto const sf = ( legend_height * svg_doc.bounding_box().height() ) / (static_cast<double>( color_list.size() ) * 15.0 );
+    svg_color_list.transform.append( utils::SvgTransform::Scale( sf ));
+
+    // Add it to the svg doc.
+    svg_doc.add( svg_color_list );
+
+    // Write the whole svg doc to file.
+    std::ofstream ofs;
+    utils::file_output_stream( svg_filename, ofs );
+    svg_doc.write( ofs );
+}
+
 void write_tree(
     Tree const& tree,
     std::vector<EdgeValues> edge_values,
@@ -528,6 +610,7 @@ void write_tree(
     std::vector<Color> color_palette,
     std::vector<Color> color_list,
     std::vector<std::string> const& color_labels,
+    double                          legend_height,
     std::string const& out_name
 ) {
     // Init with grey
@@ -615,7 +698,7 @@ void write_tree(
 
     // Draw the tree. Params can be adjusted if needed, e.g., stroke width for the svg
     LayoutParameters params;
-    params.stroke.width = 8.0;
+    params.stroke.width = 12.0;
     if( color_labels.empty() ) {
         write_color_tree_to_svg_file(
             tree, params, edge_colors, map, norm, out_name
@@ -625,7 +708,7 @@ void write_tree(
             color_list = ColorMap( color_palette ).color_list( color_labels.size() );
         }
         write_color_tree_to_svg_file(
-            tree, params, edge_colors, color_list, color_labels, out_name
+            tree, params, edge_colors, color_list, color_labels, legend_height, out_name
         );
     }
 }
@@ -781,7 +864,7 @@ void run_with_metdata( std::string const& tree_file, std::string const& meta_fil
 
         write_tree(
             tree, edge_values, min_value, max_value, color_list_nextstrain(),
-            ColorMap( color_list_nextstrain() ).color_list(color_labels.size()), color_labels,
+            ColorMap( color_list_nextstrain() ).color_list(color_labels.size()), color_labels, 0.5,
             out_prefix + data[i].name() + ".svg"
         );
     }
@@ -906,9 +989,9 @@ void run_with_tree_labels( std::string const& tree_file, std::string const& out_
     //         date_counts[ev.sum]++;
     //     }
     // }
-    for( auto const& dp : date_counts ) {
-        LOG_DBG << dp.first << ": " << dp.second;
-    }
+    // for( auto const& dp : date_counts ) {
+    //     LOG_DBG << dp.first << ": " << dp.second;
+    // }
 
     double min_value_countries = 0;
     double max_value_countries = country_order_dimitrios.size() - 1;
@@ -922,19 +1005,19 @@ void run_with_tree_labels( std::string const& tree_file, std::string const& out_
     LOG_INFO << "writing country tree";
     write_tree(
         tree, edge_values_countries, min_value_countries, max_value_countries,
-        color_list_nextstrain(), {}, color_labels_countries, out_prefix + "_countries.svg"
+        color_list_nextstrain(), {}, color_labels_countries, 1.0, out_prefix + "_countries.svg"
     );
 
     LOG_INFO << "writing region tree";
     write_tree(
         tree, edge_values_regions, min_value_regions, max_value_regions,
-        color_list_nextstrain(6), {}, color_labels_regions, out_prefix + "_regions.svg"
+        color_list_nextstrain(6), {}, color_labels_regions, 0.2, out_prefix + "_regions.svg"
     );
 
     LOG_INFO << "writing dates tree";
     write_tree(
         tree, edge_values_date, min_value_date, max_value_date,
-        color_list_nextstrain(), color_list_date, color_labels_date, out_prefix + "_date.svg"
+        color_list_nextstrain(), color_list_date, color_labels_date, 0.3, out_prefix + "_date.svg"
     );
 }
 
