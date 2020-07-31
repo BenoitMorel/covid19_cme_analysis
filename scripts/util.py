@@ -53,6 +53,9 @@ def copy_dir( src, dest, ignore=None ):
     ign_f = None
   copytree( src, dest, ignore=ign_f )
 
+def move( src, dest ):
+  os.rename( src, dest )
+
 def clean_dir( path ):
   if os.path.exists( path ):
     rmtree( path, ignore_errors=True )

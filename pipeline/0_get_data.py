@@ -9,25 +9,33 @@ import data_versioning
 import re
 import util
 import dl_gdrive
+import binascii
+
+def is_gz_file(filepath):
+    with open(filepath, 'rb') as test_f:
+        return binascii.hexlify(test_f.read(2)) == b'1f8b'
 
 if len(sys.argv) != 2:
-	util.fail("Please supply Google Drive link to the file.")
+	util.fail("Please supply local path or Google Drive link to the sequence file.")
 
-drive_link = sys.argv[1]
-
-if "drive.google.com/file/d/" in drive_link:
+given_path = sys.argv[1]
+local=False
+if "drive.google.com/file/d/" in given_path:
 	pattern = r'/d/(.+?)/view?'
-elif "drive.google.com/open?id=" in drive_link:
+elif "drive.google.com/open?id=" in given_path:
 	pattern = r'id=(.+?)$'
+elif os.path.isfile( given_path ):
+  local=True
 else:
-	util.fail("Drive Link looks wrong: {}".format(drive_link) )
+	util.fail("Given path must either be a local path or a google drive link: {}".format(given_path) )
 
-possible_id = re.search(pattern, drive_link)
-if not possible_id:
-	util.fail("Drive Link looks wrong after pattern: {}".format(drive_link) )
-else:
-	data_googleid = possible_id.group(1)
-	data_googleid.rstrip()
+if not local:
+  possible_id = re.search(pattern, given_path)
+  if not possible_id:
+  	util.fail("Drive Link looks wrong after pattern: {}".format(given_path) )
+  else:
+  	data_googleid = possible_id.group(1)
+  	data_googleid.rstrip()
 
 paths = data_versioning.setup_new_version()
 
@@ -44,17 +52,30 @@ print(" ".join(cmd))
 subprocess.call(cmd)
 """
 
-print("Downloading the data")
-dl_gdrive.download_file_from_google_drive(data_googleid, p.raw_sequences + ".gz")
+
+if not local:
+  print("Downloading the data")
+  given_path="tmp_file.msa"
+  dl_gdrive.download_file_from_google_drive( data_googleid, tmp_file )
+
+# if remote was gzipped
+if is_gz_file( given_path ):
+  print("Input was zipped. unzipping!")
+  suffix="." + given_path.split('.')[-1]
+
+  cmd = []
+  cmd.append("gunzip")
+  cmd.append("--keep")
+  cmd.append("--suffix")
+  cmd.append(suffix)
+  cmd.append( given_path )
+  #print((" ".join(cmd)))
+  subprocess.call(cmd)
+
+  given_path=given_path[:-len(suffix)]
+
+print("Moving the data over:\n  " + given_path + " -> " + p.raw_sequences)
+util.move( given_path, p.raw_sequences )
 
 print("")
 print("Version string: " + p.version)
-
-# if remote was gzipped
-if True:
-  cmd = []
-  cmd.append("gunzip")
-  cmd.append( p.raw_sequences+ ".gz" )
-  print((" ".join(cmd)))
-  subprocess.call(cmd)
-
