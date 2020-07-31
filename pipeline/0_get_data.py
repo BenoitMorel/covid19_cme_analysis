@@ -59,7 +59,9 @@ if not local:
   dl_gdrive.download_file_from_google_drive( data_googleid, tmp_file )
 
 # if remote was gzipped
+was_gz = False
 if is_gz_file( given_path ):
+  was_gz = True
   print("Input was zipped. unzipping!")
   suffix="." + given_path.split('.')[-1]
 
@@ -74,8 +76,12 @@ if is_gz_file( given_path ):
 
   given_path=given_path[:-len(suffix)]
 
-print("Moving the data over:\n  " + given_path + " -> " + p.raw_sequences)
-util.move( given_path, p.raw_sequences )
+if was_gz or not local:
+  print("Moving the data over:\n  " + given_path + " -> " + p.raw_sequences)
+  util.move( given_path, p.raw_sequences )
+else:
+  print("Making a copy of the data:\n  " + given_path + " -> " + p.raw_sequences)
+  util.copy( given_path, p.raw_sequences )
 
 print("")
 print("Version string: " + p.version)
