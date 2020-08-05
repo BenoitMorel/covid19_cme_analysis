@@ -53,17 +53,17 @@ sample_trees_len = (len(sorted_trees) // 10) + 1
 os.makedirs(runs_dir, exist_ok=True)
 
 
-index = 0
-print("running", sample_trees_len, "iterations")
-for lh, tree in sorted_trees[:sample_trees_len]:
-  outfile = os.path.join(runs_dir, "{}.tree".format(index))
-  logfile = os.path.join(runs_dir, "{}.log".format(index))
-  tmp_tree_file = os.path.join(runs_dir, "{}.in.tree".format(index))
-  with open(tmp_tree_file, 'w') as tree_file:
-    tree_file.write(tree)
-  root_digger_launcher.launch_root_digger(tmp_tree_file, alignment, model, outfile,
-      logfile, cores)
-  index += 1
+# index = 0
+# print("running", sample_trees_len, "iterations")
+# for lh, tree in sorted_trees[:sample_trees_len]:
+#   outfile = os.path.join(runs_dir, "{}.tree".format(index))
+#   logfile = os.path.join(runs_dir, "{}.log".format(index))
+#   tmp_tree_file = os.path.join(runs_dir, "{}.in.tree".format(index))
+#   with open(tmp_tree_file, 'w') as tree_file:
+#     tree_file.write(tree)
+#   root_digger_launcher.launch_root_digger(tmp_tree_file, alignment, model, outfile,
+#       logfile, cores)
+#   index += 1
 
 results = []
 
