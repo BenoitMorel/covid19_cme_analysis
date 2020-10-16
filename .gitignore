@@ -1,4 +1,9 @@
 *.pyc
 
 software/
-work_dir/
+work_dir/*/gisaid*
+work_dir/*/nextstrain*
+work_dir/*/*/data/
+work_dir/*/*/runs/
+
+
