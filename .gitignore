@@ -5,5 +5,5 @@ work_dir/*/gisaid*
 work_dir/*/nextstrain*
 work_dir/*/*/data/
 work_dir/*/*/runs/
-
+work_dir/*/*/results/tree_thinning/
 

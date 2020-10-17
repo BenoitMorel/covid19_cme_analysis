@@ -1,0 +1,3 @@
+# this file contains the likelihood of the best tree at the end of the raxml-ng run, and an evaluation of likelihood of the same tree  with iqtree (with model optimization)
+raxml_ll=-108281.854757
+iqtree_ll=-108281.854

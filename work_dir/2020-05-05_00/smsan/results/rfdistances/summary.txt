@@ -1,0 +1,3 @@
+Average pairwise RF distance between all ML trees: 0.774765
+RF distance between the best ML tree and its starting tree: 0.170191
+Average (over all the 100.0 runs) RF distance between start and ML trees: 0.12767411999999995

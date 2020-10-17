@@ -1,0 +1,19 @@
+HCOV-19_BAT_20130724_EPI_ISL_402131:
+Best-Hit signal is majority "weak" (76 / 76)
+LWR Best Hit:
+  mean: 0.025449
+  stdd: 0.000603
+LWR Entropy:
+  mean: 5.378399
+  stdd: 0.005948
+
+HCOV-19_PANGOLIN_2019_EPI_ISL_410721:
+Best-Hit signal is majority "strong" (76 / 76):
+  76 x HCOV-19_USA_20200211_EPI_ISL_411956
+LWR Best Hit:
+  mean: 0.646874
+  stdd: 0.009756
+LWR Entropy:
+  mean: 2.074200
+  stdd: 0.046435
+
