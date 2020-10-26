@@ -188,6 +188,4 @@ def extract_sequence( src_fasta, needle, dest_file ):
 
   sub.Popen("sed -n -e '/{}/,/>/ p' {} | sed -e '$d' > {}".format(needle,
                                                                   src_fasta,
-                                                                  dest_file))
-
-  return os.path.join(out_dir, out_file)
+                                                                  dest_file), shell=True)
