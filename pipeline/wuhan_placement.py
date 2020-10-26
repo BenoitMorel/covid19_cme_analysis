@@ -11,11 +11,10 @@ import util
 paths = common.Paths( sys.argv )
 
 # lay some stones in the wrong path
-hmm_profile = os.path.join(paths.hmmer_runs_dir, "reference.hmm")
 try:
-  util.expect_file_exists( hmm_profile )
+  util.expect_dir_exists( paths.epa_runs_dir )
 except Exception as e:
-  print("ERROR: Must run placement stage of pipeline first (requires hmm profile)")
+  print("ERROR: Must run placement stage of pipeline first")
   raise e
 
 # get a separate workdir for this task
@@ -30,10 +29,17 @@ util.make_path_clean( result_dir )
 # the runs dir
 wuhan_fasta = os.path.join( runs_dir, "sequence.fasta" )
 
-extract_sequence(paths.raw_sequences, "EPI_ISL_406801", wuhan_fasta)
+placement.extract_sequence( paths.raw_sequences, "EPI_ISL_406801", wuhan_fasta )
+
+ref_msa = paths.alignment
+
+# check if there already is a hmmprofile (should be the case for *msan runs)
+hmm_profile = os.path.join( paths.hmmer_runs_dir, "reference.hmm" )
+# build it if it doesn't exist
+if not os.path.isfile( hmm_profile ):
+  hmm_profile = placement.launch_hmmbuild( ref_msa, paths.hmmer_runs_dir )
 
 # align the wuhan sequence against the master MSA
-ref_msa = paths.alignment
 both_msa = placement.launch_hmmalign( hmm_profile, ref_msa, wuhan_fasta, runs_dir )
 ref_msa, query_msa = placement.launch_split4epa( ref_msa, both_msa, runs_dir )
 
