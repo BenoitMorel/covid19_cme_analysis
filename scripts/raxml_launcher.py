@@ -69,6 +69,8 @@ def evaluate(tree_file, ref_msa, out_dir):
   cmd.append('--blopt')
   cmd.append('nr_safe')
   cmd.append('--redo')
+  cmd.append("--blmin")
+  cmd.append(common.raxml_min_bl)
 
   sub.check_call(cmd, cwd=out_dir, stdout=sub.DEVNULL)
 
