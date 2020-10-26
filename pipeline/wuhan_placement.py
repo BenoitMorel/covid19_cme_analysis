@@ -56,7 +56,7 @@ with open( paths.raxml_credible_ml_trees ) as ml_trees_file:
     # subdirs per tree
     cur_outdir = os.path.join( runs_dir, str(i) )
     epa_result_subdir = os.path.join( paths.epa_rooting_dir, str(i) )
-    expect_dir_exists( epa_result_subdir )
+    util.expect_dir_exists( epa_result_subdir )
     i += 1
     util.make_path_clean( cur_outdir )
 
