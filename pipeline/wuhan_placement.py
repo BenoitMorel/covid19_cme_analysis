@@ -65,7 +65,7 @@ with open( paths.raxml_credible_ml_trees ) as ml_trees_file:
     util.expect_file_exists( tree_file )
 
     # fetch the previously created model file
-    cur_modelfile = epa_result_subdir + "eval.raxml.bestModel"
+    cur_modelfile = os.path.join( epa_result_subdir, "eval.raxml.bestModel" )
     util.expect_file_exists( cur_modelfile )
 
     # place the wuhan seq
