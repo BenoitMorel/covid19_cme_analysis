@@ -12,7 +12,7 @@ paths = common.Paths( sys.argv )
 
 # lay some stones in the wrong path
 try:
-  util.expect_dir_exists( paths.epa_runs_dir )
+  util.expect_dir_exists( paths.epa_rooting_dir )
 except Exception as e:
   print("ERROR: Must run placement stage of pipeline first")
   raise e
@@ -55,17 +55,17 @@ with open( paths.raxml_credible_ml_trees ) as ml_trees_file:
     print(i, " / ", total)
     # subdirs per tree
     cur_outdir = os.path.join( runs_dir, str(i) )
-    epa_run_subdir = os.path.join( paths.epa_runs_dir, str(i) )
-    expect_dir_exists( epa_run_subdir )
+    epa_result_subdir = os.path.join( paths.epa_rooting_dir, str(i) )
+    expect_dir_exists( epa_result_subdir )
     i += 1
     util.make_path_clean( cur_outdir )
 
     # get the same treefile as used in the normal epa runs
-    tree_file = os.path.join( epa_run_subdir, "tree.newick" )
+    tree_file = os.path.join( epa_result_subdir, "tree.newick" )
     util.expect_file_exists( tree_file )
 
     # fetch the previously created model file
-    cur_modelfile = epa_run_subdir + "eval.raxml.bestModel"
+    cur_modelfile = epa_result_subdir + "eval.raxml.bestModel"
     util.expect_file_exists( cur_modelfile )
 
     # place the wuhan seq
