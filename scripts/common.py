@@ -164,6 +164,10 @@ class Paths():
     return os.path.join(self.runs_dir, "epa_runs")
 
   @property
+  def wuhan_placement_runs_dir(self):
+    return os.path.join(self.runs_dir, "wuhan_placement_runs")
+
+  @property
   def cc_thinning_runs_dir(self):
     return os.path.join(self.runs_dir, "cc_thinning_runs")
 
@@ -224,6 +228,10 @@ class Paths():
   @property
   def epa_rooting_dir(self):
     return os.path.join(self.results_dir, "epa_rooting")
+
+  @property
+  def wuhan_placement_dir(self):
+    return os.path.join(self.results_dir, "wuhan_placement")
 
   @property
   def rootdigger_dir(self):

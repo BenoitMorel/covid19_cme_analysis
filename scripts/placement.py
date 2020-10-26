@@ -183,3 +183,11 @@ def launch_hmmalign(ref_hmm, ref_msa, query_fasta, out_dir):
 
   return os.path.join(out_dir, out_file)
 
+def extract_sequence( src_fasta, needle, dest_file ):
+  expect_file_exists( src_fasta )
+
+  sub.Popen("sed -n -e '/{}/,/>/ p' {} | sed -e '$d' > {}".format(needle,
+                                                                  src_fasta,
+                                                                  dest_file))
+
+  return os.path.join(out_dir, out_file)
