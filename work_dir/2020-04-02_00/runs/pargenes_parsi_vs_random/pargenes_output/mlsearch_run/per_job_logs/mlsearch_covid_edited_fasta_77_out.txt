@@ -1,0 +1,114 @@
+mpi-scheduler --msa /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-02_00//runs/pargenes_parsi_vs_random//pargenes_output/parse_run/results/covid_edited_fasta/covid_edited_fasta.raxml.rba --blmin 0.000000001 --precision 9 --model GTR+FO+G4 --prefix /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-02_00/runs/pargenes_parsi_vs_random/pargenes_output/mlsearch_run/results/covid_edited_fasta/multiple_runs/77/covid_edited_fasta --threads 1 --tree pars{1} --seed 3078 
+
+RAxML-NG v. 0.9.0git released on 24.03.2020 by The Exelixis Lab.
+Developed by: Alexey M. Kozlov and Alexandros Stamatakis.
+Contributors: Diego Darriba, Tomas Flouri, Benoit Morel, Sarah Lutteropp, Ben Bettisworth.
+Latest version: https://github.com/amkozlov/raxml-ng
+Questions/problems/suggestions? Please visit: https://groups.google.com/forum/#!forum/raxml
+
+RAxML-NG was called at 09-Nov-2020 14:49:54 as follows:
+
+mpi-scheduler --msa /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-02_00//runs/pargenes_parsi_vs_random//pargenes_output/parse_run/results/covid_edited_fasta/covid_edited_fasta.raxml.rba --blmin 0.000000001 --precision 9 --model GTR+FO+G4 --prefix /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-02_00/runs/pargenes_parsi_vs_random/pargenes_output/mlsearch_run/results/covid_edited_fasta/multiple_runs/77/covid_edited_fasta --threads 1 --tree pars{1} --seed 3078
+
+Analysis options:
+  run mode: ML tree search
+  start tree(s): parsimony (1)
+  random seed: 3078
+  tip-inner: OFF
+  pattern compression: ON
+  per-rate scalers: OFF
+  site repeats: ON
+  fast spr radius: AUTO
+  spr subtree cutoff: 1.000
+  branch lengths: proportional (ML estimate, algorithm: NR-FAST)
+  SIMD kernels: AVX2
+  parallelization: NONE/sequential
+
+WARNING: The model you specified on the command line (GTR+FO+G4) will be ignored 
+         since the binary MSA file already contains a model definition.
+         If you want to change the model, please re-run RAxML-NG 
+         with the original PHYLIP/FASTA alignment and --redo option.
+
+[00:00:00] Loading binary alignment from file: /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-02_00//runs/pargenes_parsi_vs_random//pargenes_output/parse_run/results/covid_edited_fasta/covid_edited_fasta.raxml.rba
+[00:00:00] Alignment comprises 1382 taxa, 1 partitions and 1756 patterns
+
+Partition 0: noname
+Model: GTR+FO+G4m
+Alignment sites / patterns: 30119 / 1756
+Gaps: 0.97 %
+Invariant sites: 95.30 %
+
+
+[00:00:00] Generating 1 parsimony starting tree(s) with 1382 taxa
+[00:00:20] Data distribution: max. partitions/sites/weight per thread: 1 / 1756 / 28096
+
+Starting ML tree search with 1 distinct starting trees
+
+[00:00:20 -1219839.185698997] Initial branch length optimization
+[00:00:23 -63418.828325159] Model parameter optimization (eps = 10.000000000)
+[00:00:42 -61484.024177258] AUTODETECT spr round 1 (radius: 5)
+[00:02:41 -61437.499910552] AUTODETECT spr round 2 (radius: 10)
+[00:04:58 -61430.419910042] AUTODETECT spr round 3 (radius: 15)
+[00:07:44 -61418.710120849] AUTODETECT spr round 4 (radius: 20)
+[00:10:50 -61417.563823843] AUTODETECT spr round 5 (radius: 25)
+[00:14:31 -61385.253865745] SPR radius for FAST iterations: 25 (autodetect)
+[00:14:31 -61385.253865745] Model parameter optimization (eps = 3.000000000)
+[00:14:36 -61384.916716349] FAST spr round 1 (radius: 25)
+[00:21:29 -61328.640581321] FAST spr round 2 (radius: 25)
+[00:25:48 -61323.642326396] FAST spr round 3 (radius: 25)
+[00:28:45 -61323.638826783] Model parameter optimization (eps = 1.000000000)
+[00:28:48 -61323.606499719] SLOW spr round 1 (radius: 5)
+[00:31:47 -61323.237618330] SLOW spr round 2 (radius: 5)
+[00:34:34 -61323.236124909] SLOW spr round 3 (radius: 10)
+[00:37:36 -61321.642082021] SLOW spr round 4 (radius: 5)
+[00:40:31 -61321.641534859] SLOW spr round 5 (radius: 10)
+[00:43:33 -61321.641353586] SLOW spr round 6 (radius: 15)
+[00:46:59 -61315.775688186] SLOW spr round 7 (radius: 5)
+[00:50:40 -61308.999402803] SLOW spr round 8 (radius: 5)
+[00:53:39 -61308.991855274] SLOW spr round 9 (radius: 10)
+[00:56:47 -61308.334731767] SLOW spr round 10 (radius: 5)
+[00:59:48 -61305.251148025] SLOW spr round 11 (radius: 5)
+[01:02:46 -61305.249081629] SLOW spr round 12 (radius: 10)
+[01:05:47 -61305.248495200] SLOW spr round 13 (radius: 15)
+[01:09:02 -61305.248460561] SLOW spr round 14 (radius: 20)
+[01:13:48 -61288.199727223] SLOW spr round 15 (radius: 5)
+[01:17:22 -61288.198752852] SLOW spr round 16 (radius: 10)
+[01:20:26 -61288.198621707] SLOW spr round 17 (radius: 15)
+[01:23:38 -61288.198604588] SLOW spr round 18 (radius: 20)
+[01:28:10 -61288.198569678] SLOW spr round 19 (radius: 25)
+[01:33:26 -61281.668050392] SLOW spr round 20 (radius: 5)
+[01:37:07 -61281.667187489] SLOW spr round 21 (radius: 10)
+[01:40:07 -61281.666559980] SLOW spr round 22 (radius: 15)
+[01:43:15 -61281.666489139] SLOW spr round 23 (radius: 20)
+[01:47:46 -61280.689019117] SLOW spr round 24 (radius: 5)
+[01:51:14 -61280.688424450] SLOW spr round 25 (radius: 10)
+[01:54:06 -61280.688358878] SLOW spr round 26 (radius: 15)
+[01:57:05 -61280.688342566] SLOW spr round 27 (radius: 20)
+[02:01:19 -61280.688327045] SLOW spr round 28 (radius: 25)
+[02:06:15 -61280.688317069] Model parameter optimization (eps = 0.100000000)
+
+[02:06:18] ML tree search #1, logLikelihood: -61280.604709964
+
+
+Optimized model parameters:
+
+   Partition 0: noname
+   Rate heterogeneity: GAMMA (4 cats, mean),  alpha: 0.020122272 (ML),  weights&rates: (0.250000000,0.000000000) (0.250000000,0.000000000) (0.250000000,0.000001037) (0.250000000,3.999998963) 
+   Base frequencies (ML): 0.297894199 0.180031327 0.194085817 0.327988657 
+   Substitution rates (ML): 0.427024921 1.343611226 0.385296147 0.341479020 2.662858109 1.000000000 
+
+
+Final LogLikelihood: -61280.604709964
+
+AIC score: 128101.209419929 / AICc score: 128662.542606999 / BIC score: 151127.974221832
+Free parameters (model + branch lengths): 2770
+
+Best ML tree saved to: /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-02_00/runs/pargenes_parsi_vs_random/pargenes_output/mlsearch_run/results/covid_edited_fasta/multiple_runs/77/covid_edited_fasta.raxml.bestTree
+Optimized model saved to: /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-02_00/runs/pargenes_parsi_vs_random/pargenes_output/mlsearch_run/results/covid_edited_fasta/multiple_runs/77/covid_edited_fasta.raxml.bestModel
+
+Execution log saved to: /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-02_00/runs/pargenes_parsi_vs_random/pargenes_output/mlsearch_run/results/covid_edited_fasta/multiple_runs/77/covid_edited_fasta.raxml.log
+
+Analysis started: 09-Nov-2020 14:49:54 / finished: 09-Nov-2020 16:56:13
+
+Elapsed time: 7578.821 seconds
+

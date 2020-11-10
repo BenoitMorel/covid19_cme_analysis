@@ -1,0 +1,206 @@
+Physical cores: 40
+Logical cores:  80
+Memory:         754GB
+Extensions:     AVX
+
+WARNING: MSA has not enough sites to infer reliable results
+Creating new checkpoint file: /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/runs/modeltest_runs/modeltest_seed42.ckp
+--------------------------------------------------------------------------------
+ModelTest-NG v0.1.7
+
+Input data:
+  MSA:        /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/data/covid_edited.fasta
+  Tree:       Maximum parsimony
+    file:           -
+  #taxa:            2203
+  #sites:           25123
+  #patterns:        1380
+  Max. thread mem:  1506 MB
+
+Output:
+  Log:           /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/runs/modeltest_runs/modeltest_seed42.log
+  Starting tree: /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/runs/modeltest_runs/modeltest_seed42.tree
+  Results:       /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/runs/modeltest_runs/modeltest_seed42.out
+
+Selection options:
+  # dna schemes:      11
+  # dna models:       110
+  include model parameters:
+    Uniform:         true
+    p-inv (+I):      true
+    gamma (+G):      true
+    both (+I+G):     true
+    free rates (+R): true
+    fixed freqs:     true
+    estimated freqs: true
+    #categories:     4
+  gamma rates mode:   mean
+  asc bias:           none
+  epsilon (opt):      0.01
+  epsilon (par):      0.05
+  keep branches:      false
+
+Additional options:
+  verbosity:        very low
+  threads:          1/40
+  RNG seed:         12345
+  subtree repeats:  enabled
+--------------------------------------------------------------------------------
+modeltest-ng was called as follows: 
+>> /hits/fast/cme/covid19/covid19_cme_analysis/software/modeltest/bin/modeltest-ng-mpi -i /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/data/covid_edited.fasta -t mp -o /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/runs/modeltest_runs/modeltest_seed42 --force -h uigfr 
+
+
+Partition 1/1
+
+ ----ID---  ----MODEL---- ---Time--- -Elapsed--- -------LnL------- -Alpha- -P-inv-
+
+Computation of likelihood scores completed. It took 0h:05:25
+
+BIC       model              K            lnL          score          delta    weight
+--------------------------------------------------------------------------------
+       1  GTR+I+G4          10    -57153.5566    159017.5950         0.0000    0.9826
+       2  GTR+R4            14    -57137.3292    159025.6664         8.0714    0.0174
+       3  GTR+I              9    -57187.5700    159075.4902        57.8952    0.0000
+       4  TIM2+I             7    -57336.7558    159353.5988       336.0038    0.0000
+       5  TIM1+I+G4          8    -57334.0755    159358.3698       340.7748    0.0000
+       6  TIM2+I+G4          8    -57335.1504    159360.5195       342.9245    0.0000
+       7  TIM2+R4           12    -57324.5649    159379.8746       362.2796    0.0000
+       8  TIM1+I             7    -57360.2580    159400.6031       383.0081    0.0000
+       9  TIM1+R4           12    -57348.3800    159427.5048       409.9098    0.0000
+      10  TIM3+I+G4          8    -57376.1182    159442.4552       424.8602    0.0000
+--------------------------------------------------------------------------------
+Best model according to BIC
+---------------------------
+Model:              GTR+I+G4
+lnL:                -57153.5566
+Frequencies:        0.3091 0.1602 0.1844 0.3462
+Subst. Rates:       0.0996 0.5637 0.0737 0.0684 2.7293 1.0000 
+Inv. sites prop:    0.8389
+Gamma shape:        0.7470
+Score:              159017.5950
+Weight:             0.9826
+---------------------------
+Parameter importances
+---------------------------
+P.Inv:              0.0000
+Gamma:              0.0000
+Gamma-Inv:          0.9826
+Frequencies:        1.0000
+---------------------------
+Model averaged estimates
+---------------------------
+P.Inv:              0.8830
+Alpha:              0.0215
+Alpha-P.Inv:        0.7470
+P.Inv-Alpha:        0.8389
+Frequencies:        0.3091 0.1602 0.1844 0.3462 
+
+Commands:
+  > phyml  -i /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/data/covid_edited.fasta -m 012345 -f m -v e -a e -c 4 -o tlr
+  > raxmlHPC-SSE3 -s /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/data/covid_edited.fasta -m GTRGAMMAIX -n EXEC_NAME -p PARSIMONY_SEED
+  > raxml-ng --msa /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/data/covid_edited.fasta --model GTR+I+G4
+  > paup -s /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/data/covid_edited.fasta
+  > iqtree -s /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/data/covid_edited.fasta -m GTR+I+G4
+
+AIC       model              K            lnL          score          delta    weight
+--------------------------------------------------------------------------------
+       1  GTR+R4            14    -57137.3292    123108.6585         0.0000    1.0000
+       2  GTR+I+G4          10    -57153.5566    123133.1132        24.4547    0.0000
+       3  GTR+I              9    -57187.5700    123199.1399        90.4815    0.0000
+       4  TIM2+R4           12    -57324.5649    123479.1297       370.4713    0.0000
+       5  TIM1+I+G4          8    -57334.0755    123490.1511       381.4926    0.0000
+       6  TIM2+I+G4          8    -57335.1504    123492.3008       383.6423    0.0000
+       7  TIM2+I             7    -57336.7558    123493.5116       384.8531    0.0000
+       8  TIM1+R4           12    -57348.3800    123526.7599       418.1015    0.0000
+       9  TIM1+I             7    -57360.2580    123540.5159       431.8574    0.0000
+      10  TIM3+I+G4          8    -57376.1182    123574.2365       465.5780    0.0000
+--------------------------------------------------------------------------------
+Best model according to AIC
+---------------------------
+Model:              GTR+R4
+lnL:                -57137.3292
+Frequencies:        0.3097 0.1602 0.1842 0.3459
+Subst. Rates:       0.0947 0.5689 0.0731 0.0656 2.5284 1.0000 
+Inv. sites prop:    -
+Gamma shape:        -
+Score:              123108.6585
+Weight:             1.0000
+---------------------------
+Parameter importances
+---------------------------
+P.Inv:              0.0000
+Gamma:              0.0000
+Gamma-Inv:          0.0000
+Frequencies:        1.0000
+---------------------------
+Model averaged estimates
+---------------------------
+P.Inv:              0.8830
+Alpha:              0.0215
+Alpha-P.Inv:        0.7470
+P.Inv-Alpha:        0.8389
+Frequencies:        0.3097 0.1602 0.1842 0.3459 
+
+Commands:
+  > phyml  -i /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/data/covid_edited.fasta -m 012345 -f m -v 0 -a 0 -c 1 -o tlr
+  > raxmlHPC-SSE3 -s /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/data/covid_edited.fasta -c 1 -m GTRCATX -n EXEC_NAME -p PARSIMONY_SEED
+  > raxml-ng --msa /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/data/covid_edited.fasta --model GTR
+  > paup -s /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/data/covid_edited.fasta
+  > iqtree -s /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/data/covid_edited.fasta -m GTR+R4
+
+AICc      model              K            lnL          score          delta    weight
+--------------------------------------------------------------------------------
+       1  GTR+R4            14    -57137.3292    124992.6585         0.0000    1.0000
+       2  GTR+I+G4          10    -57153.5566    125014.1132        21.4547    0.0000
+       3  GTR+I              9    -57187.5700    125079.1399        86.4815    0.0000
+       4  TIM2+R4           12    -57324.5649    125362.1297       369.4713    0.0000
+       5  TIM1+I+G4          8    -57334.0755    125369.1511       376.4926    0.0000
+       6  TIM2+I+G4          8    -57335.1504    125371.3008       378.6423    0.0000
+       7  TIM2+I             7    -57336.7558    125371.5116       378.8531    0.0000
+       8  TIM1+R4           12    -57348.3800    125409.7599       417.1015    0.0000
+       9  TIM1+I             7    -57360.2580    125418.5159       425.8574    0.0000
+      10  TIM3+I+G4          8    -57376.1182    125453.2365       460.5780    0.0000
+--------------------------------------------------------------------------------
+Best model according to AICc
+---------------------------
+Model:              GTR+R4
+lnL:                -57137.3292
+Frequencies:        0.3097 0.1602 0.1842 0.3459
+Subst. Rates:       0.0947 0.5689 0.0731 0.0656 2.5284 1.0000 
+Inv. sites prop:    -
+Gamma shape:        -
+Score:              124992.6585
+Weight:             1.0000
+---------------------------
+Parameter importances
+---------------------------
+P.Inv:              0.0000
+Gamma:              0.0000
+Gamma-Inv:          0.0000
+Frequencies:        1.0000
+---------------------------
+Model averaged estimates
+---------------------------
+P.Inv:              0.8830
+Alpha:              0.0215
+Alpha-P.Inv:        0.7470
+P.Inv-Alpha:        0.8389
+Frequencies:        0.3097 0.1602 0.1842 0.3459 
+
+Commands:
+  > phyml  -i /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/data/covid_edited.fasta -m 012345 -f m -v 0 -a 0 -c 1 -o tlr
+  > raxmlHPC-SSE3 -s /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/data/covid_edited.fasta -c 1 -m GTRCATX -n EXEC_NAME -p PARSIMONY_SEED
+  > raxml-ng --msa /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/data/covid_edited.fasta --model GTR
+  > paup -s /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/data/covid_edited.fasta
+  > iqtree -s /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/data/covid_edited.fasta -m GTR+R4
+Summary:
+
+Partition 1/1:
+                         Model         Score        Weight
+----------------------------------------------------------
+       BIC            GTR+I+G4   159017.5950        0.9826
+       AIC              GTR+R4   123108.6585        1.0000
+      AICc              GTR+R4   124992.6585        1.0000
+
+Execution results written to /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/runs/modeltest_runs/modeltest_seed42.out
+Starting tree written to /hits/fast/cme/covid19/covid19_cme_analysis/work_dir/2020-04-29_00/smsan/runs/modeltest_runs/modeltest_seed42.tree
