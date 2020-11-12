@@ -28,4 +28,16 @@ def launch_modeltest(alignment, output_dir, seed, cores = 16, debug = False):
   launcher.submit(prefix, cmd, cores, debug) 
 
 
+if (__name__== "__main__"):
+  max_args_number = 5
+  if len(sys.argv) < max_args_number:
+    print("Syntax error: alignment outputdir seed cores")
+    sys.exit(0)
+
+  alignment = sys.argv[1]
+  output_dir = sys.argv[2]
+  seed = int(sys.argv[3])
+  cores = int(sys.argv[4])
+  debug = False
+  launch_modeltest(alignment, output_dir, seed, cores)
 
