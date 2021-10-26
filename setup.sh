@@ -93,12 +93,14 @@ install_papara() {
 
 install_genesis() {
   git clone --recursive https://github.com/lczech/genesis.git
+  cd genesis
+  git checkout e71a89704a87634ea84c1d15e80bafac234e0824
   echo "Installing genesis..."
-  cd genesis/apps
+  cd apps
   ln -s ../../../scripts/*.cpp .
   cd ..
-  make -j
-  make update -j
+  make -j 8
+  make update -j 8
   cd ..
 }
 
