@@ -44,6 +44,8 @@ def launch_raxml(alignment, model, output_dir, seed, starting_trees = 1, parsimo
   prefix += "_seed" + str(seed)
   cmd.append("--prefix")
   cmd.append(prefix)
+  cmd.append('--force')
+  cmd.append('perf_threads')
   launcher.submit(prefix, cmd, cores, debug)
 
 def evaluate(tree_file, ref_msa, out_dir):
@@ -69,6 +71,8 @@ def evaluate(tree_file, ref_msa, out_dir):
   cmd.append('--blopt')
   cmd.append('nr_safe')
   cmd.append('--redo')
+  cmd.append('--force')
+  cmd.append('perf_threads')
   cmd.append("--blmin")
   cmd.append(common.raxml_min_bl)
 
