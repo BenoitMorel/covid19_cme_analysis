@@ -40,8 +40,15 @@ def outgroup_check(jplace_files, out_dir):
 
   return outfile
 
-def gappa_examine_lwr(jplace_path, out_dir):
+def gappa_examine_lwr(runs_dir, out_dir):
+  #runs_dir will be the working dir
   util.make_path( out_dir )
+
+  # get the jplace paths and make them relative, such that they're shorter
+  jplace_paths_full = glob( os.path.join( runs_dir, "*/*.jplace" ) )
+  jplace_paths_rel = []
+  for p in jplace_paths_full:
+    jplace_paths_rel.append( os.path.relpath(p, runs_dir) )
 
   # gappa examine lwr --jplace-path ./*/*.jplace --no-list-file --out-dir ../../results/epa_rooting/
   cmd = []
@@ -49,7 +56,7 @@ def gappa_examine_lwr(jplace_path, out_dir):
   cmd.append("examine")
   cmd.append("lwr")
   cmd.append("--jplace-path")
-  cmd += glob(jplace_path)
+  cmd += jplace_paths_rel
   cmd.append("--no-list-file")
   cmd.append("--no-compat-check")
   cmd.append("--allow-file-overwriting")
@@ -57,9 +64,9 @@ def gappa_examine_lwr(jplace_path, out_dir):
   cmd.append("20")
   cmd.append("--out-dir")
   cmd.append(out_dir)
-  cmd.append("--log-file")
-  cmd.append( os.path.join(out_dir, "gappa_examine_lwr.log") )
-  sub.check_call(cmd)
+
+  with open( os.path.join( out_dir, "gappa_examine_lwr.log" ), "w+" ) as logfile:
+    sub.check_call(cmd, cwd=runs_dir, stdout=logfile)
 
   return os.path.join( out_dir, "lwr_histogram.csv" )
 

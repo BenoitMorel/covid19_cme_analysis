@@ -83,7 +83,7 @@ util.make_path_clean( result_dir )
 # do the summary high level stats
 placement.outgroup_check( result_files, result_dir )
 # also generate the lwr histograms
-hist_csv_file = placement.gappa_examine_lwr( os.path.join( epa_out_dir, "*/*.jplace" ), result_dir )
+hist_csv_file = placement.gappa_examine_lwr( epa_out_dir, result_dir )
 placement.ggplot_lwr_histogram( hist_csv_file, result_dir)
 
 # ================================================================
