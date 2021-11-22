@@ -57,6 +57,8 @@ def gappa_examine_lwr(jplace_path, out_dir):
   cmd.append("20")
   cmd.append("--out-dir")
   cmd.append(out_dir)
+  cmd.append("--log-file")
+  cmd.append( os.path.join(out_dir, "gappa_examine_lwr.log") )
   sub.check_call(cmd)
 
   return os.path.join( out_dir, "lwr_histogram.csv" )
