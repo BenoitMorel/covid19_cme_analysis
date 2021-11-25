@@ -108,7 +108,8 @@ install_gappa() {
   git clone --recursive https://github.com/lczech/gappa.git
   echo "Installing gappa..."
   cd gappa
-  git checkout tags/v0.6.0
+  git checkout 7398c1cdf5162fe195c9c9fafe999f15e7d5012b
+  git submodule update --init --recursive
   make -j
   cd ..
 }
