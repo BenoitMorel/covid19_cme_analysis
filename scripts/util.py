@@ -1,4 +1,4 @@
-from shutil import rmtree, copyfile, copytree
+from shutil import rmtree, copyfile, copytree, ignore_patterns
 import os
 import sys
 import stat
@@ -48,7 +48,7 @@ def copy( src, dest ):
 
 def copy_dir( src, dest, ignore=None ):
   if ignore:
-    ign_f = shutil.ignore_patterns(*ignore)
+    ign_f = ignore_patterns(*ignore)
   else:
     ign_f = None
   copytree( src, dest, ignore=ign_f )
