@@ -5,7 +5,7 @@ import common
 import subprocess
 import util
 
-def launch_root_digger(tree, alignment, model, treefile, logfile, cores, factor = "1e20"):
+def launch_root_digger(tree, alignment, model, prefix, logfile, cores, factor = "1e20"):
   cmd = ["mpiexec"]
   cmd.extend(["-np", cores])
   cmd.extend([common.root_digger])
@@ -13,7 +13,7 @@ def launch_root_digger(tree, alignment, model, treefile, logfile, cores, factor 
   cmd.extend(["--msa", alignment])
   cmd.extend(["--model", model])
   cmd.extend(["--exhaustive"])
-  cmd.extend(["--treefile", treefile])
+  cmd.extend(["--prefix", prefix])
   cmd.extend(["--early-stop"])
   #cmd.extend(["--verbose"])
   print(cmd)
