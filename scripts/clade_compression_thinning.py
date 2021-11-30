@@ -20,6 +20,6 @@ def clade_compression_thinning(paths, input_tree_filename, input_alignment, taxa
   subprocess.check_call(command)
  
   shutil.move(prefix + "_pruned_alignment.fasta", output_alignment)
-
+  print("Clade-compression thinned alignment ouputed in " + output_alignment) 
 
 

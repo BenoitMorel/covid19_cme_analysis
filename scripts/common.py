@@ -95,6 +95,10 @@ class Paths():
   def dataset(self):
     return self._dataset
 
+  @property
+  def path(self):
+    return self._dataset_root
+
   # =====================================================
   # DATA
   # =====================================================
